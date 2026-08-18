@@ -1,7 +1,32 @@
+/**
+ * COGNIFY — Design System
+ * Style: "The Scholar's Atelier" — editorial academic aesthetic.
+ * Palette: Deep Ink #102A43 · Cognify Teal #1F9D8B · Learning Amber #E9A23B
+ *          Warm Ivory #F7F5EF · Soft Green #E9F0EC · Dark Text #17212B
+ * Typography: Libre Caslon Text (display serif) / Public Sans (UI) / IBM Plex Mono (data)
+ * Motifs: hairline rules, small-caps marginalia labels, footnote explanations.
+ * Avoid: neon, glassmorphism, big rounded cards, purple gradients, bento grids.
+ */
 @import "tailwindcss";
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
+
+/* ---------- Palette tokens (raw) ---------- */
+:root {
+  --ink: #102a43;
+  --teal: #1f9d8b;
+  --teal-dark: #17776a;
+  --amber: #e9a23b;
+  --amber-dark: #c9862a;
+  --ivory: #f7f5ef;
+  --ivory-deep: #f1eee6;
+  --soft-green: #e9f0ec;
+  --green-mid: #7fa894;
+  --dark-text: #17212b;
+  --ink-faint: rgba(16, 42, 67, 0.07);
+  --ink-mid: rgba(16, 42, 67, 0.45);
+}
 
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
@@ -40,85 +65,103 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+  /* Cognify brand tokens */
+  --color-ink: var(--ink);
+  --color-teal: var(--teal);
+  --color-teal-dark: var(--teal-dark);
+  --color-amber: var(--amber);
+  --color-amber-dark: var(--amber-dark);
+  --color-ivory: var(--ivory);
+  --color-ivory-deep: var(--ivory-deep);
+  --color-soft-green: var(--soft-green);
+  --color-green-mid: var(--green-mid);
+  --color-dark-text: var(--dark-text);
+  --font-serif: "Libre Caslon Text", Georgia, serif;
+  --font-sans: "Public Sans", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
 }
 
 :root {
-  --primary: var(--color-blue-700);
-  --primary-foreground: var(--color-blue-50);
-  --sidebar-primary: var(--color-blue-600);
-  --sidebar-primary-foreground: var(--color-blue-50);
-  --chart-1: var(--color-blue-300);
-  --chart-2: var(--color-blue-500);
-  --chart-3: var(--color-blue-600);
-  --chart-4: var(--color-blue-700);
-  --chart-5: var(--color-blue-800);
-  --radius: 0.65rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.235 0.015 65);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.235 0.015 65);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.235 0.015 65);
-  --secondary: oklch(0.98 0.001 286.375);
-  --secondary-foreground: oklch(0.4 0.015 65);
-  --muted: oklch(0.967 0.001 286.375);
-  --muted-foreground: oklch(0.552 0.016 285.938);
-  --accent: oklch(0.967 0.001 286.375);
-  --accent-foreground: oklch(0.141 0.005 285.823);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.985 0 0);
-  --border: oklch(0.92 0.004 286.32);
-  --input: oklch(0.92 0.004 286.32);
-  --ring: oklch(0.623 0.214 259.815);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.235 0.015 65);
-  --sidebar-accent: oklch(0.967 0.001 286.375);
-  --sidebar-accent-foreground: oklch(0.141 0.005 285.823);
-  --sidebar-border: oklch(0.92 0.004 286.32);
-  --sidebar-ring: oklch(0.623 0.214 259.815);
+  --radius: 0.25rem; /* minimal radii per design system */
+  --background: oklch(0.972 0.008 95); /* Warm Ivory #F7F5EF */
+  --foreground: oklch(0.235 0.04 245); /* Dark Text #17212B-ish */
+  --card: oklch(0.985 0.005 95);
+  --card-foreground: oklch(0.235 0.04 245);
+  --popover: oklch(0.985 0.005 95);
+  --popover-foreground: oklch(0.235 0.04 245);
+  --primary: oklch(0.605 0.095 178); /* Cognify Teal #1F9D8B */
+  --primary-foreground: oklch(0.99 0.003 95);
+  --secondary: oklch(0.94 0.015 160); /* Soft Green */
+  --secondary-foreground: oklch(0.35 0.06 178);
+  --muted: oklch(0.955 0.008 95);
+  --muted-foreground: oklch(0.5 0.02 245);
+  --accent: oklch(0.79 0.14 75); /* Learning Amber #E9A23B */
+  --accent-foreground: oklch(0.25 0.04 245);
+  --destructive: oklch(0.55 0.18 28);
+  --destructive-foreground: oklch(0.99 0 0);
+  --border: oklch(0.25 0.04 245 / 14%);
+  --input: oklch(0.25 0.04 245 / 18%);
+  --ring: oklch(0.605 0.095 178 / 60%);
+  --chart-1: oklch(0.605 0.095 178); /* teal */
+  --chart-2: oklch(0.79 0.14 75); /* amber */
+  --chart-3: oklch(0.4 0.06 245); /* ink */
+  --chart-4: oklch(0.72 0.06 160); /* green */
+  --chart-5: oklch(0.55 0.08 178);
+  --sidebar: oklch(0.27 0.05 245); /* Deep Ink #102A43 */
+  --sidebar-foreground: oklch(0.93 0.01 95);
+  --sidebar-primary: oklch(0.605 0.095 178);
+  --sidebar-primary-foreground: oklch(0.99 0 0);
+  --sidebar-accent: oklch(0.32 0.05 245);
+  --sidebar-accent-foreground: oklch(0.97 0.008 95);
+  --sidebar-border: oklch(0.99 0 0 / 12%);
+  --sidebar-ring: oklch(0.605 0.095 178);
 }
 
 .dark {
-  --primary: var(--color-blue-700);
-  --primary-foreground: var(--color-blue-50);
-  --sidebar-primary: var(--color-blue-500);
-  --sidebar-primary-foreground: var(--color-blue-50);
-  --background: oklch(0.141 0.005 285.823);
-  --foreground: oklch(0.85 0.005 65);
-  --card: oklch(0.21 0.006 285.885);
-  --card-foreground: oklch(0.85 0.005 65);
-  --popover: oklch(0.21 0.006 285.885);
-  --popover-foreground: oklch(0.85 0.005 65);
-  --secondary: oklch(0.24 0.006 286.033);
-  --secondary-foreground: oklch(0.7 0.005 65);
-  --muted: oklch(0.274 0.006 286.033);
-  --muted-foreground: oklch(0.705 0.015 286.067);
-  --accent: oklch(0.274 0.006 286.033);
-  --accent-foreground:  oklch(0.92 0.005 65);
-  --destructive: oklch(0.704 0.191 22.216);
-  --destructive-foreground: oklch(0.985 0 0);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.488 0.243 264.376);
-  --chart-1: var(--color-blue-300);
-  --chart-2: var(--color-blue-500);
-  --chart-3: var(--color-blue-600);
-  --chart-4: var(--color-blue-700);
-  --chart-5: var(--color-blue-800);
-  --sidebar: oklch(0.21 0.006 285.885);
-  --sidebar-foreground: oklch(0.85 0.005 65);
-  --sidebar-accent: oklch(0.274 0.006 286.033);
-  --sidebar-accent-foreground:  oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.488 0.243 264.376);
+  --background: oklch(0.24 0.045 245);
+  --foreground: oklch(0.95 0.008 95);
+  --card: oklch(0.27 0.045 245);
+  --card-foreground: oklch(0.95 0.008 95);
+  --popover: oklch(0.27 0.045 245);
+  --popover-foreground: oklch(0.95 0.008 95);
+  --primary: oklch(0.605 0.095 178);
+  --primary-foreground: oklch(0.99 0 0);
+  --secondary: oklch(0.32 0.05 245);
+  --secondary-foreground: oklch(0.9 0.01 95);
+  --muted: oklch(0.3 0.045 245);
+  --muted-foreground: oklch(0.72 0.015 95);
+  --accent: oklch(0.79 0.14 75);
+  --accent-foreground: oklch(0.2 0.03 245);
+  --destructive: oklch(0.6 0.18 28);
+  --destructive-foreground: oklch(0.99 0 0);
+  --border: oklch(0.99 0 0 / 14%);
+  --input: oklch(0.99 0 0 / 18%);
+  --ring: oklch(0.605 0.095 178 / 60%);
+  --sidebar: oklch(0.2 0.045 245);
+  --sidebar-foreground: oklch(0.93 0.01 95);
+  --sidebar-primary: oklch(0.605 0.095 178);
+  --sidebar-primary-foreground: oklch(0.99 0 0);
+  --sidebar-accent: oklch(0.26 0.045 245);
+  --sidebar-accent-foreground: oklch(0.97 0.008 95);
+  --sidebar-border: oklch(0.99 0 0 / 12%);
+  --sidebar-ring: oklch(0.605 0.095 178);
 }
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
+  html {
+    scroll-behavior: smooth;
+  }
   body {
     @apply bg-background text-foreground;
+    font-family: var(--font-sans);
+    font-feature-settings: "tnum" 1;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection {
+    background: color-mix(in oklch, var(--teal) 30%, transparent);
   }
   button:not(:disabled),
   [role="button"]:not([aria-disabled="true"]),
@@ -131,47 +174,116 @@
   input[type="radio"]:not(:disabled) {
     @apply cursor-pointer;
   }
+  h1, h2, h3 {
+    font-family: var(--font-serif);
+    letter-spacing: -0.015em;
+  }
 }
 
 @layer components {
-  /**
-   * Custom container utility that centers content and adds responsive padding.
-   *
-   * This overrides Tailwind's default container behavior to:
-   * - Auto-center content (mx-auto)
-   * - Add responsive horizontal padding
-   * - Set max-width for large screens
-   *
-   * Usage: <div className="container">...</div>
-   *
-   * For custom widths, use max-w-* utilities directly:
-   * <div className="max-w-6xl mx-auto px-4">...</div>
-   */
   .container {
     width: 100%;
     margin-left: auto;
     margin-right: auto;
-    padding-left: 1rem; /* 16px - mobile padding */
+    padding-left: 1rem;
     padding-right: 1rem;
   }
-
   .flex {
     min-height: 0;
     min-width: 0;
   }
-
   @media (min-width: 640px) {
     .container {
-      padding-left: 1.5rem; /* 24px - tablet padding */
+      padding-left: 1.5rem;
       padding-right: 1.5rem;
     }
   }
-
   @media (min-width: 1024px) {
     .container {
-      padding-left: 2rem; /* 32px - desktop padding */
+      padding-left: 2rem;
       padding-right: 2rem;
-      max-width: 1280px; /* Standard content width */
+      max-width: 1280px;
+    }
+  }
+
+  /* Marginalia small-caps section label */
+  .marginalia {
+    font-family: var(--font-sans);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-mid);
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+  }
+  .marginalia::before {
+    content: "";
+    display: block;
+    width: 2rem;
+    height: 1px;
+    background: var(--teal);
+  }
+  .marginalia-amber::before {
+    background: var(--amber);
+  }
+
+  /* Hairline rule with helix dot */
+  .hairline {
+    height: 1px;
+    background: linear-gradient(to right, var(--ink-faint), rgba(16, 42, 67, 0.16) 40%, var(--ink-faint));
+  }
+
+  /* Footnote explanation */
+  .footnote {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 0.8125rem;
+    line-height: 1.55;
+    color: var(--ink-mid);
+  }
+
+  /* Numbered list index style */
+  .index-num {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--teal-dark);
+    letter-spacing: 0.05em;
+  }
+
+  /* Paper texture overlay */
+  .paper-grain {
+    background-image: radial-gradient(rgba(16, 42, 67, 0.035) 1px, transparent 1px);
+    background-size: 22px 22px;
+  }
+
+  /* Subtle page-rise entrance */
+  @media (prefers-reduced-motion: no-preference) {
+    .rise-in {
+      animation: riseIn 0.5s cubic-bezier(0.23, 1, 0.32, 1) both;
+    }
+    @keyframes riseIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .rule-draw {
+      transform-origin: left;
+      animation: ruleDraw 0.7s cubic-bezier(0.23, 1, 0.32, 1) both;
+    }
+    @keyframes ruleDraw {
+      from {
+        transform: scaleX(0);
+      }
+      to {
+        transform: scaleX(1);
+      }
     }
   }
 }
