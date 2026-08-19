@@ -16,6 +16,7 @@ import {
 } from "@/components/cognify/Primitives";
 import { boards, findSubject } from "@/lib/mockData";
 import { topicAlias } from "@/lib/curriculum";
+import { subjectOverview } from "@/lib/curriculumEngine";
 import { cn } from "@/lib/utils";
 import { BookOpen, ChevronRight } from "lucide-react";
 import { useLocation } from "wouter";
@@ -75,6 +76,67 @@ export default function Curriculum() {
     (e) => e.topic.revisionStatus === "due" || e.topic.revisionStatus === "overdue"
   );
 
+  // Day 5 — subject parity: if no subject selected at the top level,
+  // render the whole map as an equal-treatment index of every subject.
+  const isTopLevel = !subjectId || subjectId === "__all__";
+  const subjects = cls.subjects;
+  if (isTopLevel) {
+    return (
+      <AppShell>
+        <PageHeader
+          overline="Curriculum Explorer"
+          title={`${board.name} · ${cls.name}`}
+          subtitle={`Every subject on equal footing — open a subject to read its chapters and topics.`}
+        />
+        <div className="px-5 py-7 sm:px-8 lg:px-10">
+          <div className="grid gap-px border border-ink/10 bg-ink/10 sm:grid-cols-2 xl:grid-cols-3">
+            {subjects.map((s) => {
+              const overview = subjectOverview(s.id);
+              if (!overview) return null;
+              return (
+                <button
+                  key={s.id}
+                  onClick={() => navigate(`/subject/${s.id}`)}
+                  className="group flex flex-col gap-3 bg-card p-6 text-left transition-colors hover:bg-teal/5"
+                >
+                  <div className="flex items-baseline justify-between">
+                    <span className="index-num">{String(subjects.indexOf(s) + 1).padStart(2, "0")}</span>
+                    <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+                      {s.code}
+                    </span>
+                  </div>
+                  <div className="font-serif text-lg font-bold leading-tight text-ink">
+                    {s.name}
+                  </div>
+                  <p className="text-[12.5px] leading-relaxed text-dark-text/70">
+                    {overview.recommendedAction ?? `A full map of ${s.name} — ${overview.topicCount} topics across ${s.chapters.length} chapters.`}
+                  </p>
+                  <div className="mt-auto grid grid-cols-2 gap-px bg-ink/10">
+                    <div className="bg-ivory p-2.5">
+                      <div className="font-mono text-[9px] uppercase tracking-[0.14em] text-muted-foreground">Mastery</div>
+                      <div className="mt-0.5 font-mono text-[15px] font-medium text-ink">{overview.mastery}%</div>
+                    </div>
+                    <div className="bg-ivory p-2.5">
+                      <div className="font-mono text-[9px] uppercase tracking-[0.14em] text-muted-foreground">Chapters</div>
+                      <div className="mt-0.5 font-mono text-[15px] font-medium text-ink">{s.chapters.length}</div>
+                    </div>
+                  </div>
+                  <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-teal transition-transform group-hover:translate-x-0.5">
+                    Open subject ledger →
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+          <p className="footnote mt-5 max-w-2xl border-l-2 border-teal/40 pl-4">
+            Each subject ledger shows chapter priority from the adaptive engine —
+            what is due for revision, what is weak, and what your streak has not yet touched.
+          </p>
+        </div>
+      </AppShell>
+    );
+  }
+
   if (!subject) {
     return (
       <AppShell>
@@ -122,11 +184,18 @@ export default function Curriculum() {
             ))}
           </SelectContent>
         </Select>
-        <Select value={subjectId} onValueChange={setSubjectId}>
+        <Select value={subjectId || "__all__"} onValueChange={(v) => {
+          if (v === "__all__") {
+            setSubjectId("__all__");
+          } else {
+            setSubjectId(v);
+          }
+        }}>
           <SelectTrigger className="h-9 w-48 border-ink/20 bg-card text-[13px]">
-            <SelectValue />
+            <SelectValue placeholder="All subjects" />
           </SelectTrigger>
           <SelectContent>
+            <SelectItem value="__all__">All subjects</SelectItem>
             {cls.subjects.map((s) => (
               <SelectItem key={s.id} value={s.id}>{s.name}</SelectItem>
             ))}

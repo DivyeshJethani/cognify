@@ -14,9 +14,12 @@ import {
 import { anotherExplanation, buildRails } from "@/lib/recommendations";
 import { discoverResources } from "@/lib/resourceDiscovery";
 import { findTopicByIdOrAlias } from "@/lib/curriculum";
+import { buildTopicSequence, type StageKey } from "@/lib/topicSequence";
 import type { LearningResource } from "@/lib/types";
-import { Clock, FlaskConical, Lightbulb, SearchX, Sparkles } from "lucide-react";
+import { BookOpen, ChevronDown, Clock, FlaskConical, Lightbulb, ListChecks, SearchX, Sparkles, Video } from "lucide-react";
 import { useLocation, useRoute } from "wouter";
+import { useEffect, useMemo, useState } from "react";
+import { cn } from "@/lib/utils";
 
 const DIFFICULTY_COLORS: Record<string, string> = {
   foundational: "#7fa894",
@@ -42,11 +45,55 @@ function sourceGlyph(source: LearningResource["source"]): string {
   }
 }
 
+const STAGE_GLYPH: Record<StageKey, React.ReactNode> = {
+  concept: <ListChecks className="h-3.5 w-3.5" />,
+  visual: <BookOpen className="h-3.5 w-3.5" />,
+  "worked-example": <Sparkles className="h-3.5 w-3.5" />,
+  video: <Video className="h-3.5 w-3.5" />,
+  retrieval: <ListChecks className="h-3.5 w-3.5" />,
+  practice: <FlaskConical className="h-3.5 w-3.5" />,
+  "teach-back": <Sparkles className="h-3.5 w-3.5" />,
+};
+
+function stageDoneKey(topicId: string, key: StageKey): string {
+  return `cognify.stage-done.v1::${topicId}::${key}`;
+}
+
 export default function TopicLearning() {
   const [match, params] = useRoute("/topic/:topicId");
   const topicId = match ? params.topicId : "";
   const [, navigate] = useLocation();
   const resolved = findTopicByIdOrAlias(topicId);
+  const sequence = useMemo(() => buildTopicSequence(topicId), [topicId]);
+  const [done, setDone] = useState<Record<string, boolean>>(() => {
+    if (!sequence) return {};
+    const acc: Record<string, boolean> = {};
+    sequence.stages.forEach((s) => {
+      acc[s.key] = typeof localStorage !== "undefined" && localStorage.getItem(stageDoneKey(topicId, s.key)) === "1";
+    });
+    return acc;
+  });
+  const [expandedStage, setExpandedStage] = useState<StageKey | null>(null);
+
+  useEffect(() => {
+    // refresh done-state when the topic changes
+    if (sequence) {
+      const acc: Record<string, boolean> = {};
+      sequence.stages.forEach((s) => {
+        acc[s.key] = typeof localStorage !== "undefined" && localStorage.getItem(stageDoneKey(topicId, s.key)) === "1";
+      });
+      setDone(acc);
+    }
+  }, [topicId, sequence]);
+
+  const toggleStageDone = (key: StageKey) => {
+    setDone((d) => {
+      const next = { ...d, [key]: !d[key] };
+      localStorage.setItem(stageDoneKey(topicId, key), next[key] ? "1" : "0");
+      return next;
+    });
+  };
+  const doneCount = Object.values(done).filter(Boolean).length;
 
   if (!resolved) {
     return (
@@ -117,6 +164,133 @@ export default function TopicLearning() {
               </div>
             </div>
           </div>
+
+          {/* Day 5 — the learning arc: seven stages from concept to teach-back */}
+          {sequence && (
+            <div className="mt-7">
+              <div className="flex flex-wrap items-baseline justify-between gap-3">
+                <div className="marginalia">The learning arc — {sequence.totalMinutes} minutes, seven stages</div>
+                <span className="font-mono text-[10.5px] uppercase tracking-[0.1em] text-ink/60">
+                  {doneCount}/{sequence.stages.length} complete
+                </span>
+              </div>
+              <ol className="mt-4 divide-y divide-ink/8 border-y border-ink/10">
+                {sequence.stages.map((s) => {
+                  const isDone = !!done[s.key];
+                  const isExpanded = expandedStage === s.key;
+                  const hasResource = !!s.resourceId;
+                  return (
+                    <li key={s.key}>
+                      <button
+                        onClick={() => setExpandedStage(isExpanded ? null : s.key)}
+                        className="grid w-full grid-cols-[2.5rem_1fr_auto] items-start gap-4 py-4 text-left"
+                      >
+                        <span className={cn("index-num", isDone && "text-teal")}>{s.numeral}</span>
+                        <div className="min-w-0">
+                          <div className="flex flex-wrap items-center gap-2">
+                            <span className="flex items-center gap-1 border border-ink/20 bg-card px-2 py-0.5 font-mono text-[9.5px] uppercase tracking-[0.1em] text-ink/70">
+                              {STAGE_GLYPH[s.key]}
+                              {s.label}
+                            </span>
+                            <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+                              {s.purpose}
+                            </span>
+                            <span className="flex items-center gap-1 font-mono text-[10px] text-muted-foreground">
+                              <Clock className="h-3 w-3" /> {s.timeMinutes} min
+                            </span>
+                          </div>
+                          {(s.body || s.resourceId) && (
+                            <p className="mt-1.5 max-w-2xl text-[12.5px] leading-relaxed text-dark-text/70">
+                              {s.body ??
+                                (hasResource
+                                  ? "Resource selected by the knowledge engine — expand to begin the session."
+                                  : "Complete this stage using the resources below.")}
+                            </p>
+                          )}
+                        </div>
+                        <div className="flex flex-col items-end gap-1.5">
+                          {isDone ? (
+                            <span className="font-mono text-[9px] uppercase tracking-[0.1em] text-teal">✓ done</span>
+                          ) : (
+                            <ChevronDown
+                              className={cn("h-4 w-4 text-ink/40 transition-transform", isExpanded && "rotate-180")}
+                            />
+                          )}
+                        </div>
+                      </button>
+                      {isExpanded && (
+                        <div className="ml-8 border-l border-ink/15 pb-4 pl-5">
+                          {(s.teachPrompt || s.practiceNote || (s.resourceId && s.body == null)) && (
+                            <p className="mb-3 text-[13px] leading-relaxed text-dark-text/75">
+                              {s.teachPrompt ?? s.practiceNote ?? "Begin a focused session below and return to mark it complete."}
+                            </p>
+                          )}
+                          {s.teachPoints && (
+                            <div className="mb-3">
+                              <div className="font-mono text-[9.5px] uppercase tracking-[0.14em] text-muted-foreground">Key points to cover</div>
+                              <ol className="mt-2 space-y-1.5">
+                                {s.teachPoints.map((p, i) => (
+                                  <li key={i} className="flex gap-2 text-[12.5px] leading-relaxed text-dark-text/75">
+                                    <span className="font-mono text-[10px] text-teal">{String(i + 1).padStart(2, "0")}</span>
+                                    {p}
+                                  </li>
+                                ))}
+                              </ol>
+                            </div>
+                          )}
+                          <div className="flex flex-wrap gap-2">
+                            {s.resourceId && s.key !== "retrieval" && s.key !== "teach-back" && (
+                              <button
+                                onClick={() => navigate(`/session/${s.resourceId}?topic=${topicId}`)}
+                                className="border border-ink bg-ink px-4 py-2 font-mono text-[10px] uppercase tracking-[0.12em] text-ivory transition-colors hover:bg-teal hover:border-teal active:scale-[0.97]"
+                              >
+                                Begin stage session →
+                              </button>
+                            )}
+                            {s.key === "retrieval" && (
+                              <button
+                                onClick={() => navigate(`/teach`)}
+                                className="border border-amber bg-amber px-4 py-2 font-mono text-[10px] uppercase tracking-[0.12em] text-white transition-colors hover:bg-amber-dark active:scale-[0.97]"
+                              >
+                                Start the retrieval check →
+                              </button>
+                            )}
+                            {s.key === "teach-back" && (
+                              <button
+                                onClick={() => navigate(`/teach`)}
+                                className="border border-teal px-4 py-2 font-mono text-[10px] uppercase tracking-[0.12em] text-teal transition-colors hover:bg-teal hover:text-white active:scale-[0.97]"
+                              >
+                                Teach Cognify →
+                              </button>
+                            )}
+                            <button
+                              onClick={() => toggleStageDone(s.key)}
+                              className={cn(
+                                "border px-4 py-2 font-mono text-[10px] uppercase tracking-[0.12em] transition-colors active:scale-[0.97]",
+                                isDone
+                                  ? "border-ink/25 bg-card text-ink/60 hover:border-teal hover:text-teal"
+                                  : "border-teal/50 bg-teal/5 text-teal hover:bg-teal/10"
+                              )}
+                            >
+                              {isDone ? "Unmark complete" : "Mark stage complete"}
+                            </button>
+                          </div>
+                          {s.key === "teach-back" && (
+                            <p className="footnote mt-3 max-w-xl">
+                              Teach-back is the strongest mastery evidence in the loop — the
+                              explanation you write is scored against these key points and
+                              written to your Learning DNA.
+                            </p>
+                          )}
+                        </div>
+                      )}
+                      <Hairline className="-mb-1" />
+                    </li>
+                  );
+                })}
+              </ol>
+            </div>
+          )}
 
           {/* Recommended first pass */}
           {resources.length > 0 && (
@@ -241,27 +415,26 @@ export default function TopicLearning() {
             </p>
           </div>
 
-          <div className="border border-ink/10 bg-card p-5">
-            <Marginalia>Working sequence</Marginalia>
-            <ol className="mt-3 space-y-2.5">
-              <li className="flex gap-2.5 text-[13px] leading-relaxed text-dark-text/75">
-                <span className="index-num">01</span>
-                <span>Begin the recommended first pass above.</span>
-              </li>
-              <li className="flex gap-2.5 text-[13px] leading-relaxed text-dark-text/75">
-                <span className="index-num">02</span>
-                <span>Note any segment that resists — the replay list forms from it.</span>
-              </li>
-              <li className="flex gap-2.5 text-[13px] leading-relaxed text-dark-text/75">
-                <span className="index-num">03</span>
-                <span>If the idea still slips, take “another explanation” below.</span>
-              </li>
-              <li className="flex gap-2.5 text-[13px] leading-relaxed text-dark-text/75">
-                <span className="index-num">04</span>
-                <span>Closer the session with one retrieval sentence in your notes.</span>
-              </li>
-            </ol>
-          </div>
+          {sequence && (
+            <div className="border border-ink/10 bg-card p-5">
+              <Marginalia>The arc — live</Marginalia>
+              <ol className="mt-3 space-y-2">
+                {sequence.stages.map((s) => (
+                  <li key={s.key} className="flex items-center gap-2.5">
+                    <span className={cn("index-num", !!done[s.key] && "text-teal")}>{s.numeral}</span>
+                    <span className={cn("text-[12.5px] uppercase tracking-wider", !!done[s.key] ? "font-mono text-teal line-through decoration-1" : "font-mono text-ink/60")}>
+                      {s.label}
+                    </span>
+                    {!!done[s.key] && <span className="ml-auto font-mono text-[9px] text-teal">✓</span>}
+                  </li>
+                ))}
+              </ol>
+              <p className="footnote mt-4">
+                Each completed stage is written to your topic file — the arc, not the
+                video, is what the adaptive engine reads.
+              </p>
+            </div>
+          )}
 
           <div className="border border-ink/10 bg-card p-5">
             <Marginalia>What a pass builds</Marginalia>

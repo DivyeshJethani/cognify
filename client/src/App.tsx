@@ -29,6 +29,7 @@ import TimetablePage from "./pages/Timetable";
 import GoalsPage from "./pages/Goals";
 import Teach from "./pages/Teach";
 import Community from "./pages/Community";
+import SubjectPage from "./pages/SubjectPage";
 
 /**
  * Auth/onboarding guard as a real component — hooks are called unconditionally
@@ -94,6 +95,7 @@ function Router() {
       <GuardedRoute path={"/onboarding"} component={Onboarding} requireOnboarding={false} />
       <GuardedRoute path={"/dashboard"} component={Dashboard} />
       <GuardedRoute path={"/curriculum"} component={Curriculum} />
+      <GuardedRoute path={"/subject/:subjectId"} component={SubjectPage} />
       <GuardedRoute path={"/profile"} component={Profile} />
       <GuardedRoute path={"/adaptive"} component={Adaptive} />
       <GuardedRoute path={"/mistakes"} component={Mistakes} />

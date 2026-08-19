@@ -141,6 +141,13 @@ export interface LearningResource {
   rail?: string;
   /** Free-web-resources flag (YouTube/NCERT/OER discovery) */
   isFreeWeb?: boolean;
+  /** Curriculum join fields — set by enrichResourceTopicContext() */
+  chapterTitle?: string;
+  subjectLabel?: string;
+  classLabel?: string;
+  board?: string;
+  /** First learning objective of the resource's topic */
+  learningObjective?: string;
 }
 
 export interface ResourceDiscoveryResult {

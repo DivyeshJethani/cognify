@@ -26,6 +26,7 @@ import type {
   TimelineNote,
 } from "./types";
 import { boards } from "./mockData";
+import { findTopicByIdOrAlias } from "./curriculum";
 
 const DNA = {
   topFormat: "visual-diagram" as const,
@@ -34,7 +35,7 @@ const DNA = {
   confidenceCalibration: "overestimates weak topics by ~35 points",
 };
 
-interface RawResource {
+export interface RawResource {
   id: string;
   title: string;
   source: ResourceSource;
@@ -80,7 +81,7 @@ export function typeMeta(id: ResourceType): ResourceTypeMeta {
 const FREE_SOURCES: ResourceSource[] = ["youtube", "ncert", "cbse", "edu-website"];
 
 /** Classify a raw resource into one of the ten COGNIFY resource types. */
-function classifyType(r: RawResource): ResourceType {
+export function classifyType(r: RawResource): ResourceType {
   const t = r.title.toLowerCase();
   const free = FREE_SOURCES.includes(r.source);
   if (free && (r.source === "ncert" || r.source === "cbse")) return "ncert-textbook";
@@ -1642,6 +1643,13 @@ export const TRANSCRIPTS: Record<string, TranscriptSegment[]> = {
 };
 
 /* ------------------------------------------------------------------
+ * Raw inventory export — used by the Day 5 knowledge-engine search so
+ * it can iterate the canonical inventory alongside discoverResources().
+ * The Day 4+ pages keep using discoverResources() as before.
+ * ---------------------------------------------------------------- */
+export const INVENTORY_EXPORT: Record<string, RawResource[]> = INVENTORY;
+
+/* ------------------------------------------------------------------
  * Discovery engine
  * ---------------------------------------------------------------- */
 const ALL_FORMATS: ResourceFormat[] = [
@@ -1684,7 +1692,7 @@ export function discoverResources(
       durationMinutes: r.durationMinutes,
       format: r.format,
       topicId,
-      topicTitle: "CBSE Class 10 topic", // filled by caller context
+      topicTitle: "", // filled by enrichResourceTopicContext()
       chapterId: "",
       subjectCode: "",
       difficulty: r.difficulty,
@@ -1709,6 +1717,34 @@ export function discoverResources(
 
 export function getTranscript(resourceId: string): TranscriptSegment[] {
   return TRANSCRIPTS[resourceId] ?? [];
+}
+
+/**
+ * Enrich a LearningResource with curriculum context (topicTitle,
+ * chapterTitle, chapterId, subjectCode, subjectLabel, classLabel,
+ * learningObjective, chapterTitle).
+ * Simulates the backend joining /api/discovery/resources with the
+ * curriculum service. The inventory only stores the stable alias slug;
+ * this resolves it to the live Topic record.
+ */
+export function enrichResourceTopicContext(
+  resource: LearningResource
+): LearningResource {
+  const resolved = findTopicByIdOrAlias(resource.topicId);
+  if (!resolved) return resource;
+  const { subject, chapter, topic } = resolved;
+  return {
+    ...resource,
+    topicTitle: topic.title,
+    chapterId: chapter.id,
+    chapterTitle: chapter.title,
+    subjectCode: subject.code,
+    subjectLabel: subject.name,
+    classLabel: "CBSE · Class 10",
+    board: "CBSE",
+    learningObjective:
+      topic.objectives[0]?.text ?? `Master ${topic.title.toLowerCase()}`,
+  };
 }
 
 /* ------------------------------------------------------------------

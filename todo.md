@@ -69,3 +69,25 @@
 - [ ] Mock conversations in assistant panel; voice recording UI placeholder
 - [ ] Responsive checks all pages
 - [ ] TS clean, checkpoint, deliver
+
+# Day 5 — Knowledge Engine + Real Learning Experience
+
+## Service layer (client/src/lib/)
+- [ ] Enrich LearningResource metadata (class label, chapter title, per-resource learning objective, free-web flag wiring)
+- [ ] curriculumEngine.ts — curriculum map resolution (class subjects w/ mastery aggregates, chapter overview stats, topic breadcrumb)
+- [ ] discoverySearch.ts — global knowledge-engine search w/ grouped results (TOPICS, RESOURCES, REVISION, PRACTICE, PATHS), filter+sort engine over resources
+- [ ] learningSessionFlow.ts — session flow (watch → 5-question retrieval → practice → confidence rating → DNA update), localStorage persisted
+- [ ] topicSequence.ts — 7-stage learn-this-topic sequence generator w/ realistic CBSE content per stage
+
+## Pages
+- [ ] Upgrade Library.tsx → Resource Discovery (/library): filters (subject, class, resource type, duration, difficulty, free-only), sorting (most relevant / recommended for me / shortest / recently added / highest evidence), evidence WHY cards
+- [ ] Upgrade Session.tsx → video learning page: learning context rail, MARK AS WATCHED / START QUICK CHECK / SAVE / ADD TO LEARNING PATH, "After this resource" rail (retrieval, practice, similar, weak topics)
+- [ ] Upgrade TopicLearning.tsx → 7-stage Learn This Topic (CONCEPT → VISUAL EXPLANATION → WORKED EXAMPLE → VIDEO → RETRIEVAL → PRACTICE → TEACH-BACK)
+- [ ] New SubjectPage.tsx (/subject/:subjectId) — subject overview + chapter ledger w/ mastery/priority/next revision
+- [ ] Upgrade Curriculum.tsx — subject parity + subject links + overview stats
+- [ ] Global search overlay in AppShell — grouped knowledge-engine results
+
+## Wiring & QA
+- [ ] Nav link updates; sidebar intact
+- [ ] TypeScript clean; all routes verified; responsive check (desktop/tablet/mobile)
+- [ ] Checkpoint + delivery

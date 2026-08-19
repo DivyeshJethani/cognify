@@ -1,21 +1,25 @@
 /**
- * COGNIFY — Resource Library
- * The catalogue room: every resource across every studied subject, browsable
- * by subject, resource type and free-web availability. Scholar's Atelier —
- * index tabs along the margin, ledger rows, hairline rules, honest footnote.
+ * COGNIFY — Resource Discovery (Library)
+ * The catalogue room, now driven by the Day 5 knowledge engine:
+ * discoverAll() + enrichResourceTopicContext() + filterAndSort().
+ * Scholar's Atelier — index tabs along the margin, ledger rows,
+ * hairline rules, honest footnote. Same visual identity as Day 2.
  */
 import AppShell, { PageHeader } from "@/components/cognify/AppShell";
 import { ActionChip, Hairline, Marginalia } from "@/components/cognify/Primitives";
 import {
   discoverAll,
+  enrichResourceTopicContext,
   RESOURCE_TYPES,
   topicIndexes,
 } from "@/lib/resourceDiscovery";
-import type { LearningResource, ResourceFormat } from "@/lib/types";
+import { filterAndSort, type LibraryFilters, type SortKey } from "@/lib/discoverySearch";
+import type { Difficulty, LearningResource, ResourceFormat, ResourceType } from "@/lib/types";
+import { learningDNA } from "@/lib/mockData";
 import { continueLearning } from "@/lib/savedResources";
 import { cn } from "@/lib/utils";
-import { Clock, ExternalLink, SearchX } from "lucide-react";
-import { useState } from "react";
+import { BookOpenText, Clock, ExternalLink, SearchX, SlidersHorizontal } from "lucide-react";
+import { useMemo, useState } from "react";
 import { Link, useLocation } from "wouter";
 import { toast } from "sonner";
 
@@ -27,6 +31,14 @@ const ALL_FORMATS: { key: ResourceFormat | "all"; label: string }[] = [
   { key: "example", label: "Example" },
   { key: "practice", label: "Practice" },
   { key: "diagram", label: "Diagram / visual" },
+];
+
+const SORT_OPTIONS: { key: SortKey; label: string }[] = [
+  { key: "most-relevant", label: "Most relevant" },
+  { key: "recommended-for-me", label: "Recommended for me" },
+  { key: "highest-evidence", label: "Highest evidence" },
+  { key: "shortest", label: "Shortest first" },
+  { key: "recently-added", label: "Recently added" },
 ];
 
 function sourceGlyph(source: LearningResource["source"]): string {
@@ -56,23 +68,42 @@ const DIFFICULTY_COLORS: Record<string, string> = {
 export default function Library() {
   const [, navigate] = useLocation();
   const [formatFilter, setFormatFilter] = useState<ResourceFormat | "all">("all");
-  const [typeFilter, setTypeFilter] = useState<string | "all">("all");
+  const [typeFilter, setTypeFilter] = useState<ResourceType | "all">("all");
+  const [subjectFilter, setSubjectFilter] = useState<string>("all");
+  const [durationFilter, setDurationFilter] = useState<LibraryFilters["duration"]>("any");
+  const [difficultyFilter, setDifficultyFilter] = useState<Difficulty | "all">("all");
   const [freeWebOnly, setFreeWebOnly] = useState(false);
+  const [sort, setSort] = useState<SortKey>("recommended-for-me");
 
-  const resources = discoverAll({
-    formats: formatFilter === "all" ? undefined : [formatFilter],
-    isFreeWeb: freeWebOnly,
-  }).filter((r) => typeFilter === "all" || r.resourceType === typeFilter);
+  const indexes = useMemo(() => topicIndexes(), []);
+  const subjectOptions = useMemo(
+    () => Array.from(new Set(indexes.map((i) => i.subjectCode))),
+    [indexes]
+  );
 
-  const indexes = topicIndexes();
+  const resources = useMemo(() => {
+    const raw = discoverAll({
+      formats: formatFilter === "all" ? undefined : [formatFilter],
+      difficulty: difficultyFilter,
+      isFreeWeb: freeWebOnly,
+    }).map(enrichResourceTopicContext);
+    const filters: LibraryFilters = {
+      types: typeFilter === "all" ? undefined : [typeFilter],
+      duration: durationFilter,
+      freeWebOnly: freeWebOnly,
+      ...(subjectFilter !== "all" ? { subject: subjectFilter } : {}),
+    };
+    return filterAndSort(raw, filters, sort);
+  }, [formatFilter, typeFilter, subjectFilter, durationFilter, difficultyFilter, freeWebOnly, sort]);
+
   const continuedIds = new Set(continueLearning().map((p) => p.resourceId));
 
   return (
     <AppShell>
       <PageHeader
-        overline="Resource Library"
+        overline="Resource Discovery"
         title="The catalogue"
-        subtitle={`${resources.length} resources across your subjects — indexed by type, format and provenance. A future backend discovery API supplies this shelf.`}
+        subtitle={`${resources.length} resources indexed across your subjects — filtered, sorted and ranked by the knowledge engine. Every recommendation carries its evidence.`}
         actions={
           <Link
             href="/dashboard"
@@ -102,6 +133,31 @@ export default function Library() {
           ))}
         </div>
         <span className="mx-1 hidden h-4 w-px bg-ink/15 sm:block" />
+        {/* Subject select */}
+        <select
+          value={subjectFilter}
+          onChange={(e) => setSubjectFilter(e.target.value)}
+          className="h-7 border border-ink/25 bg-card px-2 font-mono text-[10.5px] uppercase tracking-[0.08em] text-ink/70 outline-none transition-colors hover:border-ink/50 focus:border-teal"
+        >
+          <option value="all">All subjects</option>
+          {subjectOptions.map((code) => (
+            <option key={code} value={code}>
+              {code}
+            </option>
+          ))}
+        </select>
+        {/* Duration select */}
+        <select
+          value={durationFilter}
+          onChange={(e) => setDurationFilter(e.target.value as LibraryFilters["duration"])}
+          className="h-7 border border-ink/25 bg-card px-2 font-mono text-[10.5px] uppercase tracking-[0.08em] text-ink/70 outline-none transition-colors hover:border-ink/50 focus:border-teal"
+        >
+          <option value="any">Any length</option>
+          <option value="under15">Under 15 min</option>
+          <option value="15to30">15–30 min</option>
+          <option value="over30">Over 30 min</option>
+        </select>
+        <span className="mx-1 hidden h-4 w-px bg-ink/15 sm:block" />
         <div className="flex flex-wrap items-center gap-1.5">
           <button
             onClick={() => setTypeFilter("all")}
@@ -117,7 +173,7 @@ export default function Library() {
           {RESOURCE_TYPES.map((t) => (
             <button
               key={t.id}
-              onClick={() => setTypeFilter(t.id)}
+              onClick={() => setTypeFilter(t.id as ResourceType)}
               className={cn(
                 "border px-2.5 py-1 font-mono text-[10.5px] uppercase tracking-[0.08em] transition-colors",
                 typeFilter === t.id
@@ -141,6 +197,22 @@ export default function Library() {
         >
           <ExternalLink className="h-3 w-3" /> Free web sources only
         </button>
+        {/* Sort select */}
+        <span className="mx-1 hidden h-4 w-px bg-ink/15 sm:block" />
+        <div className="flex items-center gap-1.5">
+          <SlidersHorizontal className="h-3 w-3 text-muted-foreground" />
+          <select
+            value={sort}
+            onChange={(e) => setSort(e.target.value as SortKey)}
+            className="h-7 border border-ink/25 bg-card px-2 font-mono text-[10.5px] uppercase tracking-[0.08em] text-ink/70 outline-none transition-colors hover:border-ink/50 focus:border-teal"
+          >
+            {SORT_OPTIONS.map((s) => (
+              <option key={s.key} value={s.key}>
+                {s.label}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
 
       <div className="flex flex-col gap-8 px-5 py-7 sm:px-8 lg:flex-row lg:px-10">
@@ -189,15 +261,34 @@ export default function Library() {
                       <div className="mt-1.5 font-serif text-[16px] font-bold leading-snug text-ink">
                         {r.title}
                       </div>
-                      <div className="mt-2 flex items-center gap-3">
-                        <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
-                          {r.topicTitle}
-                        </span>
-                        <span className="h-1 w-1 rounded-full bg-ink/20" />
+                      <div className="mt-2 flex flex-wrap items-center gap-3">
+                        {r.chapterTitle && (
+                          <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+                            {r.subjectLabel} · {r.chapterTitle}
+                          </span>
+                        )}
+                        {r.topicTitle && (
+                          <>
+                            <span className="hidden h-1 w-1 rounded-full bg-ink/20 sm:block" />
+                            <Link
+                              href={`/topic/${r.topicId}`}
+                              className="border-b border-dotted border-teal/60 font-mono text-[10px] uppercase tracking-wider text-teal transition-colors hover:border-teal"
+                            >
+                              {r.topicTitle}
+                            </Link>
+                          </>
+                        )}
+                        <span className="hidden h-1 w-1 rounded-full bg-ink/20 sm:block" />
                         <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
                           Relevance {r.relevance}
                         </span>
                       </div>
+                      {r.learningObjective && (
+                        <p className="mt-1.5 flex gap-1.5 text-[12.5px] italic text-dark-text/70">
+                          <BookOpenText className="mt-0.5 h-3.5 w-3.5 shrink-0 text-teal" />
+                          Objective — {r.learningObjective}
+                        </p>
+                      )}
                       <p className="mt-2 max-w-3xl text-[13px] leading-relaxed text-dark-text/75">
                         <span className="font-mono text-[10px] font-bold uppercase tracking-[0.1em] text-teal-dark">
                           Why recommended —{" "}
@@ -242,8 +333,11 @@ export default function Library() {
 
           <p className="footnote mt-6 max-w-2xl border-l-2 border-teal/40 pl-4">
             The shelf is drawn from NCERT official material, CBSE-aligned public sources,
-            free education websites and COGNIFY's own engine. A future resource-discovery
-            API replaces this index with live results; provenance labels stay the same.
+            free education websites and COGNIFY's own engine. "Recommended for me" weights
+            your Learning DNA top format ({`"${learningDNA.topFormat}"`}); "Highest
+            evidence" rewards recommendations grounded in recorded mistakes. A future
+            resource-discovery API replaces this index with live results; provenance
+            labels stay the same.
           </p>
         </section>
 

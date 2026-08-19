@@ -31,7 +31,7 @@ import {
   Zap,
 } from "lucide-react";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
-import { searchAll } from "@/lib/search";
+import { searchKnowledge } from "@/lib/discoverySearch";
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "wouter";
 import { toast } from "sonner";
@@ -52,10 +52,18 @@ const navItems = [
 
 const comingSoon = new Set(["/credits"]);
 
+const KIND_GLYPH: Record<string, string> = {
+  topic: "T",
+  resource: "R",
+  revision: "V",
+  practice: "P",
+  path: "→",
+};
+
 function SearchBox() {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
-  const results = searchAll(query);
+  const grouped = searchKnowledge(query);
 
   // Global shortcut: Cmd/Ctrl + K opens the card catalogue
   useEffect(() => {
@@ -94,10 +102,10 @@ function SearchBox() {
               className="w-full border-0 bg-transparent py-2 font-serif text-[15px] text-ink outline-none placeholder:text-ink/30"
             />
           </div>
-          <div className="max-h-80 overflow-y-auto">
-            {results.length === 0 && query.length >= 2 && (
+          <div className="max-h-96 overflow-y-auto">
+            {grouped.groups.every((g) => g.items.length === 0) && query.length >= 2 && (
               <p className="px-4 py-6 text-center font-mono text-[11px] uppercase tracking-wider text-muted-foreground">
-                No matches — Cognify ranks what exists
+                No matches — the engine searches topics, resources, revision and practice
               </p>
             )}
             {query.length < 2 && (
@@ -117,25 +125,49 @@ function SearchBox() {
                 ))}
               </ul>
             )}
-            {results.length > 0 && (
-              <ul>
-                {results.map((r) => (
-                  <li key={`${r.kind}:${r.id}`}>
-                    <Link
-                      href={r.href}
-                      onClick={() => setOpen(false)}
-                      className="block border-b border-dotted border-ink/10 px-4 py-2.5 transition-colors hover:bg-ink/[0.04]"
-                    >
-                      <div className="flex items-baseline gap-2">
-                        <span className="font-serif text-[13.5px] font-bold text-ink">{r.title}</span>
-                        <span className="font-mono text-[9px] uppercase tracking-wider text-teal">{r.kind}</span>
-                      </div>
-                      <div className="mt-0.5 font-mono text-[10px] text-muted-foreground">{r.context}</div>
-                    </Link>
-                  </li>
+            {grouped.groups.filter((g) => g.items.length > 0).length > 0 &&
+              grouped.groups
+                .filter((g) => g.items.length > 0)
+                .map((g) => (
+                  <div key={g.key} className="border-b border-ink/8 last:border-0">
+                    <div className="sticky top-0 border-b border-dotted border-ink/12 bg-ivory px-4 py-1.5">
+                      <span className="font-mono text-[9.5px] uppercase tracking-[0.16em] text-teal-dark">
+                        {g.label} · {g.items.length}
+                      </span>
+                    </div>
+                    <ul>
+                      {g.items.map((item) => (
+                        <li key={`${item.kind}:${item.id}`}>
+                          <Link
+                            href={item.href}
+                            onClick={() => setOpen(false)}
+                            className="group flex items-baseline gap-3 border-b border-dotted border-ink/10 px-4 py-2.5 transition-colors hover:bg-ink/[0.04]"
+                          >
+                            <span className="flex h-5 w-5 shrink-0 items-center justify-center border border-ink/25 font-mono text-[9px] font-bold text-teal">
+                              {KIND_GLYPH[item.kind] ?? "·"}
+                            </span>
+                            <span className="min-w-0 flex-1">
+                              <span className="block truncate font-serif text-[13.5px] font-bold text-ink">
+                                {item.title}
+                              </span>
+                              <span className="mt-0.5 flex flex-wrap items-center gap-2 font-mono text-[9.5px] text-muted-foreground">
+                                <span>{item.context}</span>
+                                {item.detail && (
+                                  <span className="border border-amber/40 bg-amber/5 px-1 py-0.5 text-amber-dark">
+                                    {item.detail}
+                                  </span>
+                                )}
+                              </span>
+                            </span>
+                            <span className="font-mono text-[9px] uppercase tracking-wider text-ink/35 transition-colors group-hover:text-teal">
+                              {item.score}
+                            </span>
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 ))}
-              </ul>
-            )}
           </div>
         </DialogContent>
       </Dialog>
