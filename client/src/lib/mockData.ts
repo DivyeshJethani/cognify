@@ -30,6 +30,9 @@ type TopicInput = {
   reason: string | null;
   minutes: number;
   resources: { type: "lesson" | "practice" | "video" | "revision"; label: string; durationMinutes: number }[];
+  /** Optional stable id override — used for non-Latin topic titles that the
+   *  auto-slugger would otherwise reduce to empty strings */
+  topicId?: string;
 };
 
 const mkChapter = (
@@ -40,7 +43,7 @@ const mkChapter = (
   id: `ch-${title.toLowerCase().replace(/\s+/g, "-")}`,
   index,
   title,
-  topics: topics.map((t, i) => mkTopic(t, i)),
+  topics: topics.map((t, i) => mkTopic(t, i, (t as { topicId?: string }).topicId ?? (t as { topicId?: string }).topicId)),
 });
 
 function mkTopic(
@@ -56,7 +59,8 @@ function mkTopic(
     minutes: number;
     resources: { type: "lesson" | "practice" | "video" | "revision"; label: string; durationMinutes: number }[];
   },
-  index: number
+  index: number,
+  overrideId?: string
 ) {
   let state: TopicState = "new";
   if (base.mastery >= 90) state = "mastered";
@@ -71,7 +75,7 @@ function mkTopic(
   else revisionStatus = "on-track";
 
   return {
-    id: `t-${index}-${base.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").slice(0, 28)}`,
+    id: overrideId ?? `t-${index}-${base.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").slice(0, 28)}`,
     title: base.title,
     objectives: base.objectives.map((text, i) => ({ id: `lo-${i}`, text })),
     mastery: base.mastery,
@@ -632,6 +636,7 @@ const HINDI = {
   chapters: [
     mkChapter(1, "गद्य (Gadya)", [
       {
+        topicId: "t-0-maa-ki-chitthi",
         title: "माँ की चिट्ठी",
         objectives: [
           "कहानी के मुख्य विषय की व्याख्या करना",
@@ -648,6 +653,7 @@ const HINDI = {
         ],
       },
       {
+        topicId: "t-1-lhasa-ki-or",
         title: "ल्हासा की ओर",
         objectives: ["यात्रा वर्णन की विशेषताओं को समझना"],
         mastery: 30,
@@ -673,6 +679,7 @@ const SANSKRIT = {
   chapters: [
     mkChapter(1, "गद्यखण्डः", [
       {
+        topicId: "t-0-achha-vakt-mein-bhale-kaam",
         title: "अच्छा वक्त में भले काम",
         objectives: ["कथावस्तु का वर्णन करना"],
         mastery: 60,

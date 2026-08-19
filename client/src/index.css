@@ -258,6 +258,33 @@
     background-size: 22px 22px;
   }
 
+  /* Player control buttons (deep-ink stage) */
+  .ctrl-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 2.125rem;
+    min-width: 2.125rem;
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    color: rgba(255, 255, 255, 0.85);
+    transition: all 150ms cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  .ctrl-btn:hover {
+    border-color: var(--teal);
+    color: white;
+  }
+  .ctrl-btn:active {
+    transform: scale(0.95);
+  }
+  .ctrl-btn-primary {
+    background: var(--teal);
+    border-color: var(--teal);
+    color: white;
+  }
+  .ctrl-btn-primary:hover {
+    background: var(--teal-dark);
+    border-color: var(--teal-dark);
+  }
   /* Subtle page-rise entrance */
   @media (prefers-reduced-motion: no-preference) {
     .rise-in {

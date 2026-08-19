@@ -79,6 +79,102 @@ export interface TopicResource {
   durationMinutes: number;
 }
 
+/* ---------- Resource Discovery ---------- */
+
+/** Where the resource was found — future backend enumerates actual sources */
+export type ResourceSource =
+  | "youtube"
+  | "ncert"
+  | "cbse"
+  | "edu-website"
+  | "cognify-original";
+
+/** How the resource teaches — used for DNA-aware ranking */
+export type ResourceFormat =
+  | "lecture"
+  | "revision"
+  | "explanation"
+  | "example"
+  | "practice"
+  | "diagram";
+
+export type Difficulty = "foundational" | "core" | "advanced" | "stretch";
+
+export interface LearningResource {
+  id: string;
+  title: string;
+  source: ResourceSource;
+  sourceLabel: string; // human display, e.g. "YouTube · Khan Academy" or "NCERT Exemplar"
+  url: string; // null-safe: demo links only
+  durationMinutes: number;
+  format: ResourceFormat;
+  topicId: string;
+  topicTitle: string;
+  chapterId: string;
+  subjectCode: string;
+  difficulty: Difficulty;
+  /** 0–100 how strongly this resource matches the topic + student's DNA */
+  relevance: number;
+  /** The COGNIFY-specific reason this resource was surfaced */
+  whyRecommended: string;
+  /** DNA dimension this resource serves, e.g. "Teaching format" */
+  dnaDimension: string | null;
+  thumbnail?: string;
+}
+
+export interface ResourceDiscoveryResult {
+  topicId: string;
+  resources: LearningResource[];
+  /** Filters applied in this query */
+  appliedFilters: ResourceFormat[];
+  /** Backend note: real API would compute this from DNA + mastery */
+  rankingNote: string;
+}
+
+/* ---------- Transcript & replay ---------- */
+export interface TranscriptSegment {
+  startSec: number;
+  endSec: number;
+  text: string;
+  confusing?: boolean; // marked by student during playback
+}
+
+export interface ConfusingMark {
+  startSec: number;
+  note: string;
+}
+
+/* ---------- Player analytics events ---------- */
+/** Events the player emits — the future backend aggregates these per session */
+export type PlayerEventType =
+  | "PLAY"
+  | "PAUSE"
+  | "REWIND"
+  | "FAST_FORWARD"
+  | "SKIP"
+  | "SPEED_CHANGE"
+  | "COMPLETE"
+  | "DROP_OFF";
+
+export interface PlayerEvent {
+  type: PlayerEventType;
+  atSec: number; // where in the video
+  sessionId: string;
+  resourceId: string;
+  payload?: Record<string, string | number>; // e.g. { speed: 1.5 }
+}
+
+/* ---------- Learning session ---------- */
+export interface LearningSession {
+  id: string;
+  resourceId: string;
+  topicId: string;
+  objective: string;
+  estimatedMinutes: number;
+  nextActivity: string;
+  startedAt: string;
+}
+
 /* ---------- Learning DNA ---------- */
 export type LearningFormat =
   | "visual-diagram"

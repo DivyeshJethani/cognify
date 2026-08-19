@@ -16,7 +16,8 @@ import {
 } from "@/components/cognify/Primitives";
 import { boards, findSubject } from "@/lib/mockData";
 import { cn } from "@/lib/utils";
-import { BookOpen, ChevronRight, ListFilter } from "lucide-react";
+import { BookOpen, ChevronRight } from "lucide-react";
+import { useLocation } from "wouter";
 import type { Subject, Topic } from "@/lib/types";
 import {
   Select,
@@ -44,6 +45,7 @@ export default function Curriculum() {
   const [activeChapter, setActiveChapter] = useState<string | null>(null);
   const [topicDetail, setTopicDetail] = useState<Topic | null>(null);
   const [viewMode, setViewMode] = useState<ViewMode>("outline");
+  const [, navigate] = useLocation();
 
   const board = boards.find((b) => b.id === boardId)!;
   const cls = board.classes.find((c) => c.id === classId)!;
@@ -269,6 +271,10 @@ export default function Curriculum() {
           topic={topicDetail}
           subject={subject}
           onClose={() => setTopicDetail(null)}
+          onOpenResources={(topicId) => {
+            setTopicDetail(null);
+            navigate(`/resources/${topicId}`);
+          }}
         />
       )}
     </AppShell>
@@ -342,10 +348,12 @@ function TopicDetail({
   topic,
   subject,
   onClose,
+  onOpenResources,
 }: {
   topic: Topic;
   subject: Subject;
   onClose: () => void;
+  onOpenResources: (topicId: string) => void;
 }) {
   return (
     <div className="fixed inset-0 z-50 flex justify-end bg-ink/40" onClick={onClose}>
@@ -427,12 +435,18 @@ function TopicDetail({
                       </span>
                     </div>
                   </div>
-                  <span className="font-mono text-[10px] uppercase tracking-wider text-teal">
-                    Connects at API stage
+                  <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+                    In explorer
                   </span>
                 </li>
               ))}
             </ul>
+            <button
+              onClick={() => onOpenResources(topic.id)}
+              className="btn-primary mt-4 w-full"
+            >
+              Open resource explorer
+            </button>
           </section>
 
           {/* Meta */}

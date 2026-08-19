@@ -14,6 +14,9 @@ import Dashboard from "./pages/Dashboard";
 import Curriculum from "./pages/Curriculum";
 import Profile from "./pages/Profile";
 import ComingSoon from "./pages/ComingSoon";
+import Resources from "./pages/Resources";
+import Session from "./pages/Session";
+import Player from "./pages/Player";
 
 /**
  * Auth/onboarding guard as a real component — hooks are called unconditionally
@@ -80,6 +83,9 @@ function Router() {
       <GuardedRoute path={"/dashboard"} component={Dashboard} />
       <GuardedRoute path={"/curriculum"} component={Curriculum} />
       <GuardedRoute path={"/profile"} component={Profile} />
+      <GuardedRoute path={"/resources/:topicId"} component={Resources} />
+      <GuardedRoute path={"/session/:resourceId"} component={Session} />
+      <GuardedRoute path={"/player/:resourceId"} component={Player} />
       <Route path={"/timetable"}>
         {() => (
           <ComingSoon
