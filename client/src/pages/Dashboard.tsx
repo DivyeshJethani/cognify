@@ -17,6 +17,11 @@ import {
 import { useApp } from "@/contexts/AppContext";
 import { allTopics, boards } from "@/lib/mockData";
 import { topicAlias } from "@/lib/curriculum";
+import { activeInterventions, featuredIntervention } from "@/lib/interventions";
+import { calibrationSummary } from "@/lib/confidence";
+import { timetableSessions, todaySessionCount } from "@/lib/timetable";
+import { stretchGoals } from "@/lib/goals";
+import { openTeachRequests, myGroup } from "@/lib/studyGroups";
 import { cn } from "@/lib/utils";
 import { Flame, TrendingUp } from "lucide-react";
 import { useMemo } from "react";
@@ -96,6 +101,11 @@ export default function Dashboard() {
             className="relative"
           />
           <StatCell label="Credits" value={`${credits.balance}`} sub={`+${credits.earnedThisWeek} earned this week`} />
+          <StatCell
+            label="Adaptive interventions"
+            value={`${activeInterventions().filter((i) => i.status === "active").length} active`}
+            sub="engine adjustments live"
+          />
           <StatCell
             label="Weekly target"
             value="3h 22m"
@@ -213,6 +223,12 @@ export default function Dashboard() {
                     <li className="footnote">Nothing due — your spaced-retention schedule is clear today.</li>
                   )}
                 </ul>
+                <a
+                  href="/revision"
+                  className="mt-3 inline-block border-b border-teal/50 pb-0.5 font-mono text-[10px] uppercase tracking-wider text-teal transition-colors hover:border-teal"
+                >
+                  Open Revision Hub →
+                </a>
               </div>
             </section>
 
@@ -328,6 +344,108 @@ export default function Dashboard() {
                   </BarChart>
                 </ResponsiveContainer>
               </div>
+            </section>
+
+            {/* Timetable today */}
+            <section className="border border-ink/12 bg-card">
+              <div className="border-b border-ink/10 px-5 py-4">
+                <div className="flex items-center justify-between">
+                  <Marginalia className="[&::before]:hidden">Timetable — today</Marginalia>
+                  <Link href="/timetable" className="font-mono text-[10px] uppercase tracking-[0.14em] text-teal hover:underline">
+                    Full plan →
+                  </Link>
+                </div>
+              </div>
+              <div className="divide-y divide-ink/8 px-5">
+                {timetableSessions()
+                  .filter((s) => s.period === "today" && s.status === "scheduled")
+                  .slice(0, 3)
+                  .map((s) => (
+                    <div key={s.id} className="py-3.5">
+                      <div className="flex items-baseline justify-between gap-2">
+                        <span className="font-mono text-[10px] font-medium uppercase tracking-wider text-ink/50">
+                          {subjectNames[s.subjectCode] ?? s.subjectCode}
+                        </span>
+                        <span className="font-mono text-[10px] text-muted-foreground">
+                          {s.startTime} · {s.durationMinutes}m
+                        </span>
+                      </div>
+                      <div className="mt-1 flex items-baseline justify-between gap-2">
+                        <span className="text-[13px] font-semibold leading-snug text-ink">{s.topicTitle}</span>
+                        {s.priority === "high" && (
+                          <span className="shrink-0 font-mono text-[9px] font-bold uppercase tracking-[0.14em] text-amber-dark">High</span>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                {todaySessionCount() === 0 && (
+                  <p className="py-3.5 footnote">Today's plan is clear.</p>
+                )}
+              </div>
+            </section>
+
+            {/* Active interventions */}
+            <section className="border border-ink/12 bg-card">
+              <div className="border-b border-ink/10 px-5 py-4">
+                <div className="flex items-center justify-between">
+                  <Marginalia className="[&::before]:hidden">Engine is watching</Marginalia>
+                  <Link href="/adaptive" className="font-mono text-[10px] uppercase tracking-[0.14em] text-teal hover:underline">
+                    Adaptive Lab →
+                  </Link>
+                </div>
+              </div>
+              <div className="px-5 py-4">
+                {(() => {
+                  const iv = featuredIntervention();
+                  return (
+                    <>
+                      <div className="flex items-center gap-2">
+                        <span className="font-mono text-[10px] font-bold uppercase tracking-[0.12em] text-amber-dark">
+                          ● {iv.label}
+                        </span>
+                      </div>
+                      <p className="mt-1.5 footnote">{iv.action}</p>
+                      <p className="mt-1 font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+                        Evidence {iv.evidenceStrength}% · {iv.sessionsObserved} sessions observed
+                      </p>
+                    </>
+                  );
+                })()}
+              </div>
+            </section>
+
+            {/* Calibration */}
+            <section className="border border-ink/12 bg-card p-5">
+              <div className="flex items-center justify-between">
+                <Marginalia className="[&::before]:hidden">Confidence check</Marginalia>
+                <Link href="/confidence" className="font-mono text-[10px] uppercase tracking-[0.14em] text-teal hover:underline">
+                  Calibration →
+                </Link>
+              </div>
+              <div className="mt-3 flex items-baseline justify-between">
+                <span className="font-mono text-[10px] uppercase tracking-wider text-ink/60">Avg self vs measured gap</span>
+                <span className="font-serif text-2xl font-bold text-amber-dark">{calibrationSummary().avgGap} pts</span>
+              </div>
+              <p className="mt-2 footnote">{calibrationSummary().dnaNote}</p>
+            </section>
+
+            {/* Peer network */}
+            <section className="border border-ink/12 bg-card p-5">
+              <div className="flex items-center justify-between">
+                <Marginalia className="[&::before]:hidden">Study group</Marginalia>
+                <Link href="/community" className="font-mono text-[10px] uppercase tracking-[0.14em] text-teal hover:underline">
+                  Community →
+                </Link>
+              </div>
+              <p className="mt-2 footnote">
+                {openTeachRequests().length} open teach requests in your group · {myGroup().memberCount} members
+              </p>
+              <a
+                href="/teach"
+                className="mt-2 inline-block border-b border-teal/50 pb-0.5 font-mono text-[10px] uppercase tracking-wider text-teal transition-colors hover:border-teal"
+              >
+                Teach Cognify →
+              </a>
             </section>
 
             {/* Current goals */}

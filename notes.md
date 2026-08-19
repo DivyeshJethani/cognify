@@ -304,3 +304,36 @@ Saved key: cognify.saved-resources.v1; notes separate? check loadList.
 ## Verification round 3 — ALL GREEN
 Topic dossier (/topic/:alias) VERIFIED end-to-end: dossier, mastery 27%, 5 resources with WHY, DNA note, working sequence, "what a pass builds" panel. Session briefing from topic page VERIFIED (objective, topic mastery, est time, transcript preview, next activity, session id). Player VERIFIED: save/unsave, speed buttons, mark confusing, observation log (PLAY event emitted), transcript with 6 segments, DNA watching panel, alternative-explanation rail. Command palette (⌘K) VERIFIED: opens with quick-nav entries + search topics/resources. LoadList hardened to coerce non-array localStorage values. All flows wired: dashboard weak topics → /topic, curriculum drawer → dossier link + explorer link. TS clean, 0 errors. Ready to checkpoint.
 Day 2 delivered: Resource Library hub (/library, 104 resources, format+type filters, free-web-only toggle), My Saved Resources (/saved), Continue Learning (/continue), Topic Learning dossier (/topic/:id), session reflection (I understood / Another explanation), player save + alternative rail + progress persistence + rich Ask context.
+
+# DAY 4 BUILD STATE (checkpoint 5be4151a live at cognifyapp-7pg7ycde.manus.space)
+
+## Brief file: /home/ubuntu/upload/pasted_content_3.txt — 20 requirements
+Adaptive Learning hub, learning path viz, mistake analysis + detail, confidence calibration, spaced revision + session, timetable, stretch goals, Teach Cognify (+ teach requests), study groups, contextual AI panel, intervention center, Learning DNA links, Command Center integration, complete journey, design rules (no bento/AI-clichés), responsive, reusable components (AdaptiveRecommendation, MistakeAnalysis, ConfidenceCheck, RevisionCard, LearningIntervention, TeachBack, StudyGroup, PeerRequest, AIContextPanel, LearningPath, GoalCard), mock services.
+
+## Day 4 todo.md appended — phase 17 in progress.
+Plan: types.ts DONE (MistakeCategory/Mistake/MistakeAnalysisSummary, ConfidenceReading, RevisionEntry/RevisionBucket, TeachBackPrompt/TeachBackAnalysis, Intervention, TimetableSession, StretchGoal, StudyGroup/PeerRequest/PeerCandidate/GroupDiscussion, AdaptiveRecommendation, LearningPathStage, AssistantContext/AssistantMessage).
+
+## Service files to create (client/src/lib/):
+adaptive.ts (today's adaptive path), mistakes.ts, confidence.ts, revision.ts, teachBack.ts, interventions.ts, timetable.ts, goals.ts, studyGroups.ts, assistant.ts
+
+## Existing service knowledge (reuse):
+- resourceDiscovery.ts: discoverResources(topicId), TOPIC_ALIASES, LearningResource shape. INVENTORY keyed by alias slug. Circular import: resourceDiscovery must NOT import curriculum.ts (curriculum.ts CAN import resourceDiscovery).
+- curriculum.ts: findTopicByIdOrAlias(id), topicPath(topicId) → {subject, chapter, topic}, topicAlias(topic) → alias slug, boards.
+- mockData.ts: boards exported; topic ids are t-{idx}-{slug28chars}.
+- askCognify.ts has existing ask functions.
+- savedResources.ts: listSaved/addSaved/removeSaved, progress, markCompleted.
+- recommendations.ts: rails. playerEvents.ts: logEvent.
+- Sidebar nav in AppShell.tsx (add Adaptive/adaptive, mistakes, confidence, revision, interventions; Timetable/goals/community/credits were SOON — build real now).
+- App.tsx routes use PublicLayout + app guard component.
+
+## Topic catalog (MATH Class 10 CBSE, anchor data):
+Ch1 Real Numbers: t-0-euclid-s-division-lemma-hcf (84 proficient due6), t-1-irrational-numbers-proofs (38 weak due -2), t-2-fundamental-theorem-of-arith (61 developing due4)
+Ch2 Polynomials: t-0-zeros-of-a-polynomial (92 mastered due12), t-1-relationship-between-zeros-c (27 weak due1), t-2-division-algorithm-for-polyn (0 new)
+Ch3 Linear Equations: t-0-graphical-method (73 prof due8), t-1-substitution-elimination-met (55 dev due5), t-2-cross-multiplication-word-pr (0 new)
+Ch4 Quadratics: t-0-standard-form-factorisation (66 dev due9), t-1-completing-the-square (19 weak due3), t-2-nature-of-roots-discriminant (0 new)
+SCI: Ch1 t-1-types-of-reactions (41 weak due2); Ch2 t-1-ph-scale-strength (52 dev due4); t-1-nutrition-in-humans (33 weak due1)
+SST: t-1-making-of-nationalism-in-ita (22 weak due-1); t-0-first-world-war-non-coop (58 dev due6)
+ENG: t-1-nelson-mandela-long-walk-to (44 weak due2); HIN: t-1-lhasa-ki-or (30 weak due3)
+
+## Design tokens reminder
+btn-primary / btn-outline / btn-ghost / ctrl-btn CSS classes in index.css; Scholar's Atelier: ivory bg, deep ink text, teal primary, amber accents; Marginalia caps labels; MasteryBar value prop (0-100); StateBadge state; PageHeader in AppShell; DNA link indicators "Evidence: NN%".

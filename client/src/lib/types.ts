@@ -360,3 +360,268 @@ export interface CreditsBalance {
   earnedThisWeek: number;
   spentThisWeek: number;
 }
+
+/* ---------- Day 4 — Adaptive Ecosystem ---------- */
+
+/** Mistake classification categories used across practice & tests */
+export type MistakeCategory =
+  | "conceptual"
+  | "careless"
+  | "procedural"
+  | "recall"
+  | "interpretation";
+
+export interface MistakeAnalysisSummary {
+  category: MistakeCategory;
+  label: string;
+  percentage: number;
+  count: number;
+  affectedSubjects: string[];
+  affectedTopics: string[];
+  trend: "rising" | "stable" | "falling";
+  trendNote: string;
+  pattern: string;
+  intervention: string;
+}
+
+export interface Mistake {
+  id: string;
+  topicId: string;
+  topicTitle: string;
+  subjectCode: string;
+  subjectLabel: string;
+  question: string;
+  studentAnswer: string;
+  correctAnswer: string;
+  category: MistakeCategory;
+  likelyCause: string;
+  confidence: "low" | "medium" | "high";
+  occurredAt: string; // ISO
+  actions: string[];
+}
+
+/** Confidence calibration reading — compared against actual performance */
+export interface ConfidenceReading {
+  topicId: string;
+  topicTitle: string;
+  subjectCode: string;
+  selfReported: number; // 0–100 how confident the student felt
+  actualPerformance: number; // 0–100 measured
+  gap: number; // positive = overestimate
+  verdict: "overestimating" | "calibrated" | "underestimating";
+  observation: string;
+  recommendation: string;
+  recordedAt: string;
+}
+
+/** Spaced-revision schedule entry */
+export type RevisionBucket = "due-today" | "due-tomorrow" | "upcoming" | "mastered";
+
+export interface RevisionEntry {
+  topicId: string;
+  topicTitle: string;
+  subjectCode: string;
+  subjectLabel: string;
+  chapterTitle: string;
+  mastery: number;
+  lastStudied: string; // relative, e.g. "5 days ago"
+  lastStudiedIso: string;
+  nextReview: string; // relative or absolute display
+  retentionEstimate: number; // 0–100
+  priority: "high" | "medium" | "low";
+  priorityReason: string;
+  recommendedFormat: LearningFormat;
+  bucket: RevisionBucket;
+  estimatedMinutes: number;
+}
+
+/** Teach-back session */
+export interface TeachBackPrompt {
+  topicId: string;
+  topicTitle: string;
+  subjectCode: string;
+  chapterTitle: string;
+  prompt: string; // "Explain why the discriminant determines the nature of roots."
+  keyPoints: string[];
+}
+
+export interface TeachBackAnalysis {
+  coverage: number; // 0–100
+  clarity: number; // 0–100
+  missingIdea: string;
+  missingTopicId?: string;
+  verdict: string;
+  evidence: number; // 0–100 evidence strength added to DNA
+}
+
+/** Active interventions — what Cognify changes about the student's learning */
+export type InterventionKind =
+  | "format"
+  | "revision"
+  | "confidence"
+  | "mistake"
+  | "sequence"
+  | "attention";
+
+export interface Intervention {
+  id: string;
+  kind: InterventionKind;
+  label: string;
+  observation: string;
+  action: string;
+  evidenceStrength: number; // 0–100
+  sessionsObserved: number;
+  status: "active" | "paused" | "superseded";
+  startedAt: string;
+}
+
+/** Timetable session */
+export type TimetablePeriod = "today" | "week" | "upcoming";
+export type ActivityType =
+  | "concept-repair"
+  | "timed-practice"
+  | "retrieval-practice"
+  | "revision"
+  | "teach-back"
+  | "stretch";
+
+export interface TimetableSession {
+  id: string;
+  period: TimetablePeriod;
+  date: string; // display date, e.g. "Tue 19 Aug"
+  startTime: string; // e.g. "18:00"
+  endTime: string;
+  subjectCode: string;
+  subjectLabel: string;
+  topicId: string;
+  topicTitle: string;
+  activityType: ActivityType;
+  activityLabel: string;
+  durationMinutes: number;
+  priority: "high" | "medium" | "low";
+  reason: string;
+  status: "scheduled" | "in-progress" | "completed" | "skipped" | "rescheduled";
+  rescheduledTo?: string;
+}
+
+/** Stretch goal */
+export interface StretchGoal {
+  id: string;
+  title: string;
+  progress: number; // 0–100
+  deadline: string; // display, e.g. "Sat 23 Aug"
+  whyItMatters: string;
+  suggestedActions: string[];
+  status: "on-track" | "at-risk" | "achieved";
+}
+
+/** Study group */
+export interface GroupDiscussion {
+  id: string;
+  author: string;
+  initials: string;
+  message: string;
+  when: string;
+  topicTitle?: string;
+}
+
+export interface PeerRequest {
+  id: string;
+  kind: "need-help" | "can-teach";
+  author: string;
+  initials: string;
+  topicTitle: string;
+  subjectCode: string;
+  detail: string;
+  when: string;
+  status: "open" | "matched" | "resolved";
+}
+
+export interface PeerCandidate {
+  name: string;
+  initials: string;
+  strength: string; // e.g. "Strong in Mathematics"
+  mastery: number; // 0–100 in the relevant subject/topic
+  topicTitle?: string;
+}
+
+export interface StudyGroup {
+  board: string;
+  className: string;
+  focusSubject: string;
+  memberCount: number;
+  topicsDiscussed: string[];
+  discussions: GroupDiscussion[];
+  needHelp: PeerRequest[];
+  canTeach: PeerRequest[];
+}
+
+/** Adaptive recommendation — the core "what next, and why" unit */
+export type AdaptivePriority = "high" | "medium" | "low";
+
+export interface AdaptiveRecommendation {
+  rank: number;
+  topicId: string;
+  topicTitle: string;
+  subjectCode: string;
+  subjectLabel: string;
+  reason: string; // short, e.g. "weak conceptual mastery"
+  whyChoseThis: string; // the full "WHY COGNIFY CHOSE THIS" evidence block
+  format: string; // e.g. "visual explanation"
+  formatDetail: string; // how Cognify will teach it
+  priority: AdaptivePriority;
+  estimatedMinutes: number;
+  evidenceStrength: number; // 0–100
+  dnaLink: string; // which DNA dimension this updates
+}
+
+/** Learning path stage — per topic */
+export type PathStage =
+  | "current"
+  | "weakness"
+  | "intervention"
+  | "practice"
+  | "confidence"
+  | "mastery"
+  | "revision";
+
+export interface LearningPathStage {
+  stage: PathStage;
+  label: string;
+  detail: string;
+  status: "done" | "current" | "next";
+  action?: { label: string; href: string };
+}
+
+/** Contextual assistant — state-aware mock conversations */
+export type AssistantContextId =
+  | "quadratics"
+  | "zeros"
+  | "physics-motion"
+  | "history-nationalism"
+  | "teach-back-review";
+
+export interface AssistantContext {
+  id: AssistantContextId;
+  subject: string;
+  topic: string;
+  weakness: string;
+  resource: string;
+  suggestedActions: { id: string; label: string }[];
+}
+
+export interface AssistantMessage {
+  id: string;
+  from: "student" | "cognify";
+  text: string;
+  /** optional inline data card */
+  meta?: string;
+}
+
+/** Simulated assistant reply (Day 4 mock — backend will replace this) */
+export interface AssistantReply {
+  reply: string;
+  topicLabel: string;
+  dnaNote?: string;
+  mistakeHint?: string;
+}

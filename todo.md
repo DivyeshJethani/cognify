@@ -35,3 +35,37 @@
 ## Verification
 - [ ] TS check clean, browser flow test (landing→onboard→CC→curriculum→topic→resources→player→notes→ask→saved→library→search)
 - [ ] Checkpoint + deliver
+
+# Day 4 — Adaptive Learning Ecosystem (frontend-only)
+
+## Services (phase 17)
+- [ ] Types: Mistake, ConfidenceReading, RevisionEntry, TeachBackSession, Intervention, TimetableSession, StretchGoal, StudyGroup, PeerRequest, AdaptiveRecommendation, ContextAssistantMessage
+- [ ] mistakes.ts mock service (categories, per-mistake detail, trends)
+- [ ] confidence.ts (calibration readings + opposite case, DNA link)
+- [ ] revision.ts (spaced schedule: due today/tomorrow/upcoming/mastered, retention estimate)
+- [ ] teachBack.ts (topics, prompts, key-points checklists, mock analysis results)
+- [ ] interventions.ts (active interventions with evidence strength)
+- [ ] timetable.ts (today/week/upcoming with mark complete / skip / reschedule / start)
+- [ ] goals.ts (stretch goals with progress, deadline, why, actions)
+- [ ] studyGroups.ts (group, discussions, questions, teach requests, peer finder)
+- [ ] adaptive.ts (today's adaptive path: recommendation + WHY, priority, format)
+- [ ] assistant.ts (contextual AI panel with context state + realistic mock conversations)
+
+## Pages (phases 18-22)
+- [ ] Adaptive Learning hub (/adaptive) — today's adaptive path + learning path viz
+- [ ] Mistake Analysis (/mistakes) + mistake detail
+- [ ] Confidence Calibration (/confidence)
+- [ ] Revision hub (/revision) + revision session (/revision/:topic)
+- [ ] Timetable (/timetable) — full experience
+- [ ] Stretch Goals (/goals) — full experience
+- [ ] Teach Cognify (/teach) + teach-back flow + teach requests
+- [ ] Study Groups (/community) — full experience
+- [ ] Interventions (/interventions)
+- [ ] Command Center: Today's adaptive path, revision due, DNA insight, active goal, continue, teach-back challenge, study group activity (progressive disclosure)
+
+## Cross-cutting
+- [ ] Sidebar nav update (remove SOON, add Adaptive, Mistakes, Confidence, Revision, Interventions)
+- [ ] Learning DNA link indicators ("Added to Learning DNA", evidence strength)
+- [ ] Mock conversations in assistant panel; voice recording UI placeholder
+- [ ] Responsive checks all pages
+- [ ] TS clean, checkpoint, deliver

@@ -21,6 +21,14 @@ import Library from "./pages/Library";
 import Saved from "./pages/Saved";
 import Continue from "./pages/Continue";
 import TopicLearning from "./pages/TopicLearning";
+import Adaptive from "./pages/Adaptive";
+import Mistakes from "./pages/Mistakes";
+import Confidence from "./pages/Confidence";
+import Revision from "./pages/Revision";
+import TimetablePage from "./pages/Timetable";
+import GoalsPage from "./pages/Goals";
+import Teach from "./pages/Teach";
+import Community from "./pages/Community";
 
 /**
  * Auth/onboarding guard as a real component — hooks are called unconditionally
@@ -87,6 +95,11 @@ function Router() {
       <GuardedRoute path={"/dashboard"} component={Dashboard} />
       <GuardedRoute path={"/curriculum"} component={Curriculum} />
       <GuardedRoute path={"/profile"} component={Profile} />
+      <GuardedRoute path={"/adaptive"} component={Adaptive} />
+      <GuardedRoute path={"/mistakes"} component={Mistakes} />
+      <GuardedRoute path={"/confidence"} component={Confidence} />
+      <GuardedRoute path={"/revision"} component={Revision} />
+      <GuardedRoute path={"/teach"} component={Teach} />
       <GuardedRoute path={"/resources/:topicId"} component={Resources} />
       <GuardedRoute path={"/library"} component={Library} />
       <GuardedRoute path={"/saved"} component={Saved} />
@@ -94,51 +107,9 @@ function Router() {
       <GuardedRoute path={"/topic/:topicId"} component={TopicLearning} />
       <GuardedRoute path={"/session/:resourceId"} component={Session} />
       <GuardedRoute path={"/player/:resourceId"} component={Player} />
-      <Route path={"/timetable"}>
-        {() => (
-          <ComingSoon
-            overline="Timetable"
-            title="Personalised timetable"
-            blurb="Your weekly study plan, built around your peak focus hours and spaced-retention schedule."
-            capabilities={[
-              "Auto-generated weekly timetable from your Learning DNA",
-              "Peak-focus-hour scheduling",
-              "Session blocks sized to your attention window",
-              "Conflict handling with school & extracurriculars",
-            ]}
-          />
-        )}
-      </Route>
-      <Route path={"/goals"}>
-        {() => (
-          <ComingSoon
-            overline="Stretch Goals"
-            title="Stretch goals & resilience"
-            blurb="Ambitious targets with struggle analysis, so difficulty becomes data instead of discouragement."
-            capabilities={[
-              "Stretch goal definition with deadline tracking",
-              "Resilience & struggle analysis",
-              "AI teach-back and peer teaching missions",
-              "Credits rewards for goal progress",
-            ]}
-          />
-        )}
-      </Route>
-      <Route path={"/community"}>
-        {() => (
-          <ComingSoon
-            overline="Community"
-            title="Study groups & peer teaching"
-            blurb="Learn by teaching. Form groups, exchange teach-back sessions and compare learning DNA insights."
-            capabilities={[
-              "Study group formation",
-              "Peer teaching sessions with mastery credits",
-              "AI teach-back assessments",
-              "Group revision tests",
-            ]}
-          />
-        )}
-      </Route>
+      <GuardedRoute path={"/timetable"} component={TimetablePage} />
+      <GuardedRoute path={"/goals"} component={GoalsPage} />
+      <GuardedRoute path={"/community"} component={Community} />
       <Route path={"/credits"}>
         {() => (
           <ComingSoon

@@ -25,6 +25,7 @@ import {
   Menu,
   PlayCircle,
   Settings,
+  Target,
   Users,
   UserSquare2,
   Zap,
@@ -42,13 +43,14 @@ const navItems = [
   { href: "/saved", label: "My Saved Resources", icon: Bookmark },
   { href: "/continue", label: "Continue Learning", icon: PlayCircle },
   { href: "/profile", label: "Learning DNA", icon: Atom },
+  { href: "/adaptive", label: "Adaptive Lab", icon: Zap },
   { href: "/timetable", label: "Timetable", icon: CalendarDays },
-  { href: "/goals", label: "Stretch Goals", icon: Zap },
+  { href: "/goals", label: "Stretch Goals", icon: Target },
   { href: "/community", label: "Study Groups", icon: Users },
   { href: "/credits", label: "Credits", icon: CreditCard },
 ];
 
-const comingSoon = new Set(["/timetable", "/goals", "/community", "/credits"]);
+const comingSoon = new Set(["/credits"]);
 
 function SearchBox() {
   const [open, setOpen] = useState(false);
