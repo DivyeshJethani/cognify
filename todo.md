@@ -91,3 +91,42 @@
 - [ ] Nav link updates; sidebar intact
 - [ ] TypeScript clean; all routes verified; responsive check (desktop/tablet/mobile)
 - [ ] Checkpoint + delivery
+
+# Day 6 — One Coherent Adaptive Platform
+
+## 2. Shared layer
+- [ ] WhyInteraction component (WHY? marginalia/footnote pattern) + whyService mock ("why this topic / video / practice / now")
+- [ ] JourneyLink primitive (OPEN TOPIC →, CONTINUE SESSION →, PRACTICE THIS →, SEE WHY →, VIEW LEARNING DNA →, WHAT NEXT? →)
+- [ ] Recent-searches persistence (localStorage key cognify.searches.v1)
+- [ ] Verify data contract interfaces cover StudentProfile/Subject/Chapter/Topic/Resource/LearningSession/PracticeResult/MistakePattern/ConfidenceReading/LearningDNA/Recommendation/RevisionItem/SavedResource (types.ts)
+
+## 3. Command Center
+- [ ] TODAY → NEXT numbered sequence (REVISE/PRACTICE/TEACH BACK with durations) + AFTER TODAY "next recommended step"
+
+## 4. Search
+- [ ] Groups: subjects, chapters, topics, video lectures, articles, NCERT, revision notes, practice sets, diagrams, saved resources
+- [ ] Recent searches section, empty state, no-results state, subject/type metadata
+
+## 5. Continue Learning
+- [ ] States: CONTINUE (% watched), RESUME (unfinished), DUE (revision), RETRY (accuracy dropped), SAVED (bookmarked)
+- [ ] One clear action per item; mock session-progress storage
+
+## 6. Learning DNA
+- [ ] Four questions: How do I learn best / Where am I weak / How confident am I / What should Cognify change
+- [ ] Evidence labels (EVIDENCE xx% / BASED ON N SESSIONS), "current signal / early evidence / pattern emerging" language
+- [ ] Profile snapshot: board, class, subjects, DNA, streak, top strength, current focus
+
+## 7. Resource evidence framing
+- [ ] Library rows: Understand → Cognify is watching → After this
+- [ ] Session page: same three-part framing
+- [ ] WHY? interactions on topic cards / revision chips
+
+## 8. Empty/loading/error states
+- [ ] No saved resources, no mistakes yet, not enough evidence, no revision due, search nothing, backend unavailable
+- [ ] Subject coverage in selectors (Eng/Hin/Skt realistic)
+
+## 9. Polish + journey pass
+- [ ] 200–250ms transitions, underline hovers, reduced-motion
+- [ ] Full journey: Landing → Onboarding → Dashboard → Curriculum → Subject → Topic → Library → Session/Player → Practice/Teach → DNA → Adaptive → Dashboard
+- [ ] Fix broken nav/dead buttons/duplicated UI
+- [ ] Checkpoint + deliver

@@ -23,6 +23,7 @@ import { timetableSessions, todaySessionCount } from "@/lib/timetable";
 import { stretchGoals } from "@/lib/goals";
 import { openTeachRequests, myGroup } from "@/lib/studyGroups";
 import { cn } from "@/lib/utils";
+import { todaySequence, continuationItems } from "@/lib/journeyData";
 import { Flame, TrendingUp } from "lucide-react";
 import { useMemo } from "react";
 import { Link } from "wouter";
@@ -113,13 +114,86 @@ export default function Dashboard() {
           />
         </div>
 
-        <div className="mt-8 grid gap-10 lg:grid-cols-[1.6fr_1fr]">
+        {/* ---------- Today → Next ---------- */}
+        <section className="mt-8 grid gap-8 border border-ink/12 bg-card lg:grid-cols-[1.1fr_1fr]">
+          <div className="border-r border-ink/10 p-6 lg:p-7">
+            <div className="flex items-center justify-between">
+              <Marginalia amber className="[&::before]:hidden">Today — {todayDateString().split(", ").slice(0, 2).join(", ")}</Marginalia>
+              <Link href="/timetable" className="font-mono text-[10px] uppercase tracking-[0.14em] text-teal hover:underline">
+                Full plan →
+              </Link>
+            </div>
+            <ol className="mt-4 divide-y divide-ink/10">
+              {todaySequence().items.map((it) => (
+                <li key={`${it.kind}-${it.topicId}-${it.number}`} className="rise-in grid grid-cols-[2rem_1fr] gap-4 py-4">
+                  <div className="index-num pt-0.5">{String(it.number).padStart(2, "0")}</div>
+                  <div>
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="border-l-2 px-1.5 py-0.5 font-mono text-[9px] font-medium uppercase tracking-[0.1em] text-teal" style={{ borderLeftColor: "#1f9d8b" }}>
+                        {it.kind === "teach-back" ? "Teach back" : it.kind}
+                      </span>
+                      <span className="font-mono text-[9px] uppercase tracking-wider text-ink/50">
+                        {subjectNames[it.subjectCode] ?? it.subjectCode}
+                      </span>
+                    </div>
+                    <div className="mt-1.5 font-serif text-[16px] font-bold leading-snug text-ink">{it.topicTitle}</div>
+                    <div className="mt-1.5 flex flex-wrap items-center gap-3">
+                      <span className="font-mono text-[10px] text-muted-foreground">{it.minutes} min</span>
+                      <span className="font-mono text-[10px] text-ink/45">{it.reason}</span>
+                    </div>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </div>
+          <div className="p-6 lg:p-7">
+            <Marginalia className="[&::before]:hidden">After today</Marginalia>
+            <p className="mt-4 font-serif text-lg font-bold leading-snug text-ink">
+              Your next recommended step:
+            </p>
+            <Link
+              href={slugOf({ id: "t-1-types-of-reactions" }) ? `/topic/${slugOf({ id: "t-1-types-of-reactions" })}` : `/topic/t-1-types-of-reactions`}
+              className="mt-2 inline-flex items-baseline gap-2 border-b border-teal/50 pb-0.5 font-serif text-xl font-bold text-teal transition-colors hover:border-teal"
+            >
+              {todaySequence().afterToday.topicTitle}
+              <span className="font-mono text-sm">→</span>
+            </Link>
+            <p className="mt-2 footnote">{todaySequence().afterToday.reason}</p>
+            <div className="mt-3">
+              <Link href="/adaptive" className="font-mono text-[10px] uppercase tracking-[0.14em] text-ink/55 hover:text-teal">
+                Why this step? SEE WHY →
+              </Link>
+            </div>
+            <Hairline className="mt-5 mb-4" />
+            <Marginalia className="[&::before]:hidden">Continue where you left off</Marginalia>
+            <ul className="mt-3 space-y-2.5">
+              {continuationItems()
+                .slice(0, 3)
+                .map((c) => (
+                  <li key={c.id} className="flex flex-wrap items-baseline justify-between gap-2">
+                    <Link href={c.href} className="font-serif text-[14px] font-bold leading-snug text-ink hover:text-teal">
+                      {c.title}
+                    </Link>
+                    <span className="shrink-0 font-mono text-[9px] uppercase tracking-[0.12em] text-teal">{c.actionLabel} →</span>
+                  </li>
+                ))}
+            </ul>
+            <Link href="/continue" className="mt-3 inline-block border-b border-teal/50 pb-0.5 font-mono text-[10px] uppercase tracking-wider text-teal transition-colors hover:border-teal">
+              Continue Learning →
+            </Link>
+          </div>
+        </section>
+
+        <div className="mt-10 grid gap-10 lg:grid-cols-[1.6fr_1fr]">
           {/* ---------- Main column ---------- */}
           <div className="min-w-0 space-y-10">
             {/* Today's learning path */}
             <section>
               <div className="flex flex-wrap items-baseline justify-between gap-3">
-                <Marginalia amber>Today's learning path — {pathMinutes} min scheduled</Marginalia>
+                <Marginalia amber>The path — {pathMinutes} min scheduled</Marginalia>
+                <Link href="/adaptive" className="font-mono text-[10px] uppercase tracking-[0.14em] text-teal hover:underline">
+                  What did Cognify learn about me? →
+                </Link>
               </div>
               <div className="mt-5 divide-y divide-ink/10 border-y border-ink/10">
                 {todayPath.map((item, i) => (

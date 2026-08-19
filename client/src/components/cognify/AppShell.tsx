@@ -32,6 +32,7 @@ import {
 } from "lucide-react";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { searchKnowledge } from "@/lib/discoverySearch";
+import { getRecentSearches, pushRecentSearch } from "@/lib/journeyData";
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "wouter";
 import { toast } from "sonner";
@@ -58,12 +59,20 @@ const KIND_GLYPH: Record<string, string> = {
   revision: "V",
   practice: "P",
   path: "→",
+  subject: "S",
+  chapter: "C",
 };
 
 function SearchBox() {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
+  const [recent, setRecent] = useState<string[]>([]);
   const grouped = searchKnowledge(query);
+  const hasResults = grouped.groups.some((g) => g.items.length > 0);
+
+  useEffect(() => {
+    if (open) setRecent(getRecentSearches());
+  }, [open]);
 
   // Global shortcut: Cmd/Ctrl + K opens the card catalogue
   useEffect(() => {
@@ -104,26 +113,62 @@ function SearchBox() {
           </div>
           <div className="max-h-96 overflow-y-auto">
             {grouped.groups.every((g) => g.items.length === 0) && query.length >= 2 && (
-              <p className="px-4 py-6 text-center font-mono text-[11px] uppercase tracking-wider text-muted-foreground">
-                No matches — the engine searches topics, resources, revision and practice
+              <p className="px-4 py-8 font-serif text-[13.5px] leading-relaxed text-muted-foreground">
+                The catalogue has no entry for “{query.trim()}” yet —
+                <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-ink/50">
+                  {" "}try a subject, chapter or topic instead.
+                </span>
               </p>
             )}
             {query.length < 2 && (
-              <ul>
-                {navItems.slice(0, 4).map((item) => (
-                  <li key={item.href}>
-                    <Link
-                      href={item.href}
-                      onClick={() => setOpen(false)}
-                      className="flex items-center gap-2.5 border-b border-dotted border-ink/10 px-4 py-2.5 text-[13px] text-ink transition-colors hover:bg-ink/[0.04]"
-                    >
-                      <item.icon className="h-3.5 w-3.5 text-teal" />
-                      {item.label}
-                      <span className="ml-auto font-mono text-[9px] uppercase tracking-wider text-muted-foreground">Go to</span>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+              <>
+                {recent.length > 0 && (
+                  <div className="border-b border-ink/10 px-4 py-3">
+                    <span className="font-mono text-[9px] uppercase tracking-[0.16em] text-teal-dark">
+                      Recent searches
+                    </span>
+                    <ul className="mt-2 space-y-0.5">
+                      {recent.map((r) => (
+                        <li key={r}>
+                          <button
+                            type="button"
+                            onClick={() => setQuery(r)}
+                            className="flex w-full items-center gap-2.5 border-b border-dotted border-ink/10 py-2 text-left text-[13px] text-ink transition-colors hover:bg-ink/[0.04]"
+                          >
+                            <span className="font-mono text-[9px] text-ink/40">↻</span>
+                            {r}
+                            <span className="ml-auto font-mono text-[9px] uppercase tracking-wider text-muted-foreground">
+                              Search
+                            </span>
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+                <div className={recent.length > 0 ? "border-b border-ink/10 px-4 py-3" : "px-4 py-3"}>
+                  <span className="font-mono text-[9px] uppercase tracking-[0.16em] text-teal-dark">
+                    {recent.length > 0 ? "Destinations" : "Where to begin"}
+                  </span>
+                  <ul className="mt-2 space-y-0.5">
+                    {navItems.slice(0, 4).map((item) => (
+                      <li key={item.href}>
+                        <Link
+                          href={item.href}
+                          onClick={() => setOpen(false)}
+                          className="flex items-center gap-2.5 border-b border-dotted border-ink/10 py-2 text-[13px] text-ink transition-colors hover:bg-ink/[0.04]"
+                        >
+                          <item.icon className="h-3.5 w-3.5 text-teal" />
+                          {item.label}
+                          <span className="ml-auto font-mono text-[9px] uppercase tracking-wider text-muted-foreground">
+                            Go to
+                          </span>
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </>
             )}
             {grouped.groups.filter((g) => g.items.length > 0).length > 0 &&
               grouped.groups
@@ -140,7 +185,11 @@ function SearchBox() {
                         <li key={`${item.kind}:${item.id}`}>
                           <Link
                             href={item.href}
-                            onClick={() => setOpen(false)}
+                            onClick={() => {
+                              setOpen(false);
+                              pushRecentSearch(query);
+                              setRecent(getRecentSearches());
+                            }}
                             className="group flex items-baseline gap-3 border-b border-dotted border-ink/10 px-4 py-2.5 transition-colors hover:bg-ink/[0.04]"
                           >
                             <span className="flex h-5 w-5 shrink-0 items-center justify-center border border-ink/25 font-mono text-[9px] font-bold text-teal">

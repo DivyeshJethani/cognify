@@ -29,6 +29,8 @@ import {
   retrievalQuestionsFor,
   type SessionFlowState,
 } from "@/lib/learningSessionFlow";
+import { JourneyLink, WhyInteraction } from "@/components/cognify/JourneyLinks";
+import { why, whyResource, whyTopic } from "@/lib/whyEngine";
 import { Link, useLocation, useRoute } from "wouter";
 import {
   ArrowRight,
@@ -176,6 +178,11 @@ export default function Session() {
             <p className="mt-3 font-serif text-lg leading-relaxed text-ink">
               {objective ?? resolved.topic.objectives[0]?.text ?? `Master: ${resolved.topic.title}`}
             </p>
+            <WhyInteraction
+              reason={whyTopic(topicId)}
+              label="Why this topic now?"
+              className="mt-3"
+            />
             <p className="mt-3 footnote">
               Cognify observes your attempts during this session. Every interaction — play, pause,
               rewind, speed change — becomes learning data that refines your next recommendation.
@@ -342,6 +349,14 @@ export default function Session() {
               <span>{resource.sourceLabel}</span>
             </div>
 
+            <div className="mt-3">
+              <WhyInteraction
+                reason={whyResource(topicId, resource.format)}
+                label="Why this resource?"
+                className="mt-0"
+              />
+            </div>
+
             <Hairline className="!bg-ivory/15 my-5" />
 
             {!flow.watched && (
@@ -421,6 +436,9 @@ export default function Session() {
               Transcript, notes, replay marks and “Ask Cognify” are available inside the player.
               Playback events are logged for your analytics file.
             </p>
+            <JourneyLink href={`/resources/${queryTopic ?? ""}`} className="mt-3 text-ivory/60 hover:text-teal">
+              Explore other formats for this topic
+            </JourneyLink>
           </div>
         </aside>
       </div>

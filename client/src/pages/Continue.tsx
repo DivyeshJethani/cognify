@@ -7,14 +7,37 @@
  */
 import AppShell, { PageHeader } from "@/components/cognify/AppShell";
 import { Marginalia } from "@/components/cognify/Primitives";
+import { JourneyLink } from "@/components/cognify/JourneyLinks";
 import { discoverAll } from "@/lib/resourceDiscovery";
 import { continueLearning, markCompleted } from "@/lib/savedResources";
 import { logEvent, startSession } from "@/lib/playerEvents";
+import { continuationItems, type ContinuationItem } from "@/lib/journeyData";
 import type { LearningResource } from "@/lib/types";
-import { Check, Clock, PlayCircle, SearchX } from "lucide-react";
+import { Check, Clock, PlayCircle } from "lucide-react";
 import { useState } from "react";
-import { useLocation } from "wouter";
+import { Link, useLocation } from "wouter";
 import { toast } from "sonner";
+
+const STATE_META: Record<ContinuationItem["state"], { glyph: string; color: string; label: string }> = {
+  continue: { glyph: "▷", color: "#1f9d8b", label: "CONTINUE" },
+  resume: { glyph: "⟳", color: "#7fa894", label: "RESUME" },
+  due: { glyph: "◐", color: "#e9a23b", label: "REVISE" },
+  retry: { glyph: "↺", color: "#102a43", label: "RETRY" },
+  saved: { glyph: "⌖", color: "#1f9d8b", label: "OPEN" },
+};
+
+function StateCell({ item }: { item: ContinuationItem }) {
+  const meta = STATE_META[item.state];
+  return (
+    <div
+      className="flex h-10 w-10 shrink-0 items-center justify-center border font-serif text-lg font-bold"
+      style={{ borderColor: meta.color, color: meta.color }}
+      title={meta.label}
+    >
+      {meta.glyph}
+    </div>
+  );
+}
 
 const DIFFICULTY_COLORS: Record<string, string> = {
   foundational: "#7fa894",
@@ -76,6 +99,52 @@ export default function Continue() {
       />
 
       <div className="px-5 py-7 sm:px-8 lg:px-10">
+        {/* ---------- Five continuation states — one clear action each ---------- */}
+        <section className="mb-10">
+          <div className="flex items-baseline justify-between">
+            <Marginalia amber>Where you left off — five open threads</Marginalia>
+          </div>
+          <ol className="mt-4 divide-y divide-ink/10 border-y border-ink/10">
+            {continuationItems().map((item) => {
+              const meta = STATE_META[item.state];
+              return (
+                <li key={item.id} className="rise-in grid gap-4 py-5 sm:grid-cols-[3.5rem_1fr_auto]">
+                  <StateCell item={item} />
+                  <div className="min-w-0">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span
+                        className="border-l-2 px-1.5 py-0.5 font-mono text-[9px] font-medium uppercase tracking-[0.1em]"
+                        style={{ borderLeftColor: meta.color, color: meta.color }}
+                      >
+                        {meta.label}
+                      </span>
+                      <span className="font-mono text-[9px] uppercase tracking-wider text-ink/50">
+                        {item.subtitle}
+                      </span>
+                    </div>
+                    <h3 className="mt-1.5 font-serif text-lg font-bold leading-snug text-ink">{item.title}</h3>
+                    <p className="mt-1 footnote">{item.detail}</p>
+                  </div>
+                  <div className="flex flex-col justify-center">
+                    <Link
+                      href={item.href}
+                      className="shrink-0 border border-ink/25 bg-ivory-deep px-4 py-2 text-center font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-ink transition-all duration-150 hover:border-teal hover:text-teal active:scale-[0.97]"
+                    >
+                      {item.actionLabel}
+                    </Link>
+                  </div>
+                </li>
+              );
+            })}
+          </ol>
+          <JourneyLink href="/library" className="mt-4">
+            Find the next topic to open
+          </JourneyLink>
+        </section>
+
+        {/* ---------- Unfinished session passes (progress-store ledger) ---------- */}
+        <section>
+          <Marginalia>Started passes awaiting completion</Marginalia>
         {entries.length > 0 ? (
           <ul className="divide-y divide-ink/8 border-y border-ink/10">
             {entries.map(({ p, resource: r }, i) => (
@@ -173,21 +242,18 @@ export default function Continue() {
             </button>
           </div>
         )}
+        </section>
 
-        <aside className="mt-8 grid gap-6 lg:grid-cols-3">
+        <aside className="mt-8 grid gap-6 md:grid-cols-2">
           <div className="border border-ink/10 bg-card p-5">
-            <Marginalia>Why unfinished passes matter</Marginalia>
-            <p className="mt-3 text-[13px] leading-relaxed text-dark-text/75">
-              A paused session carries the context you built — your position, notes and
-              transcript focus. Resuming preserves that context instead of re-earning it.
-            </p>
-          </div>
-          <div className="border border-ink/10 bg-card p-5">
-            <Marginalia>Marking done</Marginalia>
-            <p className="mt-3 text-[13px] leading-relaxed text-dark-text/75">
-              “Mark done” closes the pass and emits a <span className="font-mono text-[11px] text-teal">COMPLETE</span>{" "}
-              interaction — the same signal a real player would send at video end.
-            </p>
+            <Marginalia>What Cognify watched while you were away</Marginalia>
+            <ul className="mt-3 space-y-1.5 font-mono text-[10px] uppercase tracking-[0.06em] text-ink/60">
+              <li>· watched fraction of each started lecture</li>
+              <li>· retrieval attempts left unfinished</li>
+              <li>· revision intervals on the spaced schedule</li>
+              <li>· practice accuracy on your last set</li>
+              <li>· resources you bookmarked manually</li>
+            </ul>
           </div>
           <div className="border border-ink bg-ink p-5 text-ivory">
             <div className="font-mono text-[9px] uppercase tracking-[0.2em] text-teal">Observation</div>
@@ -195,6 +261,9 @@ export default function Continue() {
               The most instructive move after a pause is the return. One resumed pass beats
               three abandoned beginnings.
             </p>
+            <JourneyLink href="/adaptive" className="mt-3 text-white/60 hover:text-teal">
+              See how this shapes your plan
+            </JourneyLink>
           </div>
         </aside>
       </div>

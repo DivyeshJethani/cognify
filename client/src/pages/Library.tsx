@@ -371,7 +371,34 @@ export default function Library() {
             </ul>
           </div>
 
-          <div className="border border-ink/10 bg-ink p-5 text-ivory">
+          <div className="border border-ink/10 bg-card p-5">
+            <Marginalia amber>Before you open a resource</Marginalia>
+            <ol className="mt-3 space-y-3">
+              <li>
+                <div className="font-mono text-[9px] uppercase tracking-[0.14em] text-teal">1 · Understand</div>
+                <p className="mt-1 text-[12.5px] leading-relaxed text-dark-text/75">
+                  Each row states what the resource is and what objective it serves —
+                  read the “why recommended” line before beginning.
+                </p>
+              </li>
+              <li>
+                <div className="font-mono text-[9px] uppercase tracking-[0.14em] text-teal">2 · Cognify is watching</div>
+                <p className="mt-1 text-[12.5px] leading-relaxed text-dark-text/75">
+                  During the session the player logs position, rewinds, speed changes and
+                  drop-offs. These become the next DNA update.
+                </p>
+              </li>
+              <li>
+                <div className="font-mono text-[9px] uppercase tracking-[0.14em] text-teal">3 · After this</div>
+                <p className="mt-1 text-[12.5px] leading-relaxed text-dark-text/75">
+                  A watched resource is followed by a retrieval check and a practice set —
+                  the session never ends at the video.
+                </p>
+              </li>
+            </ol>
+          </div>
+
+          <div className="border border-ink bg-ink p-5 text-ivory">
             <div className="font-mono text-[9px] uppercase tracking-[0.2em] text-teal">Observation</div>
             <p className="mt-2 font-serif text-[15px] leading-relaxed">
               A catalogue is only useful if it is consulted. Finish a started pass before

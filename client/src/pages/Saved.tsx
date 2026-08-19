@@ -132,15 +132,24 @@ export default function Saved() {
             <Bookmark className="h-6 w-6 text-ink/30" />
             <div className="font-serif text-lg font-bold text-ink">Your shelf is empty</div>
             <p className="footnote max-w-md">
-              Save resources while exploring the library or a topic page — they accumulate
-              here as a personal study stack, ranked as evidence grows.
+              Nothing has been saved yet — every resource in the catalogue has a Save action.
+              The shelf is ranked as evidence grows: started, completed and recalled items
+              rise to the top.
             </p>
-            <button
-              onClick={() => navigate("/library")}
-              className="mt-2 h-9 border border-ink bg-ink px-5 font-mono text-[10.5px] uppercase tracking-[0.12em] text-ivory transition-all duration-150 hover:bg-teal hover:border-teal active:scale-[0.97]"
-            >
-              Open the catalogue
-            </button>
+            <div className="mt-3 flex flex-wrap justify-center gap-2">
+              <button
+                onClick={() => navigate("/library")}
+                className="h-9 border border-ink bg-ink px-5 font-mono text-[10.5px] uppercase tracking-[0.12em] text-ivory transition-all duration-150 hover:bg-teal hover:border-teal active:scale-[0.97]"
+              >
+                Open the catalogue
+              </button>
+              <button
+                onClick={() => navigate("/continue")}
+                className="h-9 border border-ink/25 bg-card px-5 font-mono text-[10.5px] uppercase tracking-[0.12em] text-ink/70 transition-all duration-150 hover:border-teal hover:text-teal active:scale-[0.97]"
+              >
+                Continue learning instead
+              </button>
+            </div>
           </div>
         )}
 

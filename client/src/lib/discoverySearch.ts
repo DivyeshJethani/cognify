@@ -32,7 +32,9 @@ export type SearchGroup =
   | "resources"
   | "revision"
   | "practice"
-  | "paths";
+  | "paths"
+  | "subjects"
+  | "chapters";
 
 export interface GroupedSearchResult {
   query: string;
@@ -44,7 +46,7 @@ export interface GroupedSearchResult {
 }
 
 export interface GroupedSearchItem {
-  kind: "topic" | "resource" | "revision" | "practice" | "path";
+  kind: "topic" | "resource" | "revision" | "practice" | "path" | "subject" | "chapter";
   id: string;
   title: string;
   context: string; // e.g. "Mathematics · Quadratic Equations"
@@ -66,6 +68,8 @@ export function searchKnowledge(query: string): GroupedSearchResult {
     query,
     groups: [
       { key: "topics", label: "Topics", items: [] },
+      { key: "subjects", label: "Subjects", items: [] },
+      { key: "chapters", label: "Chapters", items: [] },
       { key: "resources", label: "Resources", items: [] },
       { key: "revision", label: "Revision", items: [] },
       { key: "practice", label: "Practice", items: [] },
@@ -77,10 +81,49 @@ export function searchKnowledge(query: string): GroupedSearchResult {
   const byGroup = new Map<SearchGroup, typeof out.groups[0]>();
   out.groups.forEach((g) => byGroup.set(g.key, g));
 
+  // ---- SUBJECTS: match subject names and codes ----
+  const seenSubjects = new Set<string>();
+  for (const { subject } of allTopics()) {
+    const hay = `${subject.name} ${subject.id}`.toLowerCase();
+    if (!hay.includes(q)) continue;
+    if (seenSubjects.has(subject.id)) continue;
+    seenSubjects.add(subject.id);
+    byGroup.get("subjects")!.items.push({
+      kind: "subject",
+      id: subject.id,
+      title: subject.name,
+      context: `CBSE · Class 10`,
+      detail: `${subject.chapters.length} chapters`,
+      href: `/subject/${subject.id}`,
+      score: 88,
+    });
+  }
+
+  // ---- CHAPTERS: chapter titles within matching subjects ----
+  const seenChapters = new Set<string>();
+  for (const { subject, chapter } of allTopics()) {
+    if (!chapter.title.toLowerCase().includes(q)) continue;
+    const key = `${subject.id}-${chapter.id}`;
+    if (seenChapters.has(key)) continue;
+    seenChapters.add(key);
+    byGroup.get("chapters")!.items.push({
+      kind: "chapter",
+      id: chapter.id,
+      title: chapter.title,
+      context: subject.name,
+      detail: `${chapter.topics.length} topics`,
+      href: `/subject/${subject.id}#${chapter.id}`,
+      score: 80,
+    });
+  }
+
   // ---- TOPICS: fuzzy match on title, objectives, chapter ----
+  const seenTopics = new Set<string>();
   for (const { subject, chapter, topic } of allTopics()) {
     const hay = `${topic.title} ${chapter.title} ${subject.name} ${topic.objectives.map((o) => o.text).join(" ")}`.toLowerCase();
     if (!hay.includes(q)) continue;
+    if (seenTopics.has(topic.id)) continue;
+    seenTopics.add(topic.id);
     const alias = topicAlias(topic.id);
     const score = topicMatchScore(topic.title, q) * 0.6 + objectiveMatchScore(topic.objectives.map((o) => o.text), q) * 0.4;
     if (score < SCORE_THRESHOLD) continue;
@@ -120,9 +163,12 @@ export function searchKnowledge(query: string): GroupedSearchResult {
   }
 
   // ---- REVISION: spaced-schedule entries whose topic matches ----
+  const seenRev = new Set<string>();
   for (const e of revisionSchedule()) {
     const hay = `${e.topicTitle} ${e.chapterTitle}`.toLowerCase();
     if (!hay.includes(q)) continue;
+    if (seenRev.has(e.topicId)) continue;
+    seenRev.add(e.topicId);
     byGroup.get("revision")!.items.push({
       kind: "revision",
       id: `rev-${e.topicId}`,
@@ -136,13 +182,15 @@ export function searchKnowledge(query: string): GroupedSearchResult {
   }
 
   // ---- PRACTICE: practice-type resources on matching topics ----
+  const seenPractice = new Set<string>();
   for (const { subject, chapter, topic } of allTopics()) {
     const hay = `${topic.title} ${chapter.title} ${subject.name}`.toLowerCase();
     if (!hay.includes(q)) continue;
     const alias = topicAlias(topic.id);
-    if (alias) {
-      const discovery = discoverResources(alias, { formats: ["practice"] });
-      if (discovery?.resources.length) {
+    if (!alias || seenPractice.has(alias)) continue;
+    seenPractice.add(alias);
+    const discovery = discoverResources(alias, { formats: ["practice"] });
+    if (discovery?.resources.length) {
         byGroup.get("practice")!.items.push({
           kind: "practice",
           id: `prac-${alias}`,
@@ -153,13 +201,15 @@ export function searchKnowledge(query: string): GroupedSearchResult {
           score: 74,
           meta: `${discovery.resources.length} set${discovery.resources.length > 1 ? "s" : ""}`,
         });
-      }
     }
   }
 
   // ---- LEARNING PATHS: adaptive path recommendations mentioning the query ----
   const path = todayAdaptivePath();
+  const seenPaths = new Set<string>();
   for (const rec of path.slice(0, 5)) {
+    if (seenPaths.has(rec.topicId)) continue;
+    seenPaths.add(rec.topicId);
     const hay = `${rec.topicTitle} ${rec.subjectLabel} ${rec.reason}`.toLowerCase();
     if (!hay.includes(q)) continue;
     byGroup.get("paths")!.items.push({

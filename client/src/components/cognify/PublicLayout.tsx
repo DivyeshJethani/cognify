@@ -28,20 +28,26 @@ export function PublicNav() {
             Curriculum
           </a>
         </nav>
-        <div className="flex items-center gap-3">
+        <div className="flex min-w-0 items-center gap-2 sm:gap-3">
           {auth.kind === "logged-in" ? (
-            <Button asChild className="h-9 bg-ink text-ivory hover:bg-ink/90">
+            <Button asChild size="sm" className="h-9 shrink-0 bg-ink text-ivory hover:bg-ink/90">
               <Link href="/dashboard">
-                Open command center <ArrowRight className="ml-1 h-3.5 w-3.5" />
+                <span className="hidden sm:inline">Open command center</span>
+                <span className="sm:hidden">Dashboard</span>
+                <ArrowRight className="ml-1 h-3.5 w-3.5 shrink-0" />
               </Link>
             </Button>
           ) : (
             <>
-              <Button asChild variant="outline" className="h-9 border-ink/25 bg-transparent text-ink hover:bg-ink/5">
+              <Button asChild size="sm" variant="outline" className="h-9 shrink-0 border-ink/25 bg-transparent text-ink hover:bg-ink/5">
                 <Link href="/login">Sign in</Link>
               </Button>
-              <Button asChild className="h-9 bg-teal text-white hover:bg-teal-dark">
-                <Link href="/signup">Begin diagnostic <ArrowRight className="ml-1 h-3.5 w-3.5" /></Link>
+              <Button asChild size="sm" className="h-9 shrink-0 bg-teal text-white hover:bg-teal-dark">
+                <Link href="/signup">
+                  <span className="hidden sm:inline">Begin diagnostic</span>
+                  <span className="sm:hidden">Sign up</span>
+                  <ArrowRight className="ml-1 h-3.5 w-3.5 shrink-0" />
+                </Link>
               </Button>
             </>
           )}
