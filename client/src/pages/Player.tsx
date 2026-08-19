@@ -17,14 +17,18 @@ import { answer, quickPicks } from "@/lib/askCognify";
 import { discoverResources, getTranscript } from "@/lib/resourceDiscovery";
 import { findTopicByIdOrAlias } from "@/lib/curriculum";
 import { eventsForSession, eventLabel, logEvent } from "@/lib/playerEvents";
+import { anotherExplanation } from "@/lib/recommendations";
+import { addSaved, isSaved, removeSaved, updateProgress } from "@/lib/savedResources";
 import { cn } from "@/lib/utils";
 import type { PlayerEvent, TranscriptSegment } from "@/lib/types";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
+  Bookmark,
   ChevronLeft,
   ChevronRight,
   CheckCircle2,
   Clock,
+  FlaskConical,
   MessageCircleQuestion,
   MicOff,
   PencilLine,
@@ -89,9 +93,19 @@ export default function Player() {
     [resource, rawTranscript]
   );
 
-  const [elapsed, setElapsed] = useState(0);
+  const [elapsed, setElapsed] = useState(() => {
+    // Resume from the last persisted position for this resource, if any
+    try {
+      const stored = JSON.parse(localStorage.getItem("cognify.progress.v1") ?? "{}")[resourceId];
+      if (stored?.lastAtSec) return Math.round(stored.lastAtSec);
+    } catch {
+      /* ignore */
+    }
+    return 0;
+  });
   const [playing, setPlaying] = useState(false);
   const [speed, setSpeed] = useState(1);
+  const [, forceRender] = useState(0);
   const [segments, setSegments] = useState<TranscriptSegment[]>(rawTranscript);
   const [confusing, setConfusing] = useState<Record<number, string>>({});
   const [tab, setTab] = useState<"transcript" | "notes" | "replay" | "related" | "ask">("transcript");
@@ -127,6 +141,12 @@ export default function Player() {
     }, TICK_MS);
     return () => clearInterval(t);
   }, [playing, totalSec, sessionId, resourceId]);
+
+  /* ---------- progress persistence (continue-learning ledger) ---------- */
+  useEffect(() => {
+    if (elapsed <= 0) return;
+    updateProgress(resourceId, { fraction: Math.min(1, elapsed / totalSec), lastAtSec: elapsed });
+  }, [elapsed, resourceId, totalSec]);
 
   const emit = (type: PlayerEvent["type"], payload?: PlayerEvent["payload"]) => {
     const evt = { type, atSec: elapsedRef.current, sessionId, resourceId, payload };
@@ -232,8 +252,30 @@ export default function Player() {
             <div className="font-mono text-[9px] uppercase tracking-[0.14em] text-muted-foreground">Session</div>
             <div className="font-mono text-[11px] font-medium text-ink">{sessionId.slice(0, 24)}</div>
           </div>
-          <div className="border border-amber/40 bg-amber/5 px-2.5 py-1 font-mono text-[9px] font-bold uppercase tracking-[0.1em] text-amber-dark">
-            Analytics ON · {events.length} events
+          <div className="hidden items-center gap-3 sm:flex">
+            <button
+              onClick={() => {
+                if (isSaved(resourceId)) {
+                  removeSaved(resourceId);
+                } else {
+                  addSaved(resource);
+                }
+                forceRender((v) => v + 1);
+              }}
+              className={cn(
+                "flex items-center gap-1.5 border px-2.5 py-1.5 font-mono text-[9px] font-bold uppercase tracking-[0.1em] transition-colors active:scale-[0.97]",
+                isSaved(resourceId)
+                  ? "border-amber bg-amber/10 text-amber-dark"
+                  : "border-ink/20 text-ink/55 hover:border-teal hover:text-teal"
+              )}
+              title="Add to My Saved Resources"
+            >
+              <Bookmark className={cn("h-3 w-3", isSaved(resourceId) && "fill-current")} />
+              {isSaved(resourceId) ? "Saved" : "Save"}
+            </button>
+            <div className="border border-amber/40 bg-amber/5 px-2.5 py-1 font-mono text-[9px] font-bold uppercase tracking-[0.1em] text-amber-dark">
+              Analytics ON · {events.length} events
+            </div>
           </div>
         </div>
       </header>
@@ -337,6 +379,30 @@ export default function Player() {
               </div>
             </div>
           </div>
+
+          {/* Another explanation — surfaces when the first pass resists */}
+          {anotherExplanation(topicId, resourceId).length > 0 && (
+            <div className="mt-6 border border-teal/30 bg-teal/5 px-4 py-3">
+              <div className="flex flex-wrap items-center gap-3">
+                <div className="flex items-center gap-2">
+                  <FlaskConical className="h-4 w-4 text-teal" />
+                  <span className="font-mono text-[10px] font-bold uppercase tracking-[0.14em] text-teal-dark">
+                    Another explanation available
+                  </span>
+                </div>
+                <p className="w-full text-[12.5px] leading-relaxed text-dark-text/75 sm:w-auto">
+                  If this pass does not hold, Cognify keeps a differently-framed alternative
+                  ready — same topic, different format.
+                </p>
+                <Link
+                  href={`/resources/${topicId}`}
+                  className="ml-auto h-8 whitespace-nowrap border border-teal bg-teal px-3 font-mono text-[9.5px] uppercase tracking-[0.1em] text-white transition-all hover:bg-teal-dark active:scale-[0.97]"
+                >
+                  View alternatives →
+                </Link>
+              </div>
+            </div>
+          )}
 
           {/* Objective strip + next activity */}
           <div className="mt-6 grid gap-px border border-ink/10 bg-ink/10 sm:grid-cols-2">
@@ -569,6 +635,15 @@ export default function Player() {
                         <Link
                           key={r.id}
                           href={`/session/${r.id}?topic=${topicId}`}
+                          onClick={() => {
+                            logEvent({
+                              type: "SKIP",
+                              atSec: elapsedRef.current,
+                              sessionId,
+                              resourceId,
+                              payload: { switchedTo: r.id },
+                            });
+                          }}
                           className="block p-4 transition-colors hover:bg-ivory-deep/60"
                         >
                           <div className="flex items-center justify-between">
@@ -618,6 +693,10 @@ export default function Player() {
                         speed: speedRef.current,
                         confusingCount: confusingMarks.length,
                         transcriptText: segments.map((s) => s.text).join(" "),
+                        confusingMarks: confusingMarks.map(([sec, note]) => ({
+                          sec: Number(sec),
+                          note,
+                        })),
                       }).map((q) => (
                         <button
                           key={q}

@@ -12,6 +12,75 @@
 import { discoveryMeta } from "./resourceDiscovery";
 import type { LearningResource } from "./types";
 
+export type AskActionId =
+  | "explain-current"
+  | "simplify"
+  | "elaborate"
+  | "give-example"
+  | "quiz-me"
+  | "what-s-next"
+  | "connect-dna"
+  | "summarise";
+
+export interface AskAction {
+  id: AskActionId;
+  label: string;
+  sublabel: string;
+  prompt: string;
+}
+
+/** Eight guided actions — the buttons a future LLM would ground on. */
+export const ASK_ACTIONS: AskAction[] = [
+  {
+    id: "explain-current",
+    label: "Explain this part",
+    sublabel: "What is happening right now?",
+    prompt: "Explain the segment I am at right now.",
+  },
+  {
+    id: "simplify",
+    label: "Simplify",
+    sublabel: "Say it more plainly",
+    prompt: "Explain this more simply, as if to a younger student.",
+  },
+  {
+    id: "elaborate",
+    label: "Go deeper",
+    sublabel: "More detail, same idea",
+    prompt: "Explain this part in more depth — I want the full picture.",
+  },
+  {
+    id: "give-example",
+    label: "Give an example",
+    sublabel: "Anchor it concretely",
+    prompt: "Give me a concrete worked example of this idea.",
+  },
+  {
+    id: "quiz-me",
+    label: "Quiz me",
+    sublabel: "Check my grasp",
+    prompt: "Ask me one question to test whether I understand this.",
+  },
+  {
+    id: "what-s-next",
+    label: "What's next",
+    sublabel: "Next step after this",
+    prompt: "What should I do immediately after this resource?",
+  },
+  {
+    id: "connect-dna",
+    label: "My DNA says…",
+    sublabel: "Relate it to my profile",
+    prompt: "Connect this segment to my Learning DNA profile.",
+  },
+  {
+    id: "summarise",
+    label: "Summarise",
+    sublabel: "The whole segment, briefly",
+    prompt: "Summarise what I have covered so far.",
+  },
+];
+
 export interface AskMessage {
   role: "user" | "cognify";
   text: string;
@@ -24,6 +93,8 @@ export interface AskContext {
   speed: number;
   confusingCount: number;
   transcriptText: string;
+  /** Confusing segments marked by the student — drives contextual questions */
+  confusingMarks?: { sec: number; note: string }[];
 }
 
 /** Quick-pick questions shown above the input */
@@ -34,9 +105,13 @@ export function quickPicks(ctx: AskContext): string[] {
     `Am I spending the right amount of time on this?`,
     `What should I do after this video?`,
     ctx.confusingCount > 0
-      ? `Help me with my confusing marks (${ctx.confusingCount})`
+      ? `Summarise my confusing marks (${ctx.confusingCount})`
       : `What should I watch for in this video?`,
-  ].slice(0, 4);
+    ctx.confusingMarks && ctx.confusingMarks.length > 0
+      ? `Which marked segment matters most?`
+      : undefined,
+  ].filter((q): q is string => !!q)
+  .slice(0, 4);
 }
 
 /** Answer a student question contextually */
@@ -68,11 +143,55 @@ export function answer(ctx: AskContext, question: string): string {
   if (q.includes("confus") || q.includes("mark") || q.includes("replay")) {
     if (ctx.confusingCount === 0)
       return `You have no confusing marks yet. While playing, press “Mark confusing” at any moment — the segment is added to your replay list and noted in your analytics file. I will summarise them at the end of the session.`;
+    const marks = ctx.confusingMarks ?? [];
+    if (marks.length > 0) {
+      const worst = marks.reduce((a, b) => (b.sec > a.sec ? b : a));
+      return `You have marked ${ctx.confusingCount} confusing segment${ctx.confusingCount > 1 ? "s" : ""}. The latest mark sits at ${formatTime(worst.sec)} — “${worst.note}”. Open the “Replay” tab to review them; revisiting your own confusion points is the highest-yield revision step Cognify schedules, and each mark feeds your mistake-profile analysis.`;
+    }
     return `You have marked ${ctx.confusingCount} confusing segment${ctx.confusingCount > 1 ? "s" : ""}. Open the “Replay” tab to review them — revisiting your own confusion points is the highest-yield revision step Cognify schedules, and each mark feeds your mistake-profile analysis.`;
   }
 
   if (q.includes("watch") || q.includes("look for") || q.includes("focus") || q.includes("tip")) {
     return `Focus on the step transitions, not the conclusions — your mistake profile shows procedural and careless errors outweigh conceptual gaps. When the narration derives a formula or proves a claim, slow to 0.75x and mark anything you would have to re-read. Those marks become your revision list.`;
+  }
+
+  if (q.includes("explain current") || q.includes("segment i am at") || q.includes("right now")) {
+    const seg = nearestSegment(ctx);
+    return seg
+      ? `Right now: “${seg.text.slice(0, 200)}${seg.text.length > 200 ? "…" : ""}” The takeaway to carry into your notes: this is the step your mistake profile says is fragile — treat it as a retrieval target, not background.`
+      : `You are at ${formatTime(ctx.elapsedSec)} of ${formatTime(ctx.totalSec)} (${progress}% through). The segment here is still indexing — ask me again in a moment, or tell me what felt unclear.`;
+  }
+
+  if (q.includes("more simple") || q.includes("plainly") || q.includes("younger") || q.includes("simplif")) {
+    const seg = nearestSegment(ctx);
+    return seg
+      ? `Simply: ${stripJargon(seg.text.slice(0, 160))}${seg.text.length > 160 ? "…" : "."} The short version: one idea, one picture in your head. If the picture won't stick, mark this segment and I will flag it for a diagram-first re-attempt.`
+      : `At your current position the idea is ${r.difficulty === "foundational" ? "already the gentlest pass available" : "the hardest pass available"} — simplifying works best on the concrete step you paused at. Tell me the sentence that lost you.`;
+  }
+
+  if (q.includes("deeper") || q.includes("depth") || q.includes("full picture")) {
+    return `Going deeper means the next layer of the same idea. For this topic, that layer is: how this connects to the surrounding curriculum step and why CBSE marks the transition between them. Ask Cognify for the related NCERT treatment after this video — the “NCERT / textbook” entry in your related resources is the depth layer.`;
+  }
+
+  if (q.includes("example") || q.includes("worked") || q.includes("concrete")) {
+    return `A worked example for this segment: ${exampleFor(ctx)}. Note the sign discipline and the verification step — those are the two places your attempt history shows slips. Reproduce it once without looking; that reproduction is the evidence your mastery file wants.`;
+  }
+
+  if (q.includes("quiz") || q.includes("question") && q.includes("test") || q.includes("check my grasp") || q.includes("test whether")) {
+    return `Here is your check: answer this before touching anything else — “${quizFor(ctx)}” Write your answer, then compare with the worked solution in this resource's transcript around this timestamp. If your answer missed the verification step, that is your known procedural error speaking, not the concept.`;
+  }
+
+  if (q.includes("my dna") || q.includes("profile") || q.includes("connect")) {
+    const seg = nearestSegment(ctx);
+    const segSnippet = seg ? `\u201C${seg.text.slice(0, 110)}\u2026\u201D` : "\u2026\u201D (segment still indexing)";
+    return `Your DNA applied at this moment: the segment says ${segSnippet} — and your profile reads: visual-diagram format strongest, 22-minute attention ceiling, conceptual errors 46%, confidence overshoot ~35 points. Practical consequence: keep this pass under a quarter hour, re-watch diagram-first if the idea resists, and write one retrieval sentence in your notes before moving on.`;
+  }
+
+  if (q.includes("summarise") || q.includes("covered so far") || q.includes("summary")) {
+    const covered = ctx.transcriptText.slice(0, 160);
+    return covered
+      ? `So far: ${covered}${ctx.transcriptText.length > 160 ? "…" : "."} One-sentence summary: ${oneSentence(ctx)}. If you can restate it without the text, this segment is banked.`
+      : `No segment text is indexed yet at this position — hit play to advance the transcript, or jump to the next authored segment. Your summary note at the end of the resource will capture everything at once.`;
   }
 
   if (q.includes("speed") || q.includes("fast") || q.includes("slow")) {
@@ -97,4 +216,41 @@ export function answer(ctx: AskContext, question: string): string {
 function formatRemaining(ctx: AskContext, budgetMinutes: number): string {
   const remainingMin = Math.max(0, Math.round(budgetMinutes - ctx.elapsedSec / 60 / ctx.speed));
   return `${remainingMin} minute${remainingMin === 1 ? "" : "s"}`;
+}
+
+function formatTime(sec: number): string {
+  const m = Math.floor(sec / 60);
+  const s = Math.floor(sec % 60);
+  return `${m}:${s.toString().padStart(2, "0")}`;
+}
+
+function nearestSegment(ctx: AskContext) {
+  // Uses the full transcript passed in via context (built by the player)
+  const segs = (ctx as AskContext & { transcript?: { startSec: number; endSec: number; text: string }[] }).transcript;
+  if (!segs) return null;
+  return segs.find((s) => ctx.elapsedSec >= s.startSec && ctx.elapsedSec < s.endSec) ?? null;
+}
+
+function stripJargon(t: string): string {
+  return t.replace(/\b(procedural|calibration|discriminant|algorithm)\b/gi, (m) => `“${m.toLowerCase()}”`);
+}
+
+function exampleFor(ctx: AskContext): string {
+  const seg = nearestSegment(ctx);
+  if (!seg) return "the worked example at the current timestamp — see the transcript step sequence.";
+  return `built from the current segment: “${seg.text.slice(0, 90)}…” — the example mirrors the same step order, with the verification identity carried through to the end.`;
+}
+
+function quizFor(ctx: AskContext): string {
+  const seg = nearestSegment(ctx);
+  if (!seg) return "restate the last formula or claim the narration made, in your own words.";
+  return `in your own words: what did the narration just establish, and why does the step before it have to be true first?`;
+}
+
+function oneSentence(ctx: AskContext): string {
+  const segs = (ctx as AskContext & { transcript?: { startSec: number; endSec: number; text: string }[] }).transcript;
+  if (!segs) return "(segment text not yet indexed)";
+  const covered = segs.filter((s) => s.endSec <= ctx.elapsedSec);
+  if (covered.length === 0) return "the opening framing of this resource.";
+  return covered[covered.length - 1].text.slice(0, 140);
 }

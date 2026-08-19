@@ -15,6 +15,7 @@ import {
   StateBadge,
 } from "@/components/cognify/Primitives";
 import { boards, findSubject } from "@/lib/mockData";
+import { topicAlias } from "@/lib/curriculum";
 import { cn } from "@/lib/utils";
 import { BookOpen, ChevronRight } from "lucide-react";
 import { useLocation } from "wouter";
@@ -441,12 +442,20 @@ function TopicDetail({
                 </li>
               ))}
             </ul>
-            <button
-              onClick={() => onOpenResources(topic.id)}
-              className="btn-primary mt-4 w-full"
-            >
-              Open resource explorer
-            </button>
+            <div className="mt-4 grid gap-2">
+              <button
+                onClick={() => onOpenResources(topic.id)}
+                className="btn-primary"
+              >
+                Open resource explorer
+              </button>
+              <a
+                href={`/topic/${topicAlias(topic.id) ?? topic.id}`}
+                className="block border border-ink/20 px-4 py-2.5 text-center font-mono text-[10px] uppercase tracking-[0.12em] text-ink/70 transition-colors hover:border-teal hover:text-teal"
+              >
+                Open learning dossier →
+              </a>
+            </div>
           </section>
 
           {/* Meta */}

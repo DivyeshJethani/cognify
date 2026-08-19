@@ -17,6 +17,10 @@ import ComingSoon from "./pages/ComingSoon";
 import Resources from "./pages/Resources";
 import Session from "./pages/Session";
 import Player from "./pages/Player";
+import Library from "./pages/Library";
+import Saved from "./pages/Saved";
+import Continue from "./pages/Continue";
+import TopicLearning from "./pages/TopicLearning";
 
 /**
  * Auth/onboarding guard as a real component — hooks are called unconditionally
@@ -84,6 +88,10 @@ function Router() {
       <GuardedRoute path={"/curriculum"} component={Curriculum} />
       <GuardedRoute path={"/profile"} component={Profile} />
       <GuardedRoute path={"/resources/:topicId"} component={Resources} />
+      <GuardedRoute path={"/library"} component={Library} />
+      <GuardedRoute path={"/saved"} component={Saved} />
+      <GuardedRoute path={"/continue"} component={Continue} />
+      <GuardedRoute path={"/topic/:topicId"} component={TopicLearning} />
       <GuardedRoute path={"/session/:resourceId"} component={Session} />
       <GuardedRoute path={"/player/:resourceId"} component={Player} />
       <Route path={"/timetable"}>

@@ -14,9 +14,11 @@ import {
 } from "@/components/cognify/Primitives";
 import { discoverResources, getTranscript } from "@/lib/resourceDiscovery";
 import { findTopicByIdOrAlias } from "@/lib/curriculum";
-import { useLocation, useRoute } from "wouter";
-import { ArrowRight, BookOpen, ChevronLeft, Clock, Target, Timer } from "lucide-react";
-import { startSession } from "@/lib/playerEvents";
+import { Link, useLocation, useRoute } from "wouter";
+import { ArrowRight, BookOpen, CheckCircle2, ChevronLeft, Clock, FlaskConical, SkipForward, Target, Timer } from "lucide-react";
+import { startSession, logEvent } from "@/lib/playerEvents";
+import { useEffect, useMemo, useState } from "react";
+import { addSaved, isSaved, removeSaved } from "@/lib/savedResources";
 
 export default function Session() {
   const [match, params] = useRoute("/session/:resourceId");
@@ -49,6 +51,37 @@ export default function Session() {
     const sessionId = startSession(resourceId);
     navigate(`/player/${resourceId}?sessionId=${sessionId}&topic=${topicId}`);
   };
+
+  // Reflection actions — what the student decides to do with this resource
+  const alternatives = useMemo(
+    () => discovery?.resources.filter((r) => r.id !== resourceId) ?? [],
+    [discovery, resourceId]
+  );
+  const [saved, setSaved] = useState(() => isSaved(resourceId));
+
+  const endSession = (verdict: "understood" | "need-more") => {
+    const sessionId = startSession(resourceId);
+    logEvent({
+      type: "COMPLETE",
+      atSec: 0,
+      sessionId,
+      resourceId,
+      payload: {
+        verdict: verdict as string,
+        switchedTo: verdict === "need-more" && alternatives[0] ? (alternatives[0].id as string) : "",
+      },
+    });
+    if (verdict === "understood") {
+      navigate(`/topic/${queryTopic ?? ""}`);
+    } else if (alternatives[0]) {
+      navigate(`/session/${alternatives[0].id}?topic=${topicId}`);
+    } else {
+      navigate(`/resources/${queryTopic ?? ""}`);
+    }
+  };
+
+  // Session can be entered after progress exists — offer reflection state if resource is complete or near
+  const [, forceRender] = useState(0);
 
   if (!resource || !resolved) {
     return (
@@ -183,6 +216,40 @@ export default function Session() {
               <span>Begin session</span>
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
             </button>
+
+            <div className="mt-2.5 grid grid-cols-2 gap-2">
+              <button
+                onClick={() => endSession("understood")}
+                className="flex items-center justify-center gap-1.5 border border-ivory/25 px-2 py-2 font-mono text-[9.5px] uppercase tracking-[0.08em] text-ivory/75 transition-all hover:border-teal hover:text-teal active:scale-[0.97]"
+              >
+                <CheckCircle2 className="h-3 w-3" /> I understood it
+              </button>
+              <button
+                onClick={() => endSession("need-more")}
+                className="flex items-center justify-center gap-1.5 border border-ivory/25 px-2 py-2 font-mono text-[9.5px] uppercase tracking-[0.08em] text-ivory/75 transition-all hover:border-amber hover:text-amber active:scale-[0.97]"
+              >
+                <FlaskConical className="h-3 w-3" /> Another explanation
+              </button>
+            </div>
+
+            <div className="mt-2.5 flex gap-2">
+              <button
+                onClick={() => {
+                  if (saved) removeSaved(resourceId);
+                  else if (resource) addSaved(resource);
+                  setSaved((v) => !v);
+                }}
+                className="flex-1 border border-ivory/25 px-2 py-2 font-mono text-[9.5px] uppercase tracking-[0.08em] text-ivory/75 transition-all hover:border-amber hover:text-amber active:scale-[0.97]"
+              >
+                {saved ? "Saved ✓" : "Save to library"}
+              </button>
+              <Link
+                href={`/resources/${queryTopic ?? ""}`}
+                className="flex flex-1 items-center justify-center gap-1 border border-ivory/25 px-2 py-2 font-mono text-[9.5px] uppercase tracking-[0.08em] text-ivory/75 transition-all hover:border-ivory/50 hover:text-ivory active:scale-[0.97]"
+              >
+                <SkipForward className="h-3 w-3" /> Skip topic
+              </Link>
+            </div>
 
             <p className="mt-4 font-mono text-[10px] leading-relaxed text-ivory/50">
               Transcript, notes, replay marks and “Ask Cognify” are available inside the player.

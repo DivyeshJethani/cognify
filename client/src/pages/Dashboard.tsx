@@ -16,6 +16,7 @@ import {
 } from "@/components/cognify/Primitives";
 import { useApp } from "@/contexts/AppContext";
 import { allTopics, boards } from "@/lib/mockData";
+import { topicAlias } from "@/lib/curriculum";
 import { cn } from "@/lib/utils";
 import { Flame, TrendingUp } from "lucide-react";
 import { useMemo } from "react";
@@ -39,6 +40,10 @@ const subjectNames: Record<string, string> = {
   HIN: "Hindi",
   SKT: "Sanskrit",
 };
+
+/* topicAlias() from curriculum.ts resolves runtime ids → stable alias slug;
+   falls back to the runtime id so links never break */
+const slugOf = (t: { id: string }): string => topicAlias(t.id) ?? t.id;
 
 function todayDateString() {
   return new Date().toLocaleDateString("en-GB", {
@@ -134,7 +139,7 @@ export default function Dashboard() {
                           {item.minutes} min · timed block
                         </span>
                         <Link
-                          href="/curriculum"
+                          href={`/topic/${slugOf({ id: item.topicId })}`}
                           className="border-b border-teal/50 pb-0.5 font-mono text-[11px] uppercase tracking-wider text-teal transition-colors hover:border-teal"
                         >
                           Open in explorer
@@ -153,14 +158,18 @@ export default function Dashboard() {
                 <ul className="mt-4 space-y-3">
                   {weakTopicsList.slice(0, 5).map((w) => (
                     <li key={w.topic.id} className="border-l-2 border-amber/60 pl-3">
-                      <div className="flex flex-wrap items-center gap-2">
-                        <span className="font-mono text-[9px] font-medium uppercase tracking-wider text-ink/50">
-                          {subjectNames[w.subject.code] ?? w.subject.code}
-                        </span>
-                        <span className="font-mono text-[9px] uppercase tracking-wider text-muted-foreground">
-                          {w.chapterTitle}
-                        </span>
-                      </div>
+                      <Link href={`/topic/${slugOf(w.topic)}`} className="group">
+                        <div className="flex flex-wrap items-center gap-2">
+                          <span className="font-mono text-[9px] font-medium uppercase tracking-wider text-ink/50">
+                            {subjectNames[w.subject.code] ?? w.subject.code}
+                          </span>
+                          <span className="font-mono text-[9px] uppercase tracking-wider text-muted-foreground">
+                            {w.chapterTitle}
+                          </span>
+                          <span className="font-mono text-[9px] uppercase tracking-wider text-teal opacity-0 transition-opacity group-hover:opacity-100">
+                            View dossier →
+                          </span>
+                        </div>
                       <div className="mt-1 font-serif text-[15px] font-bold leading-snug text-ink">
                         {w.topic.title}
                       </div>
@@ -170,6 +179,7 @@ export default function Dashboard() {
                           {w.topic.mastery}%
                         </span>
                       </div>
+                      </Link>
                     </li>
                   ))}
                 </ul>
@@ -180,18 +190,23 @@ export default function Dashboard() {
                 <ul className="mt-4 space-y-3">
                   {revisionDueList.slice(0, 5).map((r) => (
                     <li key={r.topic.id} className="border-l-2 border-teal/60 pl-3">
-                      <div className="flex flex-wrap items-center gap-2">
-                        <span className="font-mono text-[9px] font-medium uppercase tracking-wider text-ink/50">
-                          {subjectNames[r.subject.code] ?? r.subject.code}
-                        </span>
-                        <RevisionChip dueInDays={r.topic.revisionDueInDays} status={r.topic.revisionStatus} />
-                      </div>
+                      <Link href={`/topic/${slugOf(r.topic)}`} className="group">
+                        <div className="flex flex-wrap items-center gap-2">
+                          <span className="font-mono text-[9px] font-medium uppercase tracking-wider text-ink/50">
+                            {subjectNames[r.subject.code] ?? r.subject.code}
+                          </span>
+                          <RevisionChip dueInDays={r.topic.revisionDueInDays} status={r.topic.revisionStatus} />
+                          <span className="font-mono text-[9px] uppercase tracking-wider text-teal opacity-0 transition-opacity group-hover:opacity-100">
+                            View dossier →
+                          </span>
+                        </div>
                       <div className="mt-1 font-serif text-[15px] font-bold leading-snug text-ink">
                         {r.topic.title}
                       </div>
                       <div className="mt-1.5 font-mono text-[11px] text-muted-foreground">
                         Retention risk rising · spaced scheduler flag
                       </div>
+                      </Link>
                     </li>
                   ))}
                   {revisionDueList.length === 0 && (

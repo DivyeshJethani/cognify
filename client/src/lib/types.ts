@@ -100,6 +100,19 @@ export type ResourceFormat =
 
 export type Difficulty = "foundational" | "core" | "advanced" | "stretch";
 
+/** The ten COGNIFY resource types — each renders with its own layout */
+export type ResourceType =
+  | "video-lecture"
+  | "article"
+  | "ncert-textbook"
+  | "diagram"
+  | "animation-visual"
+  | "revision-notes"
+  | "solved-example"
+  | "practice-set"
+  | "quick-revision"
+  | "concept-explanation";
+
 export interface LearningResource {
   id: string;
   title: string;
@@ -120,6 +133,14 @@ export interface LearningResource {
   /** DNA dimension this resource serves, e.g. "Teaching format" */
   dnaDimension: string | null;
   thumbnail?: string;
+  /** One of the ten COGNIFY resource types */
+  resourceType: ResourceType;
+  /** Short description of contents */
+  description: string;
+  /** Recommendation rail this resource leads with, null when not leading */
+  rail?: string;
+  /** Free-web-resources flag (YouTube/NCERT/OER discovery) */
+  isFreeWeb?: boolean;
 }
 
 export interface ResourceDiscoveryResult {
@@ -164,6 +185,22 @@ export interface PlayerEvent {
   payload?: Record<string, string | number>; // e.g. { speed: 1.5 }
 }
 
+/** Wider interaction vocabulary the frontend records (future analytics) */
+export type LearningInteractionType =
+  | "PLAY"
+  | "PAUSE"
+  | "SEEK"
+  | "REWIND"
+  | "SPEED_CHANGE"
+  | "COMPLETE"
+  | "DROP_OFF"
+  | "MARK_CONFUSING"
+  | "ASK_QUESTION"
+  | "TAKE_NOTE"
+  | "SAVE_RESOURCE"
+  | "SWITCH_RESOURCE"
+  | "RETRY_EXPLANATION";
+
 /* ---------- Learning session ---------- */
 export interface LearningSession {
   id: string;
@@ -173,6 +210,7 @@ export interface LearningSession {
   estimatedMinutes: number;
   nextActivity: string;
   startedAt: string;
+  finished?: boolean;
 }
 
 /* ---------- Learning DNA ---------- */
@@ -243,6 +281,77 @@ export interface StudentProfile {
   weeklyTargetMinutes: number;
   streakDays: number;
   createdAt: string;
+}
+
+/* ---------- Saved resources ---------- */
+export interface SavedResource {
+  resourceId: string;
+  savedAt: string; // ISO
+  note?: string; // optional student note attached at save
+}
+
+/* ---------- Progress (continue learning) ---------- */
+export interface ResourceProgress {
+  resourceId: string;
+  /** fraction watched/attempted 0–1 */
+  fraction: number;
+  lastAtSec?: number;
+  updatedAt: string;
+}
+
+/* ---------- Search ---------- */
+export type SearchResultKind = "topic" | "resource" | "lecture" | "note" | "practice";
+
+export interface SearchResult {
+  kind: SearchResultKind;
+  id: string;
+  title: string;
+  context: string; // subject · chapter · topic
+  href: string; // navigation target
+  relevance: number; // 0–100
+}
+
+/* ---------- Notes with timeline attachment ---------- */
+export interface TimelineNote {
+  id: string;
+  resourceId: string;
+  atSec: number; // attached to lecture timeline
+  text: string;
+  importance: "normal" | "highlight";
+  confusing?: boolean;
+  createdAt: string;
+}
+
+/* ---------- Topic learning page ---------- */
+export interface TopicLearningView {
+  topic: Topic;
+  subject: Subject;
+  chapter: Chapter;
+  mastery: number;
+  lastStudied: string | null;
+  revisionStatus: "not-started" | "on-track" | "due" | "overdue";
+  recommendedFormat: LearningFormat;
+  recommendedFormatReason: string;
+  previousActivity: string;
+  relatedTopicIds: string[];
+  dnaInsight: { finding: string; confidence: number };
+}
+
+/* ---------- Ask Cognify actions ---------- */
+export type AskActionId =
+  | "explain-differently"
+  | "example"
+  | "hint"
+  | "test-me"
+  | "diagram"
+  | "why-important"
+  | "another-explanation"
+  | "teach-back";
+
+export interface AskAction {
+  id: AskActionId;
+  label: string;
+  detail: string;
 }
 
 /* ---------- Credits ---------- */

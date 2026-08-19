@@ -17,11 +17,15 @@
 import type {
   Difficulty,
   LearningResource,
+  LearningInteractionType,
   ResourceDiscoveryResult,
   ResourceFormat,
   ResourceSource,
+  ResourceType,
   TranscriptSegment,
+  TimelineNote,
 } from "./types";
+import { boards } from "./mockData";
 
 const DNA = {
   topFormat: "visual-diagram" as const,
@@ -41,6 +45,69 @@ interface RawResource {
   relevance: number;
   whyRecommended: string;
   dnaDimension: string | null;
+}
+
+/* ------------------------------------------------------------------
+ * Resource type taxonomy — ten COGNIFY resource types. Derived from the
+ * raw format/source/title so the entire inventory classifies itself.
+ * ---------------------------------------------------------------- */
+
+export interface ResourceTypeMeta {
+  id: ResourceType;
+  label: string;
+  /** Monogram used in ledgers and badges */
+  glyph: string;
+  showsDuration: boolean;
+}
+
+export const RESOURCE_TYPES: ResourceTypeMeta[] = [
+  { id: "video-lecture", label: "Video lecture", glyph: "▶", showsDuration: true },
+  { id: "article", label: "Article", glyph: "¶", showsDuration: false },
+  { id: "ncert-textbook", label: "NCERT / textbook", glyph: "▤", showsDuration: true },
+  { id: "diagram", label: "Diagram", glyph: "◫", showsDuration: true },
+  { id: "animation-visual", label: "Animation / visual", glyph: "◎", showsDuration: true },
+  { id: "revision-notes", label: "Revision notes", glyph: "✎", showsDuration: true },
+  { id: "solved-example", label: "Solved example", glyph: "✎", showsDuration: true },
+  { id: "practice-set", label: "Practice set", glyph: "Px", showsDuration: true },
+  { id: "quick-revision", label: "Quick revision", glyph: "↻", showsDuration: true },
+  { id: "concept-explanation", label: "Concept explanation", glyph: "⊙", showsDuration: true },
+];
+
+export function typeMeta(id: ResourceType): ResourceTypeMeta {
+  return RESOURCE_TYPES.find((t) => t.id === id) ?? RESOURCE_TYPES[0];
+}
+
+const FREE_SOURCES: ResourceSource[] = ["youtube", "ncert", "cbse", "edu-website"];
+
+/** Classify a raw resource into one of the ten COGNIFY resource types. */
+function classifyType(r: RawResource): ResourceType {
+  const t = r.title.toLowerCase();
+  const free = FREE_SOURCES.includes(r.source);
+  if (free && (r.source === "ncert" || r.source === "cbse")) return "ncert-textbook";
+  if (free && r.source === "youtube" && r.format === "lecture") return "video-lecture";
+  if (r.format === "diagram" && (t.includes("animat") || t.includes("drag") || t.includes("interactive") || t.includes("mechanism")))
+    return "animation-visual";
+  if (r.format === "diagram") return "diagram";
+  if (r.format === "practice") return "practice-set";
+  if (r.format === "example") return "solved-example";
+  if (r.format === "revision" && (r.durationMinutes <= 15 || t.includes("rapid")))
+    return "quick-revision";
+  if (r.format === "revision") return "revision-notes";
+  if (r.format === "lecture") return free ? "video-lecture" : "concept-explanation";
+  if (r.format === "explanation") return "concept-explanation";
+  return "article";
+}
+
+/** One-line description derived from the resource's own fields. */
+function describe(r: RawResource): string {
+  const t = r.title.toLowerCase();
+  if (r.format === "lecture") return "A guided walkthrough of the topic — play it, pause it, ask questions as they come.";
+  if (r.format === "explanation") return "One idea explained on its own terms, with the misconceptions around it named.";
+  if (r.format === "revision") return "A spaced-retention review of exactly what your record says you need to rehearse.";
+  if (r.format === "example") return "Worked problems in board style — follow the solution structure, not just the answer.";
+  if (r.format === "practice") return "A timed attempt at problems matched to your error pattern; evidence updates your topic file.";
+  if (r.format === "diagram") return "A visual treatment — diagrams, maps or interactive visuals for the objectives that are picture-shaped.";
+  return "A short, focused treatment of the topic in its own format.";
 }
 
 /* ------------------------------------------------------------------
@@ -1624,6 +1691,9 @@ export function discoverResources(
       relevance: r.relevance,
       whyRecommended: r.whyRecommended,
       dnaDimension: r.dnaDimension,
+      resourceType: classifyType(r),
+      description: describe(r),
+      isFreeWeb: FREE_SOURCES.includes(r.source),
     })
   );
 
@@ -1639,6 +1709,106 @@ export function discoverResources(
 
 export function getTranscript(resourceId: string): TranscriptSegment[] {
   return TRANSCRIPTS[resourceId] ?? [];
+}
+
+/* ------------------------------------------------------------------
+ * Library / search surface — flat views of the whole inventory
+ * ---------------------------------------------------------------- */
+
+/** Every resource in the inventory, enriched like a discovery result.
+ *  Simulates GET /api/library?formats=&difficulty=&isFreeWeb= */
+export function discoverAll(
+  options: {
+    formats?: ResourceFormat[];
+    difficulty?: Difficulty | "all";
+    isFreeWeb?: boolean;
+    topicId?: string;
+  } = {}
+): LearningResource[] {
+  const out: LearningResource[] = [];
+  for (const [topicSlug, raw] of Object.entries(INVENTORY)) {
+    if (options.topicId && resolveAlias(options.topicId) !== topicSlug) continue;
+    const result = discoverResources(topicSlug, options);
+    if (result) out.push(...result.resources);
+  }
+  if (options.isFreeWeb) out.filter(Boolean);
+  out.sort((a, b) => b.relevance - a.relevance);
+  return out;
+}
+
+/** Cross-inventory free-text search over titles and topic names.
+ *  Simulates GET /api/discovery/search?q= */
+export function searchResources(query: string): LearningResource[] {
+  const q = query.trim().toLowerCase();
+  if (q.length < 2) return [];
+  const out: LearningResource[] = [];
+  const seen = new Set<string>();
+  for (const topicSlug of Object.keys(INVENTORY)) {
+    const found = discoverResources(topicSlug)?.resources;
+    if (!found) continue;
+    for (const r of found) {
+      if (seen.has(r.id)) continue;
+      if (r.title.toLowerCase().includes(q) || topicSlug.includes(q)) {
+        seen.add(r.id);
+        out.push(r);
+      }
+    }
+  }
+  out.sort((a, b) => b.relevance - a.relevance);
+  return out.slice(0, 24);
+}
+
+/** Per-topic meta for library indexes (subject, chapter, mastery). */
+export interface TopicIndexMeta {
+  alias: string;
+  subjectCode: string;
+  subjectName: string;
+  chapterTitle: string;
+  topicTitle: string;
+  masteryPercent: number;
+  masteryLabel: string;
+}
+
+/* Topic indexes are built below from the imported curriculum data. */
+
+export function topicIndexes(): TopicIndexMeta[] {
+  const out: TopicIndexMeta[] = [];
+  for (const board of boards) {
+    for (const cls of board.classes) {
+      for (const subject of cls.subjects) {
+        for (const chapter of subject.chapters) {
+          for (const topic of chapter.topics) {
+            const alias = aliasForTopicId(topic.id);
+            if (!alias) continue;
+            out.push({
+              alias,
+              subjectCode: subject.code,
+              subjectName: subject.name,
+              chapterTitle: chapter.title,
+              topicTitle: topic.title,
+              masteryPercent: Math.round((topic.mastery ?? 0) * 100),
+              masteryLabel: masteryLabelFor((topic.mastery ?? 0) * 100),
+            });
+          }
+        }
+      }
+    }
+  }
+  return out;
+}
+
+function aliasForTopicId(topicId: string): string | null {
+  const aliasKey = Object.entries(TOPIC_ALIASES).find(
+    ([alias, realId]) => realId === topicId
+  );
+  if (!aliasKey) return null;
+  return aliasKey[0];
+}
+
+function masteryLabelFor(pct: number): string {
+  if (pct >= 85) return "Proficient";
+  if (pct >= 65) return "Developing";
+  return "Needs attention";
 }
 
 /** DNA-aware: what a future backend would explain about ranking */

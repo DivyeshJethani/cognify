@@ -145,3 +145,162 @@ Dev URL: https://3000-i8xkmuro48iuj1y2dmkc0-323c3b4d.us3.manus.computer
 Resources page verified desktop: 5 ranked resources with relevance scores, why-recommendations, DNA tags (Confidence calibration, Mastery gap, Teaching format), all 6 format filters + difficulty filters, format legend, session summary panel. Player verified: all tabs, transcript with timestamps, Ask Cognify contextual answers, related resources, observation log, DNA watch panel, analytics header counter. TS: 0 errors. The lingering Vite log line about "await" (curriculum.ts:33) is STALE from earlier pre-fix build; final `pnpm run check` reports 0 errors and pages render correctly, so it is not a live bug.
 Mobile: AppShell hides sidebar with lg:hidden + mobile toggle exists (verified via JS); pages use the same responsive shell as previously verified pages.
 Next: webdev_save_checkpoint then deliver (auto-publish enabled).
+
+# DAY 2 REQUEST (new scope, from /home/ubuntu/upload/pasted_content_2.txt)
+User wants the complete resource-discovery + learning experience as a natural extension. Preserve everything (nav, palette, type, command center, curriculum, DNA, onboarding). Do NOT connect backend/DB/external APIs. All mock data, clean frontend services. Design must feel academic/intelligent/calm/premium (Scholar's Atelier — already matches).
+
+Key new requirements:
+1. "Resource Library" = new MAJOR nav section in sidebar + hub page. Reachable from Command Center, Curriculum, topic pages, recommendations.
+2. All 5 subjects supported (Math, Science, SST, English, Hindi/Skt) — already have mock data.
+3. Resource types: VIDEO LECTURE, ARTICLE, NCERT/TEXTBOOK, DIAGRAM, ANIMATION/VISUAL, REVISION NOTES, SOLVED EXAMPLE, PRACTICE SET, QUICK REVISION, CONCEPT EXPLANATION — per-type layouts, not generic cards.
+4. "Free resources from across the web" section (YouTube/NCERT/CBSE/edu/OER) — per resource: title, source, type, duration, topic, difficulty, relevance, description, why-recommend, save button, open/start button. Must NOT claim live internet search.
+5. Intelligent recommendation rails with WHY: "Recommended for you", "Because you struggled with this topic", "Best for quick revision", "Best for conceptual understanding", "Continue learning", "Before your upcoming test", "Explore another explanation" — DNA-driven.
+6. Topic Learning page (/topic/:id): overview, objectives, mastery, last studied, revision status, recommended format + why, recommended resources, practice, related topics, DNA insight.
+7. Learning player extras: learning objective card, save resource, previous/next resource.
+8. Session mode: today's learning objective + [Take Notes] [I am confused] [I understand] [Ask Cognify] — Cognify guiding feel.
+9. Interaction tracking: play/pause/seek/rewind/speed/complete/confusing/ask/note/save/switch/retry — frontend services only.
+10. Notes: timestamped, attach to timeline (02:14 "Remember..."), highlight, mark confusing.
+11. Ask Cognify actions: Explain differently / Give example / Give hint / Test me / Show diagram / Why important / Another explanation / Make me teach back — mock responses.
+12. Resource comparison/switching: "Didn't understand this explanation? Try: VIDEO → DIAGRAM → EXAMPLE → SIMPLE EXPLANATION → QUICK REVISION".
+13. My Saved Resources (/saved) with subject/type/chapter/recent filters.
+14. Continue Learning (/continue): partially watched, unfinished sessions/practice, saved, upcoming revision ("Continue: Light — Reflection 68% [Continue]").
+15. Search: topics/resources/lectures/notes/practice — cmdk palette, Cognify-styled, global.
+16. Responsive.
+
+todo.md written with full checklist. Current checkpoint b119ae6e. Dev URL: https://3000-i8xkmuro48iuj1y2dmkc0-323c3b4d.us3.manus.computer
+
+## File inventory (for Day 2 work)
+- lib/types.ts (253L): LearningResource{source:youtube|ncert|cbse|edu-website|cognify-original, format:lecture|revision|explanation|example|practice|diagram, difficulty, relevance, whyRecommended, dnaDimension}, TranscriptSegment, PlayerEvent types PLAY/PAUSE/REWIND/FAST_FORWARD/SKIP/SPEED_CHANGE/COMPLETE/DROP_OFF.
+- lib/resourceDiscovery.ts (1649L): TOPIC_ALIASES (canonical slug → runtime id), resolveAlias, ALIAS_IDS, INVENTORY keyed by ALIAS slugs, TRANSCRIPTS (4 keys), discoverResources, getTranscript, discoveryMeta.
+- lib/mockData.ts (935L): boards[] CBSE/ICSE/UP, topics per chapter keyed t-{index0based}-{title-slug} (truncated), learningDNA, weakTopics(), revisionDue().
+- lib/curriculum.ts: findSubject/findTopic/findChapter/subjectName/findTopicByIdOrAlias.
+- lib/playerEvents.ts: startSession, logEvent, eventsForSession, eventsForResource, eventLabel.
+- lib/askCognify.ts: quickPicks(ctx), answer(ctx, question) — rule-based.
+- pages: Player.tsx (698L, tabs transcript/notes/replay/related/ask; player stage; observation log; DNA watch panel), Resources.tsx (330L, filters+why rows), Session.tsx (202L briefing), Curriculum.tsx drawer has "Open resource explorer", Dashboard.tsx command center, Profile.tsx.
+- App.tsx routes: /dashboard /curriculum /profile /resources/:topicId /session/:resourceId /player/:resourceId /timetable /goals /community /credits /onboarding /login /signup + guards.
+- Sidebar nav in AppShell.tsx — add "Resource Library" + maybe "My Library"/"Saved" entries there.
+- Notes localStorage key cognify.notes.v1 (in Player.tsx); saved resources NEW key cognify.saved-resources.v1; continue progress NEW key cognify.progress.v1; search index from INVENTORY+topics.
+
+## DAY 2 PHASE 12 — SERVICE LAYER PLAN (current working item)
+types.ts ALREADY EXTENDED with: ResourceType (10 types), LearningResource fields (resourceType, description, rail?, isFreeWeb?), LearningInteractionType (12), SavedResource, ResourceProgress, SearchResult/ResultKind, TimelineNote, TopicLearningView, AskActionId/AskAction.
+TS error now: resourceDiscovery.ts LearningResource mapper (line ~1611) missing resourceType/description — will add via mapper function + add rail description.
+
+### Plan for resourceDiscovery.ts
+1. Add `RESOURCE_TYPE_META` (per type: label, glyph char, duration presence).
+2. Add `describeType(r)` function → resourceType/description derived from raw fields (title, format, sourceLabel) to avoid hand-editing 100+ entries. Add `isFreeWeb` (source ∈ youtube/ncert/cbse/edu-website).
+3. Add `discoverAll()` → flat list of all resources (for library/search).
+4. Add `searchResources(query)` over INVENTORY (title/topic).
+5. Add recommendation rails module lib/recommendations.ts:
+   RAILS: "Recommended for you", "Because you struggled with this topic", "Best for quick revision", "Best for conceptual understanding", "Continue learning", "Before your upcoming test", "Explore another explanation". Each rail: fn(topicId/context)→ LearningResource[] with per-resource rail-specific WHY (reuse whyRecommended, prepend rail voice).
+6. New modules: lib/savedResources.ts (localStorage cognify.saved-resources.v1), lib/continueLearning.ts (cognify.progress.v1 + session store → merge with playerEvents for partial watch fraction; unfinished sessions from AppContext? keep simple: localStorage), lib/search.ts (index topics+resources+notes practice → SearchResult[]), lib/notes.ts (TimelineNote localStorage cognify.timeline-notes.v1), lib/askActions.ts (8 AskAction definitions + mock answer(ctx, action) returning text).
+7. playerEvents.ts: add interaction events via new logInteraction() using LearningInteractionType.
+
+### Resource type derivation (describeType)
+- video-lecture: format=lecture, source=youtube → YouTube; ncert lecture → ncert-textbook? Keep: source=ncert AND format in [lecture,example] → ncert-textbook; diagram/animation → if title contains 'animat' or 'drag' → animation-visual else diagram; revision → quick-revision if title contains 'rapid' or duration<=15? Use: format=revision & ≤15min → quick-revision else revision-notes; example → solved-example; practice → practice-set; explanation → concept-explanation; article never generated yet (maybe add 2 mock article resources for free-web).
+
+### Key facts
+- INVENTORY keys = alias slugs; TOPIC_ALIASES maps alias→runtime id. discoverResources resolves via resolveAlias (alias stays alias key).
+- Topics per alias key: ch1 math: t-0-euclid-s-division-lemma-hcf, t-1-irrational-numbers-proofs, t-2-fundamental-theorem-of-arithmetic; ch2: t-3-zeros-of-a-polynomial, t-4-relationship-between-zeros-coefficients, t-5-division-algorithm-for-polynomials; ch3: t-6-graphical-method, t-7-substitution-elimination-methods, t-8-cross-multiplication-word-problems; ch4: t-9-standard-form-factorisation, t-10-completing-the-square, t-11-nature-of-roots-discriminant; sci ch1: t-0-writing-balancing-equations, t-1-types-of-reactions, t-2-oxidation-reduction-corrosion; ch2: t-3-properties-of-acids-bases, t-4-ph-scale-strength; ch3: t-5-nutrition-in-plants, t-6-nutrition-in-humans, t-7-transportation-excretion; sst ch1: t-0-french-revolution-idea-of-nation, t-1-making-of-nationalism-italy-germany, t-2-nationalism-imperialism; ch2: t-3-first-world-war-non-cooperation, t-4-civil-disobedience-collective-belonging; eng: t-0-a-letter-to-god, t-1-nelson-mandela, t-2-two-stories-about-flying; hin: t-0-maa-ki-chitthi, t-1-lhasa-ki-or; skt: t-0-achha-vakt-mein-bhale-kaam.
+- ~85 resources total in inventory now.
+- Curriculum data needed for TopicLearningView: boards→class→subject→chapter→topic with mastery etc. (from mockData.findSubject/findTopic), findTopicByIdOrAlias in curriculum.ts.
+- Subject codes: MATH/SCI/SST/ENG/HIN/SKT. Chapter titles: Real Numbers, Polynomials, PLE, Quadratic Equations / Chemical Reactions & Equations, Acids Bases & Salts, Life Processes / History: Nationalism in Europe, Nationalism in India / First Flight prose / कृतिका.
+- Need per-topic canonical info for library (subject, chapter name). Add TOPIC_META derived from curriculum in curriculum.ts or a small static map. Better: curriculum.ts add `topicPath(alias)` → {board,class,subject,chapter,topic}.
+
+### Pages to build (phase 13)
+- /library → ResourceLibrary.tsx: hero "Resource Library — the open shelf", board/class/subject/chapter/topic selector (already scaffolded nav items), recommended rails, "Free resources from across the web" section, per-type layouts. Nav entry "Resource Library" in AppShell navItems (line 33-41) + mobile sheet.
+- /saved → SavedResources.tsx: filters subject/type/chapter/recent; empty state.
+- /continue → ContinueLearning.tsx (or merged into library section + separate route): partially watched, unfinished, saved, upcoming revision.
+- /topic/:topicAlias → TopicLearning.tsx: overview, objectives, mastery, last studied, revision, recommended format+why, resources (discoverResources), practice entry, related topics, DNA insight.
+- Search: cmdk CommandDialog global (⌘K / cmd palette button in AppShell header) → SearchResult kinds → links.
+
+### Player.tsx enhancements (phase 14)
+- Save resource button (top bar) → savedResources.add.
+- Learning objective card (already objective strip — enrich "what you should understand by the end").
+- Previous/next resource nav (same topic siblings).
+- Timeline notes: notes already {sec,text}; upgrade to TimelineNote shape (importance highlight, confusing) + render markers on timeline (small amber marks above progress bar).
+- Ask Cognify action chips (8 actions) alongside quickPicks → use askActions answer().
+- "Didn't click? Try another format" strip → rails/explore-another-explanation (cross-format same topic).
+- Session reflection: I am confused / I understand buttons in session bar; Ask Cognify already exists.
+- Interaction tracking: logInteraction on note save, save resource, action ask, switch resource.
+
+### Session.tsx enhancements
+- Guided mode block: [Take Notes] [I am confused] [I understand] [Ask Cognify] — buttons; confused → mark topic confusion store + suggests alternative explanation rail.
+
+### Wiring (phase 15)
+- Dashboard: add "Continue learning" card + resource rails entry.
+- Curriculum drawer: "Topic Learning Page" button → /topic/:alias.
+- Resources page rows: add Save button, type glyph.
+- Nav: Resource Library (real), Saved (real), Continue Learning (real) entries; timetable/goals/community/credits stay SOON.
+- Verify flows, TS clean, screenshots, checkpoint.
+
+## DAY 2 STATE (as of latest)
+DONE so far in phase 12 (service layer):
+- types.ts: extended with ResourceType (10), LearningInteractionType (13 incl MARK_CONFUSING/ASK_QUESTION/TAKE_NOTE/SAVE_RESOURCE/SWITCH_RESOURCE/RETRY_EXPLANATION), SavedResource {resourceId,savedAt,note?}, ResourceProgress {resourceId,fraction,lastAtSec?,updatedAt}, SearchResult {kind:topic|resource|lecture|note|practice,id,title,context,href,relevance}, TimelineNote {id,resourceId,atSec,text,importance,confusing?,createdAt}, TopicLearningView, AskActionId/AskAction (8 actions) in askCognify.ts.
+- resourceDiscovery.ts: RESOURCE_TYPES + typeMeta + classifyType + describe (maps format/source/title → ResourceType), isFreeWeb flag, discoverAll(), searchResources(), topicIndexes() (needs mockData import of boards; topic.mastery is number 0-1), ALIAS_IDS kept in curriculum.ts.
+- curriculum.ts: CANONICAL_TOPIC_SLUGS (local, avoids circular import), findTopicByIdOrAlias, ALIAS_IDS, topicAlias(), topicPath(), allTopics().
+- savedResources.ts: listSaved/addSaved/removeSaved/isSaved, listProgress/updateProgress/continueLearning/progressFor/markCompleted (localStorage cognify.saved-resources.v1, cognify.progress.v1).
+- search.ts: searchAll() over topics/resources/transcripts/notes (localStorage cognify.timeline-notes.v1), links /topic/:alias, /resources/:topic, /player/:id?topic=.
+- askCognify.ts: ASK_ACTIONS (8) + new answer branches (explain-current, simplify, deeper, example, quiz, connect-dna, summarise) + helpers nearestSegment/stripJargon/exampleFor/quizFor/oneSentence/formatTime. NOTE: AskContext may need optional transcript field — currently the player builds context WITHOUT transcript field. Player must pass transcript: getTranscript(id).
+- TS: reported 0 errors after check ran; later "164 errors at line 201" was likely a transient/stale report — line 201 template literal looks syntactically valid. RUN `pnpm run check` again to confirm before moving on.
+
+REMAINING (phase 12 tail):
+- Add `transcript` to AskContext usage in Player.tsx (pass segments array).
+- recommendations.ts: rail definitions (Recommended for you / Struggled with this topic / Quick revision / Conceptual / Continue learning / Before upcoming test / Another explanation) with cross-format "Explore another explanation" fn same-topic different format.
+- topicIndexes: add `topicIndexes()` callers need subject/chapter data — resourceDiscovery has mockData import.
+
+PHASE 13 PAGES: /library ResourceLibrary, /saved SavedResources, /continue ContinueLearning, /topic/:alias TopicLearning. PHASE 14: Player.tsx (save button, prev/next resource, timeline notes TimelineNote shape, Ask action chips, another-format strip, logInteraction SAVE_RESOURCE/SWITCH_RESOURCE/RETRY_EXPLANATION), Session.tsx (reflection buttons). PHASE 15: nav (AppShell navItems lines 33-41, comingSoon line 43), dashboard card, curriculum drawer topic-link button, search cmdk palette in AppShell header, TS clean, screenshots, checkpoint.
+
+## STATUS UPDATE — SERVICES COMPLETE (0 TS errors)
+recommendations.ts DONE: buildRails() returns 6 rails (recommended/struggled/revision/conceptual/continue/before-test), anotherExplanation(topicId, currentResourceId) for the player strip, RAIL_DEFINITIONS exported. Types fixed with explicit annotations.
+All Day-2 service modules now exist: types.ts (extended), resourceDiscovery.ts (types+indexes), curriculum.ts (aliases+helpers), savedResources.ts, search.ts, recommendations.ts, askCognify.ts (8 actions).
+Remaining: Player.tsx updates (transcript prop to AskContext, save/unsave, logInteraction SAVE_RESOURCE/SWITCH_RESOURCE, prev/next resource via anotherExplanation + relatedResources) — check existing Player.tsx structure first; Session.tsx (reflection at end: "I understood" / "I need another explanation" / "Log it anyway" → log RETRY_EXPLANATION); then phase 13 pages /library, /saved, /continue, /topic/:alias + nav (AppShell navItems, ComingSoon removal), dashboard card, search cmdk in AppShell, screenshots, checkpoint.
+
+## PHASE 13 PROGRESS
+AppShell.tsx: nav now has /library "Resource Library" (Library icon), /saved "My Saved Resources" (Bookmark), /continue "Continue Learning" (PlayCircle) — 0 TS errors.
+Library.tsx: DONE (0 TS errors). Resource Library hub with format+type+free-web filters, ledger rows w/ save buttons, subject index + type legend margin panels, provenance footnote.
+REMAINING pages to write:
+1. client/src/pages/Saved.tsx — My Saved Resources: listSaved()/removeSaved()/addSaved() from "@/lib/savedResources"; resource detail via discoverAll() find by id; empty state "Your shelf is empty — save resources while exploring"; Scholar's Atelier ledger.
+2. client/src/pages/Continue.tsx — Continue Learning: continueLearning() returns {resourceId,fraction,lastAtSec?,updatedAt}; show progress bar per resource, resume CTA -> /session/${resourceId}, mark-done action; empty state.
+3. client/src/pages/TopicLearning.tsx — route /topic/:topicId: uses findTopicByIdOrAlias; shows TopicLearningView meta (topic.description?, actionReason, estimatedMinutes, difficulty?, mastery % bar from resolved.topic.mastery), revisionStatus, recommendedFormat (topic.recommendedFormat?), rails: recommended resources for this topic (discoverResources(topicId)), "Another explanation" (anotherExplanation(topicId) from "@/lib/recommendations"), DNA note card; CTA "Begin learning session" links to first recommended resource session.
+4. Routes in App.tsx: import Library "/library", Saved "/saved", Continue "/continue", TopicLearning "/topic/:topicId" (GuardedRoute).
+5. Dashboard card linking to /saved or rails (optional) — Dashboard.tsx has "Continue where you left off" card already; add a "Resource Library" quick action tile if feasible.
+6. Search palette (cmdk) in AppShell header: Dialog + Command from "@/components/ui/command" (exists?), searchAll() from "@/lib/search" — keyboard shortcut ⌘K; results link to hrefs. Add shortcut key in MobileHeader desktop header too.
+7. Player.tsx phase 14: pass transcript segments to AskContext (AskContext interface in askCognify.ts currently has transcriptText only; extend with transcript?: {startSec,endSec,text}[] and use in answer()), logInteraction("SAVE_RESOURCE") on save, prev/next resource buttons using anotherExplanation, Session.tsx reflection buttons.
+8. Verify in browser + screenshot + checkpoint + deliver.
+Pattern to follow for new pages: reuse PageHeader, Marginalia, Hairline, ActionChip from Primitives; index-num class for numbers; font-serif headings, font-mono metadata; buttons .border.border-ink.bg-ink.text-ivory uppercase tracking tracking-[0.12em] text-[10.5px]; empty states with border-dashed border-ink/20 + SearchX icon.
+
+## STATUS UPDATE — PHASE 13 NEARLY DONE (0 TS errors)
+DONE: Library.tsx, Saved.tsx, Continue.tsx, TopicLearning.tsx created. Routes in App.tsx added (/library, /saved, /continue, /topic/:topicId) with guards. AppShell.tsx: nav expanded (Library/Saved/Continue items), SearchBox Dialog component w/ ⌘K shortcut via useEffect, quick-nav when query empty. MastaryBar uses value prop. Continue page uses logEvent+startSession correctly.
+REMAINING phase 14 (Player.tsx + Session.tsx enhancements per brief):
+- Player.tsx: needs (a) AskContext transcript segments (askCognify.ts AskContext currently {topicTitle,subjectName?,transcriptText?,dna?,questionContext?} — extend with transcript segments and pass in Player), (b) save/unsave button + logEvent("SKIP"-ish) for resource switching, (c) "Another explanation" prev/next buttons using anotherExplanation(topicId, resourceId), (d) transcript timestamps already exist; notes are timeline-attached already.
+- Session.tsx: add end-of-session reflection actions: "I understood it" / "I need another explanation" (link to anotherExplanation -> /resources page) / log it. Use ASK_ACTIONS & quickPicks from askCognify.ts as reference.
+- Dashboard.tsx: optionally add a "Resource Library" quick tile linking /library.
+- Curriculum.tsx line ~276: navigate to /resources/:topicId already; add a "View dossier" link to /topic/:alias too.
+- Verify in browser (library, saved, continue, topic pages; search palette; player another-explanation), mobile screenshot, checkpoint (auto-publish), deliver.
+NOTE: Vite log has STALE error lines about askCognify.ts:175 — these are old (from before my fix at 07:39:26) and TS now shows 0 errors; server restart earlier may still have cached bad HMR. If 500s appear on pages, run webdev_restart_server.
+
+## STATUS UPDATE — PHASE 14 NEARLY DONE (0 TS errors)
+Player.tsx DONE: resume-from-progress (reads cognify.progress.v1), updateProgress effect, save/unsave bookmark toggle in header (forceRender refresh), "Another explanation available" banner linking /resources/:topicId (uses anotherExplanation(topicId, resourceId)), related-resource links emit SKIP event with switchedTo payload, quickPicks now pass confusingMarks array.
+askCognify.ts DONE: AskContext has confusingMarks field; quickPicks shows "Which marked segment matters most?"; answer mentions latest mark time+note.
+NEXT (phase 14 tail): Session.tsx reflection actions — read Session.tsx (ends session: "I understood it" / "I need another explanation" buttons); wire "another explanation" to /resources/:topicId; log events.
+THEN (phase 15): dashboard quick tile → /library; Curriculum.tsx topic drawer: add "View dossier →" link to /topic/:alias; browser verify library, saved, continue, topic page, search palette (sidebar top), player enhancements; mobile screenshot; checkpoint (auto-publish on); deliver (phase 16).
+Dev server healthy (stale log lines only). TypeScript: 0 errors.
+
+## Day 2 — phase 15 status (pre-checkpoint)
+- Topic dossier page (/topic/:id) VERIFIED working: dossier, mastery, 5 resources, DNA note, working sequence, "What a pass builds" all render.
+- Fix applied: CANONICAL_TOPIC_SLUGS in curriculum.ts maps aliases → real truncated runtime ids. Verified 0 mismatches for all TOPIC_ALIASES entries via tsx script (31 runtime ids).
+- Dashboard weak-topics + revision entries link to /topic/:alias (via topicAlias).
+- Curriculum drawer now has "Open learning dossier →" link next to "Open resource explorer".
+- Session.tsx enhanced: reflection actions (I understood / Another explanation / skip), save-to-library, topic switching.
+- Player.tsx enhanced: save/unsave, another-explanation rail, progress persistence, richer Ask Cognify context with confusingMarks.
+- TS clean (0 errors). Stale 07:39 askCognify transform errors in devserver log are historical.
+- Remaining: quick verify /library /saved /continue + ⌘K palette, then checkpoint + deliver.
+
+## Verification round 2
+Library (104 resources, filters, type chips) VERIFIED. Continue Learning with seeded progress (fraction 0.4) VERIFIED — shows Resume / Mark done. Saved page crashed: my bad console seed wrote `{saved:[],notes:{}}` object shape but Saved.tsx expects the stored value to be an ARRAY (listSaved helper) — TypeError saved.map. FIX: either restore correct array shape in localStorage via console (fastest: set key cognify.saved-resources.v1 to array) OR harden listSaved to coerce. Do both: console reseed + robust coercion in savedResources.ts loadList.
+Correct saved shape = [ { resourceId, topicId?, note, savedAt } ].
+Saved key: cognify.saved-resources.v1; notes separate? check loadList.
+
+## Verification round 3 — ALL GREEN
+Topic dossier (/topic/:alias) VERIFIED end-to-end: dossier, mastery 27%, 5 resources with WHY, DNA note, working sequence, "what a pass builds" panel. Session briefing from topic page VERIFIED (objective, topic mastery, est time, transcript preview, next activity, session id). Player VERIFIED: save/unsave, speed buttons, mark confusing, observation log (PLAY event emitted), transcript with 6 segments, DNA watching panel, alternative-explanation rail. Command palette (⌘K) VERIFIED: opens with quick-nav entries + search topics/resources. LoadList hardened to coerce non-array localStorage values. All flows wired: dashboard weak topics → /topic, curriculum drawer → dossier link + explorer link. TS clean, 0 errors. Ready to checkpoint.
+Day 2 delivered: Resource Library hub (/library, 104 resources, format+type filters, free-web-only toggle), My Saved Resources (/saved), Continue Learning (/continue), Topic Learning dossier (/topic/:id), session reflection (I understood / Another explanation), player save + alternative rail + progress persistence + rich Ask context.
