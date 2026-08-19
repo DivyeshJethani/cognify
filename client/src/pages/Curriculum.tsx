@@ -14,7 +14,8 @@ import {
   RevisionChip,
   StateBadge,
 } from "@/components/cognify/Primitives";
-import { boards, findSubject } from "@/lib/mockData";
+import { boards } from "@/lib/mockData";
+import { classSubjects, getStudyContext, onContextChange, subjectFor } from "@/lib/studyContext";
 import { topicAlias } from "@/lib/curriculum";
 import { subjectOverview } from "@/lib/curriculumEngine";
 import { cn } from "@/lib/utils";
@@ -41,17 +42,35 @@ const subjectNames: Record<string, string> = {
 type ViewMode = "outline" | "mastery" | "revision";
 
 export default function Curriculum() {
-  const [boardId, setBoardId] = useState("cbse");
-  const [classId, setClassId] = useState("cbse-10");
+  const [, navigate] = useLocation();
+  // Start from the student's actual context so the explorer opens on their
+  // class — the selector still allows browsing other classes.
+  const [boardId, setBoardId] = useState(() => getStudyContext().boardId);
+  const [classId, setClassId] = useState(() => getStudyContext().classId);
   const [subjectId, setSubjectId] = useState("math");
   const [activeChapter, setActiveChapter] = useState<string | null>(null);
   const [topicDetail, setTopicDetail] = useState<Topic | null>(null);
   const [viewMode, setViewMode] = useState<ViewMode>("outline");
-  const [, navigate] = useLocation();
 
   const board = boards.find((b) => b.id === boardId)!;
   const cls = board.classes.find((c) => c.id === classId)!;
-  const subject = findSubject(boardId, classId, subjectId);
+  const subject = subjectFor(boardId, classId, subjectId);
+  const variantSubjects = useMemo(
+    () => classSubjects(boardId, classId),
+    [boardId, classId]
+  );
+
+  // Keep the explorer in sync with the global class switcher.
+  useEffect(() => {
+    const c = getStudyContext();
+    setBoardId(c.boardId);
+    setClassId(c.classId);
+    return onContextChange(() => {
+      const next = getStudyContext();
+      setBoardId(next.boardId);
+      setClassId(next.classId);
+    });
+  }, []);
 
   // Keep selected chapter valid when switching subjects
   useEffect(() => {
@@ -79,7 +98,7 @@ export default function Curriculum() {
   // Day 5 — subject parity: if no subject selected at the top level,
   // render the whole map as an equal-treatment index of every subject.
   const isTopLevel = !subjectId || subjectId === "__all__";
-  const subjects = cls.subjects;
+  const subjects = variantSubjects;
   if (isTopLevel) {
     return (
       <AppShell>
@@ -91,7 +110,7 @@ export default function Curriculum() {
         <div className="px-5 py-7 sm:px-8 lg:px-10">
           <div className="grid gap-px border border-ink/10 bg-ink/10 sm:grid-cols-2 xl:grid-cols-3">
             {subjects.map((s) => {
-              const overview = subjectOverview(s.id);
+              const overview = subjectOverview(s.id, boardId, classId);
               if (!overview) return null;
               return (
                 <button
@@ -171,9 +190,11 @@ export default function Curriculum() {
         </Select>
         <Select value={classId} onValueChange={(v) => {
           setClassId(v);
+          // Keep the same subject when switching classes if it exists there,
+          // otherwise fall back to the class's first subject.
           const nb = boards.find((b) => b.id === boardId)!;
           const nc = nb.classes.find((c) => c.id === v)!;
-          setSubjectId(nc.subjects[0].id);
+          setSubjectId(nc.subjects.find((s) => s.code === subject?.code)?.id ?? nc.subjects[0].id);
         }}>
           <SelectTrigger className="h-9 w-32 border-ink/20 bg-card text-[13px]">
             <SelectValue />
@@ -196,9 +217,14 @@ export default function Curriculum() {
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="__all__">All subjects</SelectItem>
-            {cls.subjects.map((s) => (
-              <SelectItem key={s.id} value={s.id}>{s.name}</SelectItem>
-            ))}
+            {variantSubjects.map((s) => {
+              // Selector values are base ids (math/science/…) so subjectFor
+              // always resolves; variants carry per-class ids like math-9.
+              const base = cls.subjects.find((bs) => bs.code === s.code);
+              return (
+                <SelectItem key={s.id} value={base?.id ?? s.id}>{s.name}</SelectItem>
+              );
+            })}
           </SelectContent>
         </Select>
 

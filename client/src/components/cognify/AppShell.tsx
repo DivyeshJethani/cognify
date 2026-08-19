@@ -33,6 +33,13 @@ import {
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { searchKnowledge } from "@/lib/discoverySearch";
 import { getRecentSearches, pushRecentSearch } from "@/lib/journeyData";
+import {
+  classSubjects,
+  getStudyContext,
+  onContextChange,
+  saveContext,
+} from "@/lib/studyContext";
+import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "wouter";
 import { toast } from "sonner";
@@ -224,6 +231,132 @@ function SearchBox() {
   );
 }
 
+/** Subject Switcher — filters every downstream page by the active
+ *  subject. Reads the stored study context so the whole UI stays in sync
+ *  with Command Center, Curriculum, Library and Search. */
+function SubjectSwitcher() {
+  const ctx = getStudyContext();
+  const [, rerender] = useState(0);
+  const subjects = classSubjects(ctx.boardId, ctx.classId);
+
+  useEffect(() => onContextChange(() => rerender((n) => n + 1)), []);
+
+  return (
+    <div className="border-b border-white/[0.08] px-5 pb-3">
+      <div className="marginalia [&::before]:hidden mb-1.5 font-mono text-[9px] uppercase tracking-[0.18em] text-white/35">
+        Subject focus
+      </div>
+      <div className="flex flex-wrap gap-1.5">
+        {/* "All subjects" chip resets the focus */}
+        <button
+          onClick={() => saveContext({ subjectFocus: null })}
+          className={cn(
+            "border px-2 py-1 font-mono text-[10px] uppercase tracking-wider transition-colors duration-150 active:scale-[0.97]",
+            ctx.subjectFocus === null
+              ? "border-teal bg-teal/15 text-teal"
+              : "border-white/15 text-white/45 hover:border-white/30 hover:text-white/80"
+          )}
+        >
+          All
+        </button>
+        {subjects.map((s) => {
+          const active = ctx.subjectFocus === s.id;
+          return (
+            <button
+              key={s.id}
+              onClick={() =>
+                saveContext({
+                  boardId: ctx.boardId,
+                  classId: ctx.classId,
+                  subjectFocus: active ? null : s.id,
+                })
+              }
+              className={cn(
+                "border px-2 py-1 font-mono text-[10px] uppercase tracking-wider transition-colors duration-150 active:scale-[0.97]",
+                active
+                  ? "border-teal bg-teal/15 text-teal"
+                  : "border-white/15 text-white/45 hover:border-white/30 hover:text-white/80"
+              )}
+            >
+              {s.code}
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+/** Context indicator — "CBSE · Class 10" — shown under the logo so the
+ *  student always knows which board and class the whole platform is
+ *  currently speaking to. */
+function ContextIndicator() {
+  const [, rerender] = useState(0);
+  useEffect(() => onContextChange(() => rerender((n) => n + 1)), []);
+  const { boardName, className } = getStudyContext();
+  return (
+    <div className="flex items-center gap-2 border-b border-white/[0.08] px-5 py-2.5">
+      <span className="flex h-5 w-5 items-center justify-center border border-white/15 font-mono text-[9px] font-bold text-amber">
+        ▣
+      </span>
+      <span className="font-mono text-[10.5px] uppercase tracking-[0.14em] text-white/70">
+        {boardName} · {className}
+      </span>
+    </div>
+  );
+}
+
+/** Mobile strip under the top bar — lets Class 8/9 students toggle subject
+ *  focus on small screens without opening the sheet. */
+function MobileSubjectStrip() {
+  const [, rerender] = useState(0);
+  useEffect(() => onContextChange(() => rerender((n) => n + 1)), []);
+  const ctx = getStudyContext();
+  const subjects = classSubjects(ctx.boardId, ctx.classId);
+  return (
+    <div className="border-b border-border bg-ivory px-4 py-2 lg:hidden">
+      <div className="flex items-center gap-2 overflow-x-auto">
+        <span className="shrink-0 font-mono text-[9px] uppercase tracking-[0.14em] text-muted-foreground">
+          {getStudyContext().boardName} · {getStudyContext().className}
+        </span>
+        <span className="shrink-0 text-border">│</span>
+        <button
+          onClick={() => saveContext({ subjectFocus: null })}
+          className={cn(
+            "shrink-0 border px-1.5 py-0.5 font-mono text-[9.5px] uppercase tracking-wider",
+            ctx.subjectFocus === null
+              ? "border-teal bg-teal/10 text-teal-dark"
+              : "border-ink/15 text-muted-foreground"
+          )}
+        >
+          All
+        </button>
+        {subjects.map((s) => {
+          const active = ctx.subjectFocus === s.id;
+          return (
+            <button
+              key={s.id}
+              onClick={() =>
+                saveContext({
+                  boardId: ctx.boardId,
+                  classId: ctx.classId,
+                  subjectFocus: active ? null : s.id,
+                })
+              }
+              className={cn(
+                "shrink-0 border px-1.5 py-0.5 font-mono text-[9.5px] uppercase tracking-wider",
+                active ? "border-teal bg-teal/10 text-teal-dark" : "border-ink/15 text-muted-foreground"
+              )}
+            >
+              {s.code}
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 function NavLinks({ onNavigate }: { onNavigate?: () => void }) {
   const [location] = useLocation();
   const { profile, dna } = useApp();
@@ -269,7 +402,7 @@ function ShellContent({ children }: { children: React.ReactNode }) {
     <div className="flex min-h-screen bg-background">
       {/* Sidebar — desktop */}
       <aside className="fixed inset-y-0 left-0 z-40 hidden w-64 flex-col border-r border-white/[0.08] bg-ink lg:flex">
-        <Link href="/dashboard" className="flex items-center gap-3 border-b border-white/[0.08] px-5 py-5">
+                <Link href="/dashboard" className="flex items-center gap-3 border-b border-white/[0.08] px-5 py-5">
           <img src={LOGO_URL} alt="COGNIFY" className="h-9 w-9" />
           <div>
             <div className="font-serif text-lg font-bold tracking-[0.12em] text-white">COGNIFY</div>
@@ -278,8 +411,10 @@ function ShellContent({ children }: { children: React.ReactNode }) {
             </div>
           </div>
         </Link>
-
+        {/* Class context line — what the whole platform is scoped to */}
+        <ContextIndicator />
         <div className="flex-1 overflow-y-auto py-5">
+          <SubjectSwitcher />
           <NavLinks />
         </div>
 
@@ -315,6 +450,8 @@ function ShellContent({ children }: { children: React.ReactNode }) {
 
       {/* Mobile top bar */}
       <MobileHeader />
+      {/* Mobile subject switcher strip — only renders when focused */}
+      <MobileSubjectStrip />
 
       {/* Content */}
       <main className="min-h-screen flex-1 lg:pl-64">{children}</main>

@@ -933,3 +933,69 @@ export function revisionDue() {
   }
   return due.sort((a, b) => (a.topic.revisionDueInDays ?? 99) - (b.topic.revisionDueInDays ?? 99));
 }
+
+/* ---------- Per-class curriculum variants ----------
+ *  Class 8 and 9 teach genuinely different content from Class 10
+ *  (e.g. Class 9 Maths "Number Systems", Class 8 Science "Light",
+ *  Class 9 Social "The Story of Village Palampur"). This module holds
+ *  those variants; the resolver below swaps them in by class id. */
+import {
+  ENGLISH_8,
+  ENGLISH_9,
+  HINDI_8,
+  HINDI_9,
+  MATH_8,
+  MATH_9,
+  SCIENCE_8,
+  SCIENCE_9,
+  SOCIAL_8,
+  SOCIAL_9,
+} from "./mockDataClasses";
+
+/** Map class id → subject id → variant Subject. Class 10 keeps the
+ *  canonical MATH / SCIENCE / SOCIAL / ENGLISH / HINDI objects above. */
+const CLASS_VARIANTS: Record<string, Record<string, Subject>> = {
+  "cbse-9": {
+    math: MATH_9,
+    science: SCIENCE_9,
+    social: SOCIAL_9,
+    english: ENGLISH_9,
+    hindi: HINDI_9,
+  },
+  "cbse-8": {
+    math: MATH_8,
+    science: SCIENCE_8,
+    social: SOCIAL_8,
+    english: ENGLISH_8,
+    hindi: HINDI_8,
+  },
+  // ICSE and UP Board reuse the CBSE variants as close-proximity mocks.
+  "icse-9": {
+    math: MATH_9,
+    science: SCIENCE_9,
+    social: SOCIAL_9,
+    english: ENGLISH_9,
+    hindi: HINDI_9,
+  },
+  "icse-8": {
+    math: MATH_8,
+    science: SCIENCE_8,
+    social: SOCIAL_8,
+    english: ENGLISH_8,
+    hindi: HINDI_8,
+  },
+};
+
+/** Resolve the subject for a class, using the class-appropriate variant
+ *  when one exists (Class 8/9) and the canonical Class-10 subject
+ *  otherwise. This is the single entry point the UI should use for
+ *  per-student curriculum lookups. */
+export function findSubjectForClass(
+  boardId: string,
+  classId: string,
+  subjectId: string
+): Subject | null {
+  const base = findSubject(boardId, classId, subjectId);
+  if (!base) return null;
+  return CLASS_VARIANTS[classId]?.[subjectId] ?? base;
+}

@@ -26,6 +26,7 @@ import {
   Users,
   Zap,
 } from "lucide-react";
+import { useState } from "react";
 import { toast } from "sonner";
 import { Link } from "wouter";
 
@@ -55,6 +56,7 @@ export default function Adaptive() {
   const calib = calibrationSummary();
   const dueToday = revisionEntriesByBucket(buckets()[0]);
   const teachRequests = openTeachRequests();
+  const [expandedRec, setExpandedRec] = useState<string | null>(null);
 
   return (
     <AppShell>
@@ -139,7 +141,9 @@ export default function Adaptive() {
                 </span>
               </div>
               <div className="mt-5 divide-y divide-ink/10 border-y border-ink/10">
-                {path.map((rec, i) => (
+                {path.map((rec, i) => {
+                  const expanded = expandedRec === rec.topicId;
+                  return (
                   <div key={rec.topicId} className="rise-in grid gap-4 py-6 sm:grid-cols-[2.5rem_1fr]">
                     <div className="index-num pt-0.5">{String(rec.rank).padStart(2, "0")}</div>
                     <div>
@@ -157,21 +161,40 @@ export default function Adaptive() {
                         </span>
                       </div>
                       <h3 className="mt-1.5 font-serif text-xl font-bold text-ink">{rec.topicTitle}</h3>
+                      {/* Progressive disclosure: one human line first, full
+                          evidence hidden behind "See evidence" */}
                       <div className="mt-2.5 space-y-1.5">
                         <div className="flex items-start gap-2">
                           <span className="mt-1 shrink-0 font-mono text-[10px] font-bold uppercase tracking-[0.12em] text-teal">
                             Why
                           </span>
-                          <p className="footnote">{rec.whyChoseThis}</p>
+                          <p className="footnote">{rec.reason}</p>
                         </div>
-                        <div className="flex items-start gap-2">
-                          <span className="mt-1 shrink-0 font-mono text-[10px] font-bold uppercase tracking-[0.12em] text-amber">
-                            How
-                          </span>
-                          <p className="footnote">
-                            <ActionChip action={rec.format} /> {rec.formatDetail}
-                          </p>
-                        </div>
+                        {expanded ? (
+                          <div className="space-y-1.5 border-l border-dotted border-ink/15 pl-3">
+                            <div className="flex items-start gap-2">
+                              <span className="mt-1 shrink-0 font-mono text-[10px] font-bold uppercase tracking-[0.12em] text-teal">
+                                Evidence
+                              </span>
+                              <p className="footnote">{rec.whyChoseThis}</p>
+                            </div>
+                            <div className="flex items-start gap-2">
+                              <span className="mt-1 shrink-0 font-mono text-[10px] font-bold uppercase tracking-[0.12em] text-amber">
+                                How
+                              </span>
+                              <p className="footnote">
+                                <ActionChip action={rec.format} /> {rec.formatDetail}
+                              </p>
+                            </div>
+                          </div>
+                        ) : (
+                          <button
+                            onClick={() => setExpandedRec(expanded ? null : rec.topicId)}
+                            className="mt-1 font-mono text-[10px] uppercase tracking-[0.14em] text-ink/55 hover:text-teal"
+                          >
+                            See evidence →
+                          </button>
+                        )}
                       </div>
                       <div className="mt-4 flex flex-wrap items-center gap-3">
                         <span className="font-mono text-[11px] text-dark-text/60">
@@ -186,7 +209,8 @@ export default function Adaptive() {
                       </div>
                     </div>
                   </div>
-                ))}
+                  );
+                })}
               </div>
             </section>
 

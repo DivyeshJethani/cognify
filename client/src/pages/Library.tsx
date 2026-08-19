@@ -18,10 +18,38 @@ import type { Difficulty, LearningResource, ResourceFormat, ResourceType } from 
 import { learningDNA } from "@/lib/mockData";
 import { continueLearning } from "@/lib/savedResources";
 import { cn } from "@/lib/utils";
+import { getStudyContext } from "@/lib/studyContext";
 import { BookOpenText, Clock, ExternalLink, SearchX, SlidersHorizontal } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useLocation } from "wouter";
 import { toast } from "sonner";
+
+const subjectNames: Record<string, string> = {
+  MATH: "Mathematics",
+  SCI: "Science",
+  SST: "Social Science",
+  ENG: "English",
+  HIN: "Hindi",
+  SKT: "Sanskrit",
+};
+
+const SUBJECT_ID_TO_CODE: Record<string, string> = {
+  math: "MATH",
+  science: "SCI",
+  social: "SST",
+  english: "ENG",
+  hindi: "HIN",
+  sanskrit: "SKT",
+};
+
+const SUBJECT_CODE_TO_ID: Record<string, string> = {
+  MATH: "math",
+  SCI: "science",
+  SST: "social",
+  ENG: "english",
+  HIN: "hindi",
+  SKT: "sanskrit",
+};
 
 const ALL_FORMATS: { key: ResourceFormat | "all"; label: string }[] = [
   { key: "all", label: "All formats" },
@@ -69,11 +97,32 @@ export default function Library() {
   const [, navigate] = useLocation();
   const [formatFilter, setFormatFilter] = useState<ResourceFormat | "all">("all");
   const [typeFilter, setTypeFilter] = useState<ResourceType | "all">("all");
-  const [subjectFilter, setSubjectFilter] = useState<string>("all");
+  const [subjectFilter, setSubjectFilter] = useState<string>(() => {
+    const sf = getStudyContext().subjectFocus;
+    return sf ? SUBJECT_ID_TO_CODE[sf] ?? "all" : "all";
+  });
+  const [lastFocus, setLastFocus] = useState<string | null>(() => getStudyContext().subjectFocus);
   const [durationFilter, setDurationFilter] = useState<LibraryFilters["duration"]>("any");
   const [difficultyFilter, setDifficultyFilter] = useState<Difficulty | "all">("all");
   const [freeWebOnly, setFreeWebOnly] = useState(false);
   const [sort, setSort] = useState<SortKey>("recommended-for-me");
+  const [expandedWhy, setExpandedWhy] = useState<string | null>(null);
+
+  // Stay in sync with the sidebar's subject switcher.
+  useEffect(() => {
+    const handler = () => {
+      const sf = getStudyContext().subjectFocus;
+      setSubjectFilter((prev) => {
+        const prevId = prev === "all" ? null : SUBJECT_CODE_TO_ID[prev];
+        if (prev !== "all" && prevId === lastFocus && !sf) return "all";
+        if (sf && prev === "all") return SUBJECT_ID_TO_CODE[sf] ?? "all";
+        return prev;
+      });
+      setLastFocus(getStudyContext().subjectFocus);
+    };
+    window.addEventListener("cognify:context-change", handler);
+    return () => window.removeEventListener("cognify:context-change", handler);
+  }, [lastFocus]);
 
   const indexes = useMemo(() => topicIndexes(), []);
   const subjectOptions = useMemo(
@@ -113,6 +162,20 @@ export default function Library() {
           </Link>
         }
       />
+
+      {subjectFilter !== "all" && (
+        <div className="flex items-center justify-between gap-3 border-b border-amber/30 bg-amber/5 px-5 py-2.5 sm:px-8 lg:px-10">
+          <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-amber-dark">
+            Focused on {subjectNames[subjectFilter] ?? subjectFilter}
+          </span>
+          <button
+            onClick={() => setSubjectFilter("all")}
+            className="font-mono text-[10px] uppercase tracking-[0.14em] text-ink/55 hover:text-teal"
+          >
+            Show all subjects ←
+          </button>
+        </div>
+      )}
 
       {/* Filter strip */}
       <div className="flex flex-wrap items-center gap-2 border-b border-ink/10 px-5 py-3.5 sm:px-8 lg:px-10">
@@ -289,12 +352,36 @@ export default function Library() {
                           Objective — {r.learningObjective}
                         </p>
                       )}
-                      <p className="mt-2 max-w-3xl text-[13px] leading-relaxed text-dark-text/75">
-                        <span className="font-mono text-[10px] font-bold uppercase tracking-[0.1em] text-teal-dark">
-                          Why recommended —{" "}
-                        </span>
-                        {r.whyRecommended}
-                      </p>
+                      {/* Progressive disclosure: one line, evidence behind a toggle */}
+                      <div className="mt-2 max-w-3xl">
+                        {expandedWhy === r.id ? (
+                          <div className="border-l border-dotted border-ink/15 pl-3">
+                            <span className="font-mono text-[10px] font-bold uppercase tracking-[0.1em] text-teal-dark">
+                              Why Cognify recommends
+                            </span>
+                            <p className="mt-1 text-[13px] leading-relaxed text-dark-text/75">{r.whyRecommended}</p>
+                            <button
+                              onClick={() => setExpandedWhy(null)}
+                              className="mt-1 font-mono text-[10px] uppercase tracking-[0.14em] text-ink/55 hover:text-teal"
+                            >
+                              Hide evidence ←
+                            </button>
+                          </div>
+                        ) : (
+                          <p className="text-[13px] leading-relaxed text-dark-text/75">
+                            <span className="font-mono text-[10px] font-bold uppercase tracking-[0.1em] text-teal-dark">
+                              Why recommended{" "}
+                            </span>
+                            {r.whyRecommended.split(".").slice(0, 1).join("")}.
+                            <button
+                              onClick={() => setExpandedWhy(r.id)}
+                              className="ml-2 border-b border-teal/50 pb-0.5 font-mono text-[10px] uppercase tracking-[0.14em] text-teal transition-colors hover:border-teal"
+                            >
+                              See evidence →
+                            </button>
+                          </p>
+                        )}
+                      </div>
                     </div>
                     <div className="flex flex-col items-end gap-2">
                       <button
@@ -346,15 +433,20 @@ export default function Library() {
           <div className="border border-ink/10 bg-card p-5">
             <Marginalia>Index — subjects</Marginalia>
             <ul className="mt-3 space-y-1.5">
-              {Array.from(new Set(indexes.map((i) => i.subjectName))).map((name) => {
-                const count = indexes.filter((i) => i.subjectName === name).length;
-                return (
-                  <li key={name} className="flex items-baseline justify-between border-b border-dotted border-ink/15 pb-1">
-                    <span className="font-serif text-[14px] text-ink">{name}</span>
-                    <span className="font-mono text-[10px] text-muted-foreground">{count} topics</span>
-                  </li>
-                );
-              })}
+              {Array.from(new Set(indexes.map((i) => i.subjectName)))
+                .filter((name) => {
+                  if (subjectFilter === "all") return true;
+                  return name === (subjectNames[subjectFilter] ?? "");
+                })
+                .map((name) => {
+                  const count = indexes.filter((i) => i.subjectName === name).length;
+                  return (
+                    <li key={name} className="flex items-baseline justify-between border-b border-dotted border-ink/15 pb-1">
+                      <span className="font-serif text-[14px] text-ink">{name}</span>
+                      <span className="font-mono text-[10px] text-muted-foreground">{count} topics</span>
+                    </li>
+                  );
+                })}
             </ul>
           </div>
 

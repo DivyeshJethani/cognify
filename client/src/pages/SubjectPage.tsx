@@ -15,7 +15,8 @@ import {
   RevisionChip,
   StateBadge,
 } from "@/components/cognify/Primitives";
-import { boards, findSubject } from "@/lib/mockData";
+import { boards } from "@/lib/mockData";
+import { contextLabel, getStudyContext, subjectFor } from "@/lib/studyContext";
 import { subjectOverview, chapterPriority, type ChapterPriority } from "@/lib/curriculumEngine";
 import { topicAlias } from "@/lib/curriculum";
 import { cn } from "@/lib/utils";
@@ -39,9 +40,8 @@ export default function SubjectPage() {
   const [, navigate] = useLocation();
   const [sortKey, setSortKey] = useState<SortKey>("order");
 
-  const boardId = "cbse";
-  const classId = "cbse-10";
-  const subject = findSubject(boardId, classId, subjectId);
+  const ctx = getStudyContext();
+  const subject = subjectFor(ctx.boardId, ctx.classId, subjectId);
   const overview = useMemo(() => (subject ? subjectOverview(subject.id) : null), [subject]);
 
   if (!subject) {
@@ -94,7 +94,7 @@ export default function SubjectPage() {
     <AppShell>
       <PageHeader
         overline="Subject Ledger"
-        title={`${subject.name} — ${boards.find((b) => b.id === boardId)?.name ?? "CBSE"} · Class 10`}
+        title={`${subject.name} — ${contextLabel()}`}
         subtitle={`Chapter ${String(subject.chapters.length).padStart(2, "0")} — a working map: every chapter carries its adaptive priority, mastery and revision state.`}
         actions={
           <button

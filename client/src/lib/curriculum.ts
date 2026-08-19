@@ -7,6 +7,7 @@
  * dataset. When the backend ships, this becomes the API client's resolver.
  */
 import { boards } from "./mockData";
+import { getStudyContextSafe } from "./curriculumEngine";
 import type { Chapter, Subject, Topic } from "./types";
 
 export function findSubject(
@@ -72,7 +73,53 @@ export function findTopicByIdOrAlias(topicId: string): {
   if (direct) return direct;
   // fall back to stable aliases (e.g. "t-4-relationship-between-zeros-coefficients")
   const realId = CANONICAL_TOPIC_SLUGS[topicId] ?? topicId;
-  return findTopic(realId);
+  const aliasHit = findTopic(realId);
+  if (aliasHit) return aliasHit;
+  // Class 8/9 students land here when the dashboard points at a variant
+  // topic: map by subject + title instead of returning a dead end.
+  const ctx = getStudyContextSafe();
+  if (ctx) {
+    const byTitle = findTopicByTitleInSubject(ctx.subjectId, topicId);
+    if (byTitle) return byTitle;
+  }
+  return null;
+}
+
+/** Find a topic by a fuzzy title match inside one subject only — used to
+ *  map a Class 8/9 student onto Class 10 discovery content when the
+ *  exact runtime id does not exist in the Class-10 resource inventory.
+ *  The backend will do this properly per-class; this keeps the demo path
+ *  honest (same topic name, matched within the subject). */
+export function findTopicByTitleInSubject(
+  subjectId: string,
+  title: string
+): {
+  subject: Subject;
+  chapter: Chapter;
+  topic: Topic;
+} | null {
+  const needle = normalize(title);
+  for (const e of allTopics()) {
+    if (e.subject.id !== subjectId) continue;
+    if (normalize(e.topic.title) === needle) return e;
+  }
+  for (const e of allTopics()) {
+    if (e.subject.id !== subjectId) continue;
+    if (normalize(e.topic.title).includes(needle) || normalize(e.topic.title).includes(splitTitle(needle))) return e;
+  }
+  return null;
+}
+
+function normalize(s: string): string {
+  return s.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+}
+
+function splitTitle(s: string): string {
+  const words = normalize(s).split(" ");
+  if (words.length < 3) return "";
+  // first two words capture the core concept, e.g. "Light Reflection" from
+  // "Light — Reflection and Refraction"
+  return words.slice(0, 2).join(" ");
 }
 
 /** The canonical list of stable alias slugs for links and UIs. */

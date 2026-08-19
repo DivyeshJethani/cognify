@@ -16,6 +16,7 @@ import {
 import { answer, quickPicks } from "@/lib/askCognify";
 import { discoverResources, getTranscript } from "@/lib/resourceDiscovery";
 import { findTopicByIdOrAlias } from "@/lib/curriculum";
+import { topicBreadcrumb } from "@/lib/curriculumEngine";
 import { eventsForSession, eventLabel, logEvent } from "@/lib/playerEvents";
 import { anotherExplanation } from "@/lib/recommendations";
 import { addSaved, isSaved, removeSaved, updateProgress } from "@/lib/savedResources";
@@ -76,8 +77,8 @@ export default function Player() {
   const query = useMemo(() => new URLSearchParams(window.location.search), []);
   const sessionId = query.get("sessionId") ?? "sess-unknown";
   const topicId = query.get("topic") ?? "";
-
   const resolved = findTopicByIdOrAlias(topicId);
+  const resolvedSubjectContext = topicBreadcrumb(topicId);
   const discovery = discoverResources(topicId);
   const resource = discovery?.resources.find((r) => r.id === resourceId) ?? null;
   const rawTranscript = getTranscript(resourceId);
@@ -293,7 +294,7 @@ export default function Player() {
                 {resource.title}
               </div>
               <div className="font-mono text-[11px] text-ivory/60">
-                {resolved.topic.title} — CBSE Class 10
+                {resolved.topic.title} — {resolvedSubjectContext ? `${resolvedSubjectContext.board} · ${resolvedSubjectContext.className}` : "CBSE · Class 10"}
               </div>
               {!playing && elapsed < totalSec && (
                 <button

@@ -1727,12 +1727,50 @@ export function getTranscript(resourceId: string): TranscriptSegment[] {
  * curriculum service. The inventory only stores the stable alias slug;
  * this resolves it to the live Topic record.
  */
+const SUBJECT_ID_TO_CODE: Record<string, string> = {
+  math: "MATH",
+  science: "SCI",
+  social: "SST",
+  english: "ENG",
+  hindi: "HIN",
+  sanskrit: "SKT",
+};
+
+/** The board · class line for the student's active context. */
+function classContextFor(_subjectId: string): { boardName: string; className: string } {
+  try {
+    const raw = localStorage.getItem("cognify.profile-context.v1");
+    if (!raw) return { boardName: "CBSE", className: "Class 10" };
+    const c = JSON.parse(raw) as { boardId?: string; classId?: string };
+    const boardId = c.boardId ?? "cbse";
+    const classId = c.classId ?? "cbse-10";
+    const board = boards.find((b) => b.id === boardId);
+    const cls = board?.classes.find((cl) => cl.id === classId);
+    return { boardName: board?.name ?? "CBSE", className: cls?.name ?? "Class 10" };
+  } catch {
+    return { boardName: "CBSE", className: "Class 10" };
+  }
+}
+
+/** Subject code of the active focus, null when browsing everything. */
+function focusedSubjectCode(): string | null {
+  try {
+    const raw = localStorage.getItem("cognify.profile-context.v1");
+    if (!raw) return null;
+    const c = JSON.parse(raw) as { subjectFocus?: string | null };
+    return c.subjectFocus ? SUBJECT_ID_TO_CODE[c.subjectFocus] ?? null : null;
+  } catch {
+    return null;
+  }
+}
+
 export function enrichResourceTopicContext(
   resource: LearningResource
 ): LearningResource {
   const resolved = findTopicByIdOrAlias(resource.topicId);
   if (!resolved) return resource;
   const { subject, chapter, topic } = resolved;
+  const classCtx = classContextFor(subject.id);
   return {
     ...resource,
     topicTitle: topic.title,
@@ -1740,8 +1778,8 @@ export function enrichResourceTopicContext(
     chapterTitle: chapter.title,
     subjectCode: subject.code,
     subjectLabel: subject.name,
-    classLabel: "CBSE · Class 10",
-    board: "CBSE",
+    classLabel: `${classCtx.boardName} · ${classCtx.className}`,
+    board: classCtx.boardName,
     learningObjective:
       topic.objectives[0]?.text ?? `Master ${topic.title.toLowerCase()}`,
   };
@@ -1765,7 +1803,14 @@ export function discoverAll(
   for (const [topicSlug, raw] of Object.entries(INVENTORY)) {
     if (options.topicId && resolveAlias(options.topicId) !== topicSlug) continue;
     const result = discoverResources(topicSlug, options);
-    if (result) out.push(...result.resources);
+    if (!result) continue;
+    const focused = focusedSubjectCode();
+    const enriched = result.resources.map(enrichResourceTopicContext);
+    if (focused && enriched.some((r) => r.subjectCode === focused)) {
+      out.push(...enriched.filter((r) => r.subjectCode === focused));
+    } else {
+      out.push(...enriched);
+    }
   }
   if (options.isFreeWeb) out.filter(Boolean);
   out.sort((a, b) => b.relevance - a.relevance);

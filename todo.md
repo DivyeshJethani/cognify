@@ -130,3 +130,56 @@
 - [ ] Full journey: Landing → Onboarding → Dashboard → Curriculum → Subject → Topic → Library → Session/Player → Practice/Teach → DNA → Adaptive → Dashboard
 - [ ] Fix broken nav/dead buttons/duplicated UI
 - [ ] Checkpoint + deliver
+
+# Day 7 — UX Refinement, Personalization & Simplification
+
+Constraints: NO redesign, NO new major features, NO removal of features. Preserve Scholar's Atelier identity.
+Judge demo path: Command Center → Class 10 Social Science → Nationalism in India → Cognify recommends resource → Learning session → practice → weakness → DNA → changed recommendation. 2-3 min, max ~6 screens.
+
+## Phase 2 — Data layer
+- [ ] mockData: genuine Class 8 / Class 9 / Class 10 curriculum differences (real chapters/topics per class, not relabelled)
+- [ ] studentProfile = {board, classLevel, subjects} stored (cognify.profile.v1) + onboarding stores classLevel
+- [ ] context.ts service: currentClass(), currentSubject(), scopedContent APIs
+- [ ] Services scope content by classLevel/subject (resourceDiscovery, revision, mistakes, timetable, goals, journeyData, adaptive)
+
+## Phase 3 — Context surface
+- [ ] AppShell: "CBSE · Class 10" context indicator (non-dominant)
+- [ ] Subject switcher (pills, per page where subject matters)
+- [ ] Class switcher from Profile settings
+- [ ] Links/sessions scoped by current class
+
+## Phase 4 — Command Center simplification
+- [ ] One primary action: START TODAY'S SESSION
+- [ ] Today 01-03 sequence (Learn/Practice/Reflect) + NEXT block
+- [ ] One insight only + SEE WHY
+- [ ] Continue compact (≤3 items, single action each)
+- [ ] One revision item + REVISE
+- [ ] DNA snapshot ≤4 stats; move rest behind See analysis
+- [ ] Remove metric clutter
+
+## Phase 5 — Progressive disclosure + human language
+- [ ] Profile: 4 plain questions + EXPLORE YOUR LEARNING DNA
+- [ ] Adaptive Lab: focus + why + plan; SEE EVIDENCE for metrics
+- [ ] Mistakes/Confidence/Revision: human labels + human empty states
+- [ ] Timetable/Goals/Teach/Community: primary action emphasis
+
+## Phase 6 — Class/subject scoped pages
+- [ ] Library filters scoped to current class+subject
+- [ ] Search respects classLevel + subject
+- [ ] Continue scoped, human verbs (CONTINUE/RETRY/REVISE/FINISH)
+- [ ] Topic page: one topic focus, one strong resource, START LEARNING
+- [ ] Curriculum subject parity + class-aware chapters
+- [ ] Resource rows: what/learn/why + one action
+
+## Phase 7 — Readability
+- [ ] Contrast audit (gray/teal/amber text → readable ink)
+- [ ] Typography hierarchy: heading → sentence → action; fewer tiny labels
+- [ ] Card reduction (whitespace/dividers/lists)
+- [ ] Human empty states everywhere
+- [ ] Responsive pass (sidebar, filters, titles, mobile primary action)
+
+## Phase 8 — Verification
+- [ ] 3 class profiles (8/9/10): content differs genuinely
+- [ ] Class 10 × 5 subjects: only subject content visible
+- [ ] Judge demo path end to end
+- [ ] Checkpoint + deliver

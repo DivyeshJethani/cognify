@@ -27,6 +27,27 @@ import { todayAdaptivePath } from "./adaptive";
 import { learningDNA } from "./mockData";
 import { subjectNames as subjectNameMap } from "./curriculumEngine";
 
+const SUBJECT_ID_TO_CODE: Record<string, string> = {
+  math: "MATH",
+  science: "SCI",
+  social: "SST",
+  english: "ENG",
+  hindi: "HIN",
+  sanskrit: "SKT",
+};
+
+/** Read the active subject focus (null when browsing everything). */
+function getSubjectFocus(): string | null {
+  try {
+    const raw = localStorage.getItem("cognify.profile-context.v1");
+    if (!raw) return null;
+    const c = JSON.parse(raw) as { subjectFocus?: string | null };
+    return c.subjectFocus ? SUBJECT_ID_TO_CODE[c.subjectFocus] ?? null : null;
+  } catch {
+    return null;
+  }
+}
+
 export type SearchGroup =
   | "topics"
   | "resources"
@@ -63,6 +84,8 @@ export interface GroupedSearchItem {
 const SCORE_THRESHOLD = 38;
 
 export function searchKnowledge(query: string): GroupedSearchResult {
+  // Scope every group to the active subject focus when one is set.
+  const focusCode = getSubjectFocus();
   const q = query.trim().toLowerCase();
   const out: GroupedSearchResult = {
     query,
@@ -84,6 +107,7 @@ export function searchKnowledge(query: string): GroupedSearchResult {
   // ---- SUBJECTS: match subject names and codes ----
   const seenSubjects = new Set<string>();
   for (const { subject } of allTopics()) {
+    if (focusCode && subject.code !== focusCode) continue;
     const hay = `${subject.name} ${subject.id}`.toLowerCase();
     if (!hay.includes(q)) continue;
     if (seenSubjects.has(subject.id)) continue;
@@ -102,6 +126,7 @@ export function searchKnowledge(query: string): GroupedSearchResult {
   // ---- CHAPTERS: chapter titles within matching subjects ----
   const seenChapters = new Set<string>();
   for (const { subject, chapter } of allTopics()) {
+    if (focusCode && subject.code !== focusCode) continue;
     if (!chapter.title.toLowerCase().includes(q)) continue;
     const key = `${subject.id}-${chapter.id}`;
     if (seenChapters.has(key)) continue;
@@ -120,6 +145,7 @@ export function searchKnowledge(query: string): GroupedSearchResult {
   // ---- TOPICS: fuzzy match on title, objectives, chapter ----
   const seenTopics = new Set<string>();
   for (const { subject, chapter, topic } of allTopics()) {
+    if (focusCode && subject.code !== focusCode) continue;
     const hay = `${topic.title} ${chapter.title} ${subject.name} ${topic.objectives.map((o) => o.text).join(" ")}`.toLowerCase();
     if (!hay.includes(q)) continue;
     if (seenTopics.has(topic.id)) continue;

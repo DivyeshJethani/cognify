@@ -10,7 +10,7 @@
  * When the CBSE curriculum pipeline ships, this module is replaced by
  * API calls — every function is a thin query over the same shapes.
  */
-import { boards, findSubject, allTopics } from "./mockData";
+import { boards, allTopics, findSubjectForClass } from "./mockData";
 import { topicAlias, topicPath } from "./curriculum";
 import type {
   Subject,
@@ -32,6 +32,31 @@ export const subjectNames: Record<string, string> = {
 export function cbseClass10(): Classroom {
   const board = boards.find((b) => b.id === "cbse")!;
   return board.classes.find((c) => c.id === "cbse-10")!;
+}
+
+/** Breadcrumb context for the class a topic actually belongs to. */
+function activeContextFor(subjectId: string): { boardName: string; className: string } {
+  const ctx = getStudyContextSafe();
+  if (ctx) {
+    const cls = classById(ctx.boardId, ctx.classId);
+    if (cls) return { boardName: boards.find((b) => b.id === ctx.boardId)?.name ?? "CBSE", className: cls.name };
+  }
+  return { boardName: "CBSE", className: "Class 10" };
+}
+
+export function getStudyContextSafe(): { boardId: string; classId: string; subjectId: string } | null {
+  try {
+    const raw = localStorage.getItem("cognify.profile-context.v1");
+    if (!raw) return null;
+    const c = JSON.parse(raw) as { boardId?: string; classId?: string; subjectFocus?: string | null };
+    return {
+      boardId: c.boardId ?? "cbse",
+      classId: c.classId ?? "cbse-10",
+      subjectId: c.subjectFocus ?? "math",
+    };
+  } catch {
+    return null;
+  }
 }
 
 export function classById(boardId: string, classId: string): Classroom | null {
@@ -68,9 +93,18 @@ export interface SubjectOverview {
 
 const RECENT_ISO = "2026-08-19";
 
-export function subjectOverview(subjectId: string): SubjectOverview | null {
-  const cls = cbseClass10();
-  const subject = cls.subjects.find((s) => s.id === subjectId);
+export function subjectOverview(
+  subjectId: string,
+  boardId: string = "cbse",
+  classId: string = "cbse-10"
+): SubjectOverview | null {
+  const cls = classById(boardId, classId);
+  if (!cls) return null;
+  // Prefer the class-appropriate variant (Class 8/9) when available.
+  const subject =
+    findSubjectForClass(boardId, classId, subjectId) ??
+    cls.subjects.find((s) => s.id === subjectId) ??
+    null;
   if (!subject) return null;
 
   const chapters = subject.chapters.map((chapter) =>
@@ -192,9 +226,12 @@ export function topicBreadcrumb(topicId: string): TopicBreadcrumb | null {
   const path = topicPath(topicId);
   if (!path) return null;
   const alias = topicAlias(topicId);
+  // Read the active class context so breadcrumbs stay honest for
+  // Class 8/9 students whose topics live in the variant datasets.
+  const { boardName, className } = activeContextFor(path.subject.id);
   return {
-    board: "CBSE",
-    className: "Class 10",
+    board: boardName,
+    className,
     subjectId: path.subject.id,
     subjectName: path.subject.name,
     subjectCode: path.subject.code,

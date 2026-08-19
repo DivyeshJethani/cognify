@@ -4,6 +4,7 @@
  * marginalia labels, mono data. NOT a bento grid. Serif headers.
  */
 import AppShell, { PageHeader } from "@/components/cognify/AppShell";
+import { getStudyContext, onContextChange } from "@/lib/studyContext";
 import {
   ActionChip,
   Hairline,
@@ -25,7 +26,7 @@ import { openTeachRequests, myGroup } from "@/lib/studyGroups";
 import { cn } from "@/lib/utils";
 import { todaySequence, continuationItems } from "@/lib/journeyData";
 import { Flame, TrendingUp } from "lucide-react";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "wouter";
 import {
   Bar,
@@ -47,6 +48,26 @@ const subjectNames: Record<string, string> = {
   SKT: "Sanskrit",
 };
 
+// The subject switcher stores the subject id (e.g. "math"); the ledger rows
+// carry the subject code (e.g. "MATH"). Resolve between the two.
+const SUBJECT_ID_TO_NAME: Record<string, string> = {
+  math: "Mathematics",
+  science: "Science",
+  social: "Social Science",
+  english: "English",
+  hindi: "Hindi",
+  sanskrit: "Sanskrit",
+};
+
+const SUBJECT_ID_TO_CODE: Record<string, string> = {
+  math: "MATH",
+  science: "SCI",
+  social: "SST",
+  english: "ENG",
+  hindi: "HIN",
+  sanskrit: "SKT",
+};
+
 /* topicAlias() from curriculum.ts resolves runtime ids → stable alias slug;
    falls back to the runtime id so links never break */
 const slugOf = (t: { id: string }): string => topicAlias(t.id) ?? t.id;
@@ -63,6 +84,15 @@ function todayDateString() {
 export default function Dashboard() {
   const { profile, todayPath, weakTopicsList, revisionDueList, activity, dna, goalsList, credits } =
     useApp();
+
+  // Keep the header synced with the sidebar's class + subject focus.
+  const [, rerender] = useState(0);
+  useEffect(() => onContextChange(() => rerender((n) => n + 1)), []);
+  const ctx = getStudyContext();
+  const focusName = ctx.subjectFocus ? SUBJECT_ID_TO_NAME[ctx.subjectFocus] ?? "" : "";
+  const focusCode = ctx.subjectFocus ? SUBJECT_ID_TO_CODE[ctx.subjectFocus] ?? "" : "";
+  const subjectFocus = focusCode || null;
+  const focusSubject = focusName || null;
 
   const pathMinutes = todayPath.reduce((n, p) => n + p.minutes, 0);
   const overallMastery = useMemo(() => {
@@ -86,10 +116,33 @@ export default function Dashboard() {
   return (
     <AppShell>
       <PageHeader
-        overline="Learning Command Center"
+        overline={`Learning Command Center — ${ctx.boardName} · ${ctx.className}`}
         title={`Good ${greeting()}, ${profile.name.split(" ")[0]}.`}
-        subtitle={`${todayDateString()} · Your learning DNA is ${dna.profileStrength}% complete · ${pathMinutes} minutes scheduled today`}
+        subtitle={
+          subjectFocus
+            ? `Everything below is filtered to ${subjectFocus} — tap a different subject in the sidebar to shift focus.`
+            : `${todayDateString()} · Your learning DNA is ${dna.profileStrength}% complete · ${pathMinutes} minutes scheduled today`
+        }
       />
+
+      {/* Single primary action — the one thing to do right now */}
+      {!subjectFocus && todaySequence().items.length > 0 && (
+        <PrimaryActionBanner
+          key={todaySequence().items[0].topicId}
+          item={todaySequence().items[0]}
+        />
+      )}
+
+      {subjectFocus && (
+        <div className="mt-6 flex items-center gap-3 border border-teal/30 bg-teal/5 px-5 py-4">
+          <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-teal-dark">
+            Focused
+          </span>
+          <span className="font-serif text-[15px] font-bold text-ink">
+            Viewing only {subjectFocus} — weak topics, revision and today's plan for this subject appear below.
+          </span>
+        </div>
+      )}
 
       <div className="px-5 py-7 sm:px-8 lg:px-10">
         {/* Header stats ledger */}
@@ -124,7 +177,9 @@ export default function Dashboard() {
               </Link>
             </div>
             <ol className="mt-4 divide-y divide-ink/10">
-              {todaySequence().items.map((it) => (
+              {todaySequence().items
+                .filter((it) => (subjectFocus ? it.subjectCode === subjectFocus : true))
+                .map((it) => (
                 <li key={`${it.kind}-${it.topicId}-${it.number}`} className="rise-in grid grid-cols-[2rem_1fr] gap-4 py-4">
                   <div className="index-num pt-0.5">{String(it.number).padStart(2, "0")}</div>
                   <div>
@@ -196,7 +251,9 @@ export default function Dashboard() {
                 </Link>
               </div>
               <div className="mt-5 divide-y divide-ink/10 border-y border-ink/10">
-                {todayPath.map((item, i) => (
+                {todayPath
+                  .filter((p) => (subjectFocus ? p.subject === subjectFocus : true))
+                  .map((item, i) => (
                   <div key={item.topicId} className="rise-in grid gap-4 py-6 sm:grid-cols-[2.5rem_1fr]">
                     <div className="index-num pt-0.5">{String(i + 1).padStart(2, "0")}</div>
                     <div>
@@ -240,7 +297,11 @@ export default function Dashboard() {
               <div>
                 <Marginalia amber>Weak & developing topics</Marginalia>
                 <ul className="mt-4 space-y-3">
-                  {weakTopicsList.slice(0, 5).map((w) => (
+                  {weakTopicsList
+                    .filter((w) => (subjectFocus ? w.subject.code === subjectFocus : true))
+                    .slice(0, 5)
+                    .map((w) => (
+                    <>
                     <li key={w.topic.id} className="border-l-2 border-amber/60 pl-3">
                       <Link href={`/topic/${slugOf(w.topic)}`} className="group">
                         <div className="flex flex-wrap items-center gap-2">
@@ -265,14 +326,26 @@ export default function Dashboard() {
                       </div>
                       </Link>
                     </li>
+                    </>
                   ))}
+                  {weakTopicsList.filter((w) => (subjectFocus ? w.subject.code === subjectFocus : true)).length === 0 && (
+                    <li className="footnote">
+                      {subjectFocus
+                        ? `Nothing flagged weak in ${subjectFocus} right now.`
+                        : "Nothing flagged weak right now."}
+                    </li>
+                  )}
                 </ul>
               </div>
 
               <div>
                 <Marginalia>Due for revision</Marginalia>
                 <ul className="mt-4 space-y-3">
-                  {revisionDueList.slice(0, 5).map((r) => (
+                  {revisionDueList
+                    .filter((r) => (subjectFocus ? r.subject.code === subjectFocus : true))
+                    .slice(0, 5)
+                    .map((r) => (
+                    <>
                     <li key={r.topic.id} className="border-l-2 border-teal/60 pl-3">
                       <Link href={`/topic/${slugOf(r.topic)}`} className="group">
                         <div className="flex flex-wrap items-center gap-2">
@@ -292,9 +365,14 @@ export default function Dashboard() {
                       </div>
                       </Link>
                     </li>
+                    </>
                   ))}
-                  {revisionDueList.length === 0 && (
-                    <li className="footnote">Nothing due — your spaced-retention schedule is clear today.</li>
+                  {revisionDueList.filter((r) => (subjectFocus ? r.subject.code === subjectFocus : true)).length === 0 && (
+                    <li className="footnote">
+                      {subjectFocus
+                        ? `Nothing due in ${subjectFocus} — your spaced schedule for this subject is clear.`
+                        : "Nothing due — your spaced-retention schedule is clear today."}
+                    </li>
                   )}
                 </ul>
                 <a
@@ -310,7 +388,10 @@ export default function Dashboard() {
             <section>
               <Marginalia>Recent learning activity</Marginalia>
               <ol className="mt-4 space-y-0">
-                {activity.map((a, i) => (
+                {activity
+                  .filter((a) => (subjectFocus ? a.subject === subjectFocus : true))
+                  .map((a, i) => (
+                  <>
                   <li
                     key={a.id}
                     className="grid grid-cols-[1.5rem_1fr] gap-4 border-l border-ink/10 pb-5 pl-4 last:pb-0"
@@ -336,7 +417,15 @@ export default function Dashboard() {
                       </span>
                     </div>
                   </li>
+                  </>
                 ))}
+                {activity.filter((a) => (subjectFocus ? a.subject === subjectFocus : true)).length === 0 && (
+                  <li className="footnote">
+                    {subjectFocus
+                      ? `No recent activity recorded for ${subjectFocus} yet.`
+                      : "No recent activity recorded yet."}
+                  </li>
+                )}
               </ol>
             </section>
           </div>
@@ -557,4 +646,36 @@ function greeting() {
   if (h < 12) return "morning";
   if (h < 17) return "afternoon";
   return "evening";
+}
+
+/** The ONE thing to do right now — surfaces before every other ledger so
+ *  the Command Center answers "what should I do today?" in a glance. */
+function PrimaryActionBanner({ item }: { item: NonNullable<ReturnType<typeof todaySequence>["items"]>[number] }) {
+  const href = `/topic/${slugOf({ id: item.topicId })}`;
+  return (
+    <Link
+      href={href}
+      className="rise-in mt-6 flex flex-wrap items-center justify-between gap-4 border-l-4 border-amber bg-amber/5 px-5 py-4 transition-colors hover:bg-amber/10 sm:px-6"
+    >
+      <div className="min-w-0">
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="font-mono text-[10px] font-bold uppercase tracking-[0.14em] text-amber-dark">
+            Start with this
+          </span>
+          <span className="font-mono text-[9px] uppercase tracking-wider text-ink/50">
+            {subjectNames[item.subjectCode] ?? item.subjectCode} · {item.minutes} min
+          </span>
+        </div>
+        <div className="mt-1 font-serif text-lg font-bold leading-snug text-ink sm:text-xl">
+          {item.topicTitle}
+        </div>
+        <div className="mt-1 max-w-xl truncate font-mono text-[11px] text-ink/60">
+          {item.reason}
+        </div>
+      </div>
+      <span className="shrink-0 font-mono text-[11px] uppercase tracking-[0.14em] text-teal-dark">
+        Begin →
+      </span>
+    </Link>
+  );
 }

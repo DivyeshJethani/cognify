@@ -238,6 +238,7 @@ function ResourceRow({
   subjectCode: string;
   onOpen: () => void;
 }) {
+  const [whyOpen, setWhyOpen] = useState(false);
   return (
     <li>
       <div className="grid grid-cols-[2.5rem_1fr_auto] gap-4 py-4">
@@ -288,12 +289,35 @@ function ResourceRow({
             )}
           </div>
 
-          <p className="mt-2 max-w-3xl text-[13px] leading-relaxed text-dark-text/75">
-            <span className="font-mono text-[10px] font-bold uppercase tracking-[0.1em] text-teal-dark">
-              Why Cognify recommends —{" "}
-            </span>
-            {resource.whyRecommended}
-          </p>
+          <div className="mt-2 max-w-3xl">
+            {whyOpen ? (
+              <div className="border-l border-dotted border-ink/15 pl-3">
+                <span className="font-mono text-[10px] font-bold uppercase tracking-[0.1em] text-teal-dark">
+                  Why Cognify recommends
+                </span>
+                <p className="mt-1 text-[13px] leading-relaxed text-dark-text/75">{resource.whyRecommended}</p>
+                <button
+                  onClick={() => setWhyOpen(false)}
+                  className="mt-1 font-mono text-[10px] uppercase tracking-[0.14em] text-ink/55 hover:text-teal"
+                >
+                  Hide evidence ←
+                </button>
+              </div>
+            ) : (
+              <p className="text-[13px] leading-relaxed text-dark-text/75">
+                <span className="font-mono text-[10px] font-bold uppercase tracking-[0.1em] text-teal-dark">
+                  Why Cognify recommends{" "}
+                </span>
+                {resource.whyRecommended.split(".").slice(0, 1).join("")}.
+                <button
+                  onClick={() => setWhyOpen(true)}
+                  className="ml-2 border-b border-teal/50 pb-0.5 font-mono text-[10px] uppercase tracking-[0.14em] text-teal transition-colors hover:border-teal"
+                >
+                  See evidence →
+                </button>
+              </p>
+            )}
+          </div>
         </div>
 
         <div className="flex flex-col items-end gap-2">
