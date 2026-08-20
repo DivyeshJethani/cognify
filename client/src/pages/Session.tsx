@@ -159,7 +159,7 @@ export default function Session() {
         actions={
           <button
             onClick={() => navigate(`/resources/${queryTopic ?? ""}`)}
-            className="flex items-center gap-1.5 border border-ink/15 bg-card px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.1em] text-ink/70 transition-colors hover:border-teal hover:text-teal"
+            className="flex items-center gap-1.5 border border-ink/15 bg-card px-3 py-1.5 font-mono text-[14px] uppercase tracking-[0.1em] text-ink/70 transition-colors hover:border-teal hover:text-teal"
           >
             <ChevronLeft className="h-3.5 w-3.5" /> Back to discovery
           </button>
@@ -192,32 +192,32 @@ export default function Session() {
           {/* Session stats grid */}
           <div className="mt-6 grid grid-cols-2 gap-px border border-ink/10 bg-ink/10 sm:grid-cols-4">
             <div className="bg-card p-5">
-              <div className="font-mono text-[9px] uppercase tracking-[0.14em] text-muted-foreground">Topic mastery</div>
+              <div className="font-mono text-[9px] uppercase tracking-[0.08em] text-muted-foreground">Topic mastery</div>
               <div className="mt-1 font-mono text-xl font-medium text-ink">{resolved.topic.mastery}%</div>
               <MasteryBar value={resolved.topic.mastery} className="mt-2" />
             </div>
             <div className="bg-card p-5">
-              <div className="font-mono text-[9px] uppercase tracking-[0.14em] text-muted-foreground">Estimated time</div>
+              <div className="font-mono text-[9px] uppercase tracking-[0.08em] text-muted-foreground">Estimated time</div>
               <div className="mt-1 flex items-center gap-1.5 font-mono text-xl font-medium text-ink">
                 <Timer className="h-4 w-4 text-teal" /> {minutes} min
               </div>
-              <div className="mt-2 font-mono text-[10px] text-muted-foreground">
+              <div className="mt-2 font-mono text-[12px] text-muted-foreground">
                 {transcript.length} transcript segments
               </div>
             </div>
             <div className="bg-card p-5">
-              <div className="font-mono text-[9px] uppercase tracking-[0.14em] text-muted-foreground">Format</div>
+              <div className="font-mono text-[9px] uppercase tracking-[0.08em] text-muted-foreground">Format</div>
               <div className="mt-1">
                 <ActionChip action={resource.format} />
               </div>
-              <div className="mt-2 font-mono text-[10px] text-muted-foreground">{resource.difficulty} difficulty</div>
+              <div className="mt-2 font-mono text-[12px] text-muted-foreground">{resource.difficulty} difficulty</div>
             </div>
             <div className="bg-card p-5">
-              <div className="font-mono text-[9px] uppercase tracking-[0.14em] text-muted-foreground">Loop stage</div>
-              <div className="mt-1 font-mono text-[11px] font-medium uppercase tracking-[0.1em] text-teal">
+              <div className="font-mono text-[9px] uppercase tracking-[0.08em] text-muted-foreground">Loop stage</div>
+              <div className="mt-1 font-mono text-[14px] font-medium uppercase tracking-[0.1em] text-teal">
                 {flow.stage}
               </div>
-              <div className="mt-2 font-mono text-[10px] text-muted-foreground">
+              <div className="mt-2 font-mono text-[12px] text-muted-foreground">
                 Analytics: ON
               </div>
             </div>
@@ -235,7 +235,7 @@ export default function Session() {
                 <p className="font-serif text-[14px] italic leading-relaxed text-dark-text/80">
                   “{transcript[0].text}”
                 </p>
-                <footer className="mt-2 font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
+                <footer className="mt-2 font-display text-xs uppercase tracking-[0.08em] text-muted-foreground">
                   00:00 – {formatTime(transcript[0].endSec)}
                 </footer>
               </blockquote>
@@ -281,7 +281,7 @@ export default function Session() {
                   </div>
                   <button
                     onClick={() => setRetrievalOpen(true)}
-                    className="shrink-0 border border-teal px-4 py-2 font-mono text-[10px] uppercase tracking-[0.12em] text-teal transition-colors hover:bg-teal hover:text-white active:scale-[0.97]"
+                    className="shrink-0 border border-teal px-4 py-2 font-mono text-[12px] uppercase tracking-[0.12em] text-teal transition-colors hover:bg-teal hover:text-white active:scale-[0.97]"
                   >
                     Start check
                   </button>
@@ -297,7 +297,7 @@ export default function Session() {
                   </div>
                   <button
                     onClick={() => setConfidenceOpen(true)}
-                    className="shrink-0 border border-teal px-4 py-2 font-mono text-[10px] uppercase tracking-[0.12em] text-teal transition-colors hover:bg-teal hover:text-white active:scale-[0.97]"
+                    className="shrink-0 border border-teal px-4 py-2 font-mono text-[12px] uppercase tracking-[0.12em] text-teal transition-colors hover:bg-teal hover:text-white active:scale-[0.97]"
                   >
                     Rate now
                   </button>
@@ -312,7 +312,7 @@ export default function Session() {
                 </div>
                 <button
                   onClick={() => navigate(`/resources/${queryTopic ?? ""}`)}
-                  className="shrink-0 border border-ink/30 px-4 py-2 font-mono text-[10px] uppercase tracking-[0.12em] text-ink/70 transition-colors hover:border-ink hover:text-ink active:scale-[0.97]"
+                  className="shrink-0 border border-ink/30 px-4 py-2 font-mono text-[12px] uppercase tracking-[0.12em] text-ink/70 transition-colors hover:border-ink hover:text-ink active:scale-[0.97]"
                 >
                   Open practice
                 </button>
@@ -325,7 +325,7 @@ export default function Session() {
                   </div>
                   <button
                     onClick={() => navigate("/adaptive")}
-                    className="shrink-0 border border-amber/50 px-4 py-2 font-mono text-[10px] uppercase tracking-[0.12em] text-amber-dark transition-colors hover:bg-amber/10 active:scale-[0.97]"
+                    className="shrink-0 border border-amber/50 px-4 py-2 font-mono text-[12px] uppercase tracking-[0.12em] text-amber-dark transition-colors hover:bg-amber/10 active:scale-[0.97]"
                   >
                     View path
                   </button>
@@ -338,13 +338,13 @@ export default function Session() {
         {/* Begin column */}
         <aside className="w-full shrink-0 lg:w-80">
           <div className="sticky top-6 border border-ink bg-ink p-6 text-ivory">
-            <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-teal">
+            <div className="font-mono text-[12px] uppercase tracking-[0.08em] text-teal">
               {resolved.subject.code} · {resolved.topic.title}
             </div>
-            <div className="mt-3 font-serif text-xl font-bold leading-snug">
+            <div className="mt-3 font-display text-[20px] font-bold leading-snug">
               {resource.title}
             </div>
-            <div className="mt-2 flex items-center gap-3 font-mono text-[11px] text-ivory/60">
+            <div className="mt-2 flex items-center gap-3 font-mono text-[14px] text-ivory/60">
               <span className="flex items-center gap-1"><Clock className="h-3 w-3" /> {minutes} min</span>
               <span>{resource.sourceLabel}</span>
             </div>
@@ -362,7 +362,7 @@ export default function Session() {
             {!flow.watched && (
               <button
                 onClick={beginSession}
-                className="group flex w-full items-center justify-between border border-teal bg-teal px-5 py-3.5 font-mono text-[12px] uppercase tracking-[0.14em] text-white transition-all duration-150 hover:bg-teal-dark active:scale-[0.98]"
+                className="group flex w-full items-center justify-between border border-teal bg-teal px-5 py-3.5 font-mono text-[12px] uppercase tracking-[0.08em] text-white transition-all duration-150 hover:bg-teal-dark active:scale-[0.98]"
               >
                 <span>Begin session</span>
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
@@ -373,19 +373,19 @@ export default function Session() {
               {!flow.watched ? (
                 <button
                   onClick={handleMarkWatched}
-                  className="w-full border border-ivory/25 px-3 py-2.5 font-mono text-[10px] uppercase tracking-[0.08em] text-ivory/75 transition-all hover:border-teal hover:text-teal active:scale-[0.97]"
+                  className="w-full border border-ivory/25 px-3 py-2.5 font-mono text-[12px] uppercase tracking-[0.08em] text-ivory/75 transition-all hover:border-teal hover:text-teal active:scale-[0.97]"
                 >
                   Mark as watched (no player)
                 </button>
               ) : (
                 <>
-                  <div className="border border-teal/40 bg-teal/10 p-3 font-mono text-[10px] uppercase tracking-[0.08em] text-teal">
+                  <div className="border border-teal/40 bg-teal/10 p-3 font-mono text-[12px] uppercase tracking-[0.08em] text-teal">
                     ✓ Watched · stage {flow.stage}
                   </div>
                   {!flow.retrieval && (
                     <button
                       onClick={() => setRetrievalOpen(true)}
-                      className="w-full border border-amber bg-amber px-3 py-2.5 font-mono text-[10px] uppercase tracking-[0.08em] text-white transition-all hover:bg-amber-dark active:scale-[0.97]"
+                      className="w-full border border-amber bg-amber px-3 py-2.5 font-mono text-[12px] uppercase tracking-[0.08em] text-white transition-all hover:bg-amber-dark active:scale-[0.97]"
                     >
                       Start quick check →
                     </button>
@@ -400,14 +400,14 @@ export default function Session() {
               )}
               <button
                 onClick={() => endSession("understood", resourceId, alternatives[0]?.id ?? null, topicId, queryTopic, navigate)}
-                className="flex w-full items-center justify-center gap-1.5 border border-ivory/25 px-2 py-2 font-mono text-[9.5px] uppercase tracking-[0.08em] text-ivory/75 transition-all hover:border-teal hover:text-teal active:scale-[0.97]"
+                className="flex w-full items-center justify-center gap-1.5 border border-ivory/25 px-2 py-2 font-mono text-[10.5px] uppercase tracking-[0.08em] text-ivory/75 transition-all hover:border-teal hover:text-teal active:scale-[0.97]"
               >
                 <CheckCircle2 className="h-3 w-3" /> I understood it
               </button>
               {alternatives[0] && (
                 <button
                   onClick={() => endSession("need-more", resourceId, alternatives[0].id, topicId, queryTopic, navigate)}
-                  className="flex w-full items-center justify-center gap-1.5 border border-ivory/25 px-2 py-2 font-mono text-[9.5px] uppercase tracking-[0.08em] text-ivory/75 transition-all hover:border-amber hover:text-amber active:scale-[0.97]"
+                  className="flex w-full items-center justify-center gap-1.5 border border-ivory/25 px-2 py-2 font-mono text-[10.5px] uppercase tracking-[0.08em] text-ivory/75 transition-all hover:border-amber hover:text-amber active:scale-[0.97]"
                 >
                   <FlaskConical className="h-3 w-3" /> Another explanation
                 </button>
@@ -419,20 +419,20 @@ export default function Session() {
                     else if (resource) addSaved(resource);
                     setSaved((v) => !v);
                   }}
-                  className="flex-1 border border-ivory/25 px-2 py-2 font-mono text-[9.5px] uppercase tracking-[0.08em] text-ivory/75 transition-all hover:border-amber hover:text-amber active:scale-[0.97]"
+                  className="flex-1 border border-ivory/25 px-2 py-2 font-mono text-[10.5px] uppercase tracking-[0.08em] text-ivory/75 transition-all hover:border-amber hover:text-amber active:scale-[0.97]"
                 >
                   {saved ? "Saved ✓" : "Save to library"}
                 </button>
                 <Link
                   href={`/resources/${queryTopic ?? ""}`}
-                  className="flex flex-1 items-center justify-center gap-1 border border-ivory/25 px-2 py-2 font-mono text-[9.5px] uppercase tracking-[0.08em] text-ivory/75 transition-all hover:border-ivory/50 hover:text-ivory active:scale-[0.97]"
+                  className="flex flex-1 items-center justify-center gap-1 border border-ivory/25 px-2 py-2 font-mono text-[10.5px] uppercase tracking-[0.08em] text-ivory/75 transition-all hover:border-ivory/50 hover:text-ivory active:scale-[0.97]"
                 >
                   <SkipForward className="h-3 w-3" /> Skip topic
                 </Link>
               </div>
             </div>
 
-            <p className="mt-4 font-mono text-[10px] leading-relaxed text-ivory/50">
+            <p className="mt-4 font-mono text-[12px] leading-relaxed text-ivory/50">
               Transcript, notes, replay marks and “Ask Cognify” are available inside the player.
               Playback events are logged for your analytics file.
             </p>
@@ -521,7 +521,7 @@ export default function Session() {
                   className="border border-ink/25 p-3 transition-all hover:border-teal active:scale-[0.97]"
                 >
                   <div className="font-mono text-lg font-medium text-teal">{c.value}%</div>
-                  <div className="mt-1 font-mono text-[10px] uppercase tracking-[0.1em] text-ink/60">{c.label}</div>
+                  <div className="mt-1 font-mono text-[12px] uppercase tracking-[0.1em] text-ink/60">{c.label}</div>
                 </button>
               ))}
             </div>

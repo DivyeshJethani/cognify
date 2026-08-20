@@ -1,8 +1,7 @@
 /**
- * COGNIFY — Shared primitives
- * Style: Scholar's Atelier. Small-caps marginalia labels, hairline rules,
- * hairline-framed mastery bars, state badges in teal/amber/green/ink.
- * Minimal radii, no glow, no glass.
+ * COGNIFY — Shared primitives (Day 8 refinement: calm, warm, modern education feel).
+ * Semantic colour: teal = action/learning, green = healthy, amber = attention,
+ * ink = neutral info. Manrope values, Inter body, mono only for metadata.
  */
 import { cn } from "@/lib/utils";
 import type { TopicState } from "@/lib/types";
@@ -57,15 +56,15 @@ export function MasteryBar({
 export function stateColor(state: TopicState): string {
   switch (state) {
     case "mastered":
-      return "#1f9d8b";
+      return "#3d8f6b"; // restrained green — completed / healthy
     case "proficient":
-      return "#1f9d8b";
+      return "#2b9c8c"; // muted teal — learning
     case "developing":
-      return "#7fa894";
+      return "#4c83b5"; // soft blue — supporting info
     case "weak":
-      return "#e9a23b";
+      return "#d9912f"; // warm amber — needs attention
     case "learning":
-      return "#102a43";
+      return "#132b3b"; // deep ink-charcoal — neutral info
     case "new":
       return "#8b949e";
   }
@@ -92,7 +91,7 @@ export function StateBadge({ state }: { state: TopicState }) {
   const color = stateColor(state);
   return (
     <span
-      className="inline-flex items-center gap-1.5 border px-2 py-0.5 font-mono text-[10px] font-medium uppercase tracking-[0.08em]"
+      className="inline-flex items-center gap-1.5 border px-2 py-0.5 font-mono text-[12px] font-medium uppercase tracking-[0.08em]"
       style={{ borderColor: color, color }}
     >
       <span className="h-1.5 w-1.5 rounded-full" style={{ background: color }} />
@@ -105,27 +104,27 @@ export function StateBadge({ state }: { state: TopicState }) {
 export function RevisionChip({ dueInDays, status }: { dueInDays: number | null; status: string }) {
   if (status === "not-started")
     return (
-      <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+      <span className="font-mono text-[12px] uppercase tracking-wider text-muted-foreground">
         Not scheduled
       </span>
     );
   if (status === "overdue")
     return (
-      <span className="inline-flex items-center gap-1 font-mono text-[10px] font-medium uppercase tracking-wider text-amber-dark">
+      <span className="inline-flex items-center gap-1 font-mono text-[12px] font-medium uppercase tracking-wider text-amber-dark">
         <span className="h-1.5 w-1.5 rounded-full bg-amber" />
         Overdue {dueInDays !== null && dueInDays < 0 ? `${Math.abs(dueInDays)}d` : ""}
       </span>
     );
   if (status === "due")
     return (
-      <span className="inline-flex items-center gap-1 font-mono text-[10px] font-medium uppercase tracking-wider text-amber-dark">
+      <span className="inline-flex items-center gap-1 font-mono text-[12px] font-medium uppercase tracking-wider text-amber-dark">
         <span className="h-1.5 w-1.5 rounded-full bg-amber" />
         Due {dueInDays === 0 ? "today" : `in ${dueInDays}d`}
       </span>
     );
   return (
-    <span className="inline-flex items-center gap-1 font-mono text-[10px] uppercase tracking-wider text-green-mid">
-      <span className="h-1.5 w-1.5 rounded-full bg-green-mid" />
+    <span className="inline-flex items-center gap-1 font-mono text-[12px] uppercase tracking-wider text-blue-soft">
+      <span className="h-1.5 w-1.5 rounded-full bg-blue-soft" />
       On track · {dueInDays}d
     </span>
   );
@@ -133,18 +132,18 @@ export function RevisionChip({ dueInDays, status }: { dueInDays: number | null; 
 
 /* ---------- Recommendation action label ---------- */
 const actionMeta: Record<string, { label: string; color: string }> = {
-  learn: { label: "Learn", color: "#102a43" },
-  practice: { label: "Practice", color: "#1f9d8b" },
-  revise: { label: "Revise", color: "#e9a23b" },
-  "teach-back": { label: "Teach back", color: "#7fa894" },
-  stretch: { label: "Stretch", color: "#102a43" },
+  learn: { label: "Learn", color: "#132b3b" },
+  practice: { label: "Practice", color: "#2b9c8c" },
+  revise: { label: "Revise", color: "#d9912f" },
+  "teach-back": { label: "Teach back", color: "#3d8f6b" },
+  stretch: { label: "Stretch", color: "#132b3b" },
 };
 
 export function ActionChip({ action }: { action: string }) {
   const meta = actionMeta[action] ?? { label: action, color: "#8b949e" };
   return (
     <span
-      className="border-l-2 px-1.5 py-0.5 font-mono text-[10px] font-medium uppercase tracking-[0.1em]"
+      className="border-l-2 px-1.5 py-0.5 font-mono text-[12px] font-medium uppercase tracking-[0.1em]"
       style={{ borderLeftColor: meta.color, color: meta.color }}
     >
       {meta.label}
@@ -166,11 +165,11 @@ export function StatCell({
 }) {
   return (
     <div className={cn("border-l border-ink/10 pl-4", className)}>
-      <div className="font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
+      <div className="font-mono text-[12px] font-medium uppercase tracking-[0.08em] text-muted-foreground">
         {label}
       </div>
-      <div className="mt-1 font-serif text-2xl font-bold text-ink">{value}</div>
-      {sub && <div className="mt-0.5 font-mono text-[11px] text-muted-foreground">{sub}</div>}
+      <div className="mt-1 font-display text-[26px] font-bold leading-none text-ink">{value}</div>
+      {sub && <div className="mt-0.5 font-mono text-[14px] text-muted-foreground">{sub}</div>}
     </div>
   );
 }

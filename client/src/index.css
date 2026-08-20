@@ -1,11 +1,13 @@
 /**
  * COGNIFY — Design System
- * Style: "The Scholar's Atelier" — editorial academic aesthetic.
- * Palette: Deep Ink #102A43 · Cognify Teal #1F9D8B · Learning Amber #E9A23B
- *          Warm Ivory #F7F5EF · Soft Green #E9F0EC · Dark Text #17212B
- * Typography: Libre Caslon Text (display serif) / Public Sans (UI) / IBM Plex Mono (data)
- * Motifs: hairline rules, small-caps marginalia labels, footnote explanations.
- * Avoid: neon, glassmorphism, big rounded cards, purple gradients, bento grids.
+ * Style: "The Scholar's Atelier" — refined into a calm, warm, modern education feel.
+ * Palette: Deep Ink #132B3B · Cognify Teal #2B9C8C · Soft Blue #4C83B5
+ *          Warm Ivory #F7F6F1 · Restrained Green #3D8F6B · Warm Amber #D9912F
+ * Typography: Manrope (display/headings) / Inter (body) / JetBrains Mono (data only)
+ * Principles: calm, clear, warm, approachable; semantic colour, generous
+ *              line-height (1.5–1.7 body), whitespace-driven hierarchy.
+ * Avoid: neon, glassmorphism, big rounded cards, purple gradients, bento grids,
+ *        accent colours in body text, dense uppercase metadata.
  */
 @import "tailwindcss";
 @import "tw-animate-css";
@@ -14,18 +16,20 @@
 
 /* ---------- Palette tokens (raw) ---------- */
 :root {
-  --ink: #102a43;
-  --teal: #1f9d8b;
-  --teal-dark: #17776a;
-  --amber: #e9a23b;
-  --amber-dark: #c9862a;
-  --ivory: #f7f5ef;
-  --ivory-deep: #f1eee6;
-  --soft-green: #e9f0ec;
-  --green-mid: #7fa894;
-  --dark-text: #17212b;
-  --ink-faint: rgba(16, 42, 67, 0.07);
-  --ink-mid: rgba(16, 42, 67, 0.45);
+  --ink: #132b3b;
+  --teal: #2b9c8c;
+  --teal-dark: #238375;
+  --amber: #d9912f;
+  --amber-dark: #b8772a;
+  --blue-soft: #4c83b5;
+  --blue-light: #e9f0f8;
+  --green-ok: #3d8f6b;
+  --green-light: #e8f3ed;
+  --ivory: #f7f6f1;
+  --ivory-deep: #f1efea;
+  --dark-text: #1b2733;
+  --ink-faint: rgba(19, 43, 59, 0.06);
+  --ink-mid: rgba(19, 43, 59, 0.5);
 }
 
 @theme inline {
@@ -69,6 +73,10 @@
   --color-ink: var(--ink);
   --color-teal: var(--teal);
   --color-teal-dark: var(--teal-dark);
+  --color-blue-soft: var(--blue-soft);
+  --color-blue-light: var(--blue-light);
+  --color-green-ok: var(--green-ok);
+  --color-green-light: var(--green-light);
   --color-amber: var(--amber);
   --color-amber-dark: var(--amber-dark);
   --color-ivory: var(--ivory);
@@ -76,39 +84,39 @@
   --color-soft-green: var(--soft-green);
   --color-green-mid: var(--green-mid);
   --color-dark-text: var(--dark-text);
-  --font-serif: "Libre Caslon Text", Georgia, serif;
-  --font-sans: "Public Sans", system-ui, sans-serif;
-  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+  --font-display: "Manrope", "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
 }
 
 :root {
   --radius: 0.25rem; /* minimal radii per design system */
-  --background: oklch(0.972 0.008 95); /* Warm Ivory #F7F5EF */
-  --foreground: oklch(0.235 0.04 245); /* Dark Text #17212B-ish */
-  --card: oklch(0.985 0.005 95);
-  --card-foreground: oklch(0.235 0.04 245);
-  --popover: oklch(0.985 0.005 95);
-  --popover-foreground: oklch(0.235 0.04 245);
-  --primary: oklch(0.605 0.095 178); /* Cognify Teal #1F9D8B */
-  --primary-foreground: oklch(0.99 0.003 95);
-  --secondary: oklch(0.94 0.015 160); /* Soft Green */
-  --secondary-foreground: oklch(0.35 0.06 178);
-  --muted: oklch(0.955 0.008 95);
-  --muted-foreground: oklch(0.5 0.02 245);
-  --accent: oklch(0.79 0.14 75); /* Learning Amber #E9A23B */
-  --accent-foreground: oklch(0.25 0.04 245);
+  --background: oklch(0.975 0.006 90); /* Warm Ivory #F7F6F1 */
+  --foreground: oklch(0.27 0.04 240); /* Deep Ink-charcoal */
+  --card: oklch(0.99 0.004 90);
+  --card-foreground: oklch(0.27 0.04 240);
+  --popover: oklch(0.99 0.004 90);
+  --popover-foreground: oklch(0.27 0.04 240);
+  --primary: oklch(0.655 0.09 178); /* Muted Cognify Teal #2B9C8C */
+  --primary-foreground: oklch(0.99 0.003 90);
+  --secondary: oklch(0.945 0.02 230); /* Soft Blue #4C83B5 support */
+  --secondary-foreground: oklch(0.38 0.07 245);
+  --muted: oklch(0.96 0.006 90);
+  --muted-foreground: oklch(0.48 0.02 240);
+  --accent: oklch(0.74 0.13 70); /* Warm Amber #D9912F */
+  --accent-foreground: oklch(0.25 0.04 240);
   --destructive: oklch(0.55 0.18 28);
   --destructive-foreground: oklch(0.99 0 0);
   --border: oklch(0.25 0.04 245 / 14%);
   --input: oklch(0.25 0.04 245 / 18%);
   --ring: oklch(0.605 0.095 178 / 60%);
-  --chart-1: oklch(0.605 0.095 178); /* teal */
-  --chart-2: oklch(0.79 0.14 75); /* amber */
-  --chart-3: oklch(0.4 0.06 245); /* ink */
-  --chart-4: oklch(0.72 0.06 160); /* green */
-  --chart-5: oklch(0.55 0.08 178);
-  --sidebar: oklch(0.27 0.05 245); /* Deep Ink #102A43 */
-  --sidebar-foreground: oklch(0.93 0.01 95);
+  --chart-1: oklch(0.655 0.09 178); /* teal = action/learning */
+  --chart-2: oklch(0.74 0.13 70); /* amber = attention */
+  --chart-3: oklch(0.35 0.05 240); /* ink */
+  --chart-4: oklch(0.61 0.11 155); /* restrained green = healthy */
+  --chart-5: oklch(0.58 0.09 245); /* soft blue = support */
+  --sidebar: oklch(0.255 0.045 240); /* Deep Ink #132B3B */
+  --sidebar-foreground: oklch(0.94 0.008 90);
   --sidebar-primary: oklch(0.605 0.095 178);
   --sidebar-primary-foreground: oklch(0.99 0 0);
   --sidebar-accent: oklch(0.32 0.05 245);
@@ -157,6 +165,8 @@
   body {
     @apply bg-background text-foreground;
     font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.6;
     font-feature-settings: "tnum" 1;
     -webkit-font-smoothing: antialiased;
   }
@@ -175,8 +185,13 @@
     @apply cursor-pointer;
   }
   h1, h2, h3 {
-    font-family: var(--font-serif);
-    letter-spacing: -0.015em;
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  p {
+    line-height: 1.65;
+    color: var(--foreground);
   }
 }
 
@@ -206,12 +221,12 @@
     }
   }
 
-  /* Marginalia small-caps section label */
+  /* Section label — kept as a quiet, readable metadata line */
   .marginalia {
-    font-family: var(--font-sans);
-    font-size: 0.6875rem;
+    font-family: var(--font-display);
+    font-size: 0.75rem;
     font-weight: 700;
-    letter-spacing: 0.16em;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--ink-mid);
     display: flex;
@@ -229,33 +244,33 @@
     background: var(--amber);
   }
 
-  /* Hairline rule with helix dot */
+  /* Soft rule — lighter and warmer than the old academic hairline */
   .hairline {
     height: 1px;
-    background: linear-gradient(to right, var(--ink-faint), rgba(16, 42, 67, 0.16) 40%, var(--ink-faint));
+    background: linear-gradient(to right, transparent, rgba(19, 43, 59, 0.12) 40%, transparent);
   }
 
-  /* Footnote explanation */
+  /* Supporting explanation — readable, calm, never tiny */
   .footnote {
-    font-family: var(--font-serif);
+    font-family: var(--font-sans);
     font-style: italic;
-    font-size: 0.8125rem;
-    line-height: 1.55;
+    font-size: 0.9375rem;
+    line-height: 1.65;
     color: var(--ink-mid);
   }
 
-  /* Numbered list index style */
+  /* Step index — data-style but never for prose */
   .index-num {
     font-family: var(--font-mono);
-    font-size: 0.75rem;
-    color: var(--teal-dark);
-    letter-spacing: 0.05em;
+    font-size: 0.8125rem;
+    color: var(--teal);
+    letter-spacing: 0.02em;
   }
 
-  /* Paper texture overlay */
+  /* Soft paper texture — barely visible warmth */
   .paper-grain {
-    background-image: radial-gradient(rgba(16, 42, 67, 0.035) 1px, transparent 1px);
-    background-size: 22px 22px;
+    background-image: radial-gradient(rgba(19, 43, 59, 0.025) 1px, transparent 1px);
+    background-size: 24px 24px;
   }
 
   /* Player control buttons (deep-ink stage) */

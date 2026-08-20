@@ -18,7 +18,7 @@ import { Link } from "wouter";
 
 /* ---------- Journey link ---------- */
 const journeyLinkBase =
-  "group inline-flex items-baseline gap-1.5 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-ink/70 transition-colors duration-200 hover:text-teal";
+  "group inline-flex items-baseline gap-1.5 font-mono text-[12px] font-medium uppercase tracking-[0.08em] text-ink/70 transition-colors duration-200 hover:text-teal";
 
 export function JourneyLink({
   href,
@@ -68,7 +68,7 @@ export function WhyInteraction({
         type="button"
         onClick={() => setOpen((v) => !v)}
         className={cn(
-          "inline-flex items-center gap-2 border-b border-dashed border-ink/25 pb-0.5 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-ink/55",
+          "inline-flex items-center gap-2 border-b border-dashed border-ink/25 pb-0.5 font-mono text-[12px] font-medium uppercase tracking-[0.08em] text-ink/55",
           "transition-colors duration-200 hover:border-teal hover:text-teal",
         )}
         aria-expanded={open}
@@ -91,7 +91,7 @@ export function WhyInteraction({
       >
         <div className="overflow-hidden">
           <div className="pt-3 pl-3 border-l border-ink/15">
-            <p className="font-serif text-[13px] leading-snug text-ink">{reason.headline}</p>
+            <p className="font-serif text-[14px] leading-snug text-ink">{reason.headline}</p>
             <p className="mt-1 font-sans text-[12px] leading-relaxed text-muted-foreground">
               {reason.detail}
             </p>
@@ -117,7 +117,7 @@ export function WhyInteraction({
 /* ---------- One-line WHY footer (always visible, quiet) ---------- */
 export function WhyFootnote({ reason, className }: { reason: WhyReason; className?: string }) {
   return (
-    <p className={cn("font-mono text-[10px] leading-relaxed uppercase tracking-[0.06em] text-ink/50", className)}>
+    <p className={cn("font-mono text-[12px] leading-relaxed uppercase tracking-[0.06em] text-ink/50", className)}>
       <span className="text-teal">Why — </span>
       {reason.headline.replace(/\.$/, "").toLowerCase()}
       <span className="text-ink/30">.</span>

@@ -42,7 +42,7 @@ export default function ComingSoon({
           </div>
           <Link
             href={auth.kind === "logged-in" ? "/dashboard" : "/"}
-            className="mt-8 inline-block border-b border-teal/50 pb-0.5 font-mono text-[11px] uppercase tracking-[0.14em] text-teal"
+            className="mt-8 inline-block border-b border-teal/50 pb-0.5 font-mono text-[14px] uppercase tracking-[0.08em] text-teal"
           >
             ← Back to the command center
           </Link>

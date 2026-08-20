@@ -87,10 +87,10 @@ function sourceGlyph(source: LearningResource["source"]): string {
 }
 
 const DIFFICULTY_COLORS: Record<string, string> = {
-  foundational: "#7fa894",
-  core: "#1f9d8b",
-  advanced: "#102a43",
-  stretch: "#c9862a",
+  foundational: "#4c83b5",
+  core: "#2b9c8c",
+  advanced: "#132b3b",
+  stretch: "#b8772a",
 };
 
 export default function Library() {
@@ -156,7 +156,7 @@ export default function Library() {
         actions={
           <Link
             href="/dashboard"
-            className="border border-ink/15 bg-card px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.1em] text-ink/70 transition-colors hover:border-teal hover:text-teal"
+            className="border border-ink/15 bg-card px-3 py-1.5 font-mono text-[14px] uppercase tracking-[0.1em] text-ink/70 transition-colors hover:border-teal hover:text-teal"
           >
             ← Command Center
           </Link>
@@ -165,12 +165,12 @@ export default function Library() {
 
       {subjectFilter !== "all" && (
         <div className="flex items-center justify-between gap-3 border-b border-amber/30 bg-amber/5 px-5 py-2.5 sm:px-8 lg:px-10">
-          <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-amber-dark">
+          <span className="font-display text-xs uppercase tracking-[0.08em] text-amber-dark">
             Focused on {subjectNames[subjectFilter] ?? subjectFilter}
           </span>
           <button
             onClick={() => setSubjectFilter("all")}
-            className="font-mono text-[10px] uppercase tracking-[0.14em] text-ink/55 hover:text-teal"
+            className="font-display text-xs uppercase tracking-[0.08em] text-ink/55 hover:text-teal"
           >
             Show all subjects ←
           </button>
@@ -296,7 +296,7 @@ export default function Library() {
                         >
                           {sourceGlyph(r.source)}
                         </span>
-                        <span className="font-mono text-[10px] text-ink/55">{r.sourceLabel}</span>
+                        <span className="font-mono text-[12px] text-ink/55">{r.sourceLabel}</span>
                         <ActionChip action={actionForFormat(r.format)} />
                         <span
                           className="border px-1.5 py-0.5 font-mono text-[9px] uppercase tracking-wider"
@@ -312,7 +312,7 @@ export default function Library() {
                             <ExternalLink className="h-3 w-3" /> free web
                           </span>
                         )}
-                        <span className="flex items-center gap-1 font-mono text-[10px] text-muted-foreground">
+                        <span className="flex items-center gap-1 font-mono text-[12px] text-muted-foreground">
                           <Clock className="h-3 w-3" /> {r.durationMinutes} min
                         </span>
                         {continuedIds.has(r.id) && (
@@ -326,7 +326,7 @@ export default function Library() {
                       </div>
                       <div className="mt-2 flex flex-wrap items-center gap-3">
                         {r.chapterTitle && (
-                          <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+                          <span className="font-mono text-[12px] uppercase tracking-wider text-muted-foreground">
                             {r.subjectLabel} · {r.chapterTitle}
                           </span>
                         )}
@@ -335,14 +335,14 @@ export default function Library() {
                             <span className="hidden h-1 w-1 rounded-full bg-ink/20 sm:block" />
                             <Link
                               href={`/topic/${r.topicId}`}
-                              className="border-b border-dotted border-teal/60 font-mono text-[10px] uppercase tracking-wider text-teal transition-colors hover:border-teal"
+                              className="border-b border-dotted border-teal/60 font-mono text-[12px] uppercase tracking-wider text-teal transition-colors hover:border-teal"
                             >
                               {r.topicTitle}
                             </Link>
                           </>
                         )}
                         <span className="hidden h-1 w-1 rounded-full bg-ink/20 sm:block" />
-                        <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+                        <span className="font-mono text-[12px] uppercase tracking-wider text-muted-foreground">
                           Relevance {r.relevance}
                         </span>
                       </div>
@@ -356,26 +356,26 @@ export default function Library() {
                       <div className="mt-2 max-w-3xl">
                         {expandedWhy === r.id ? (
                           <div className="border-l border-dotted border-ink/15 pl-3">
-                            <span className="font-mono text-[10px] font-bold uppercase tracking-[0.1em] text-teal-dark">
+                            <span className="font-mono text-[12px] font-bold uppercase tracking-[0.1em] text-teal-dark">
                               Why Cognify recommends
                             </span>
-                            <p className="mt-1 text-[13px] leading-relaxed text-dark-text/75">{r.whyRecommended}</p>
+                            <p className="mt-1 text-[14px] leading-relaxed text-dark-text/75">{r.whyRecommended}</p>
                             <button
                               onClick={() => setExpandedWhy(null)}
-                              className="mt-1 font-mono text-[10px] uppercase tracking-[0.14em] text-ink/55 hover:text-teal"
+                              className="mt-1 font-display text-xs uppercase tracking-[0.08em] text-ink/55 hover:text-teal"
                             >
                               Hide evidence ←
                             </button>
                           </div>
                         ) : (
-                          <p className="text-[13px] leading-relaxed text-dark-text/75">
-                            <span className="font-mono text-[10px] font-bold uppercase tracking-[0.1em] text-teal-dark">
+                          <p className="text-[14px] leading-relaxed text-dark-text/75">
+                            <span className="font-mono text-[12px] font-bold uppercase tracking-[0.1em] text-teal-dark">
                               Why recommended{" "}
                             </span>
                             {r.whyRecommended.split(".").slice(0, 1).join("")}.
                             <button
                               onClick={() => setExpandedWhy(r.id)}
-                              className="ml-2 border-b border-teal/50 pb-0.5 font-mono text-[10px] uppercase tracking-[0.14em] text-teal transition-colors hover:border-teal"
+                              className="ml-2 border-b border-teal/50 pb-0.5 font-display text-xs uppercase tracking-[0.08em] text-teal transition-colors hover:border-teal"
                             >
                               See evidence →
                             </button>
@@ -395,7 +395,7 @@ export default function Library() {
                           toast("Saving to your shelf — evidence logged");
                           import("@/lib/savedResources").then((m) => m.addSaved(r));
                         }}
-                        className="h-9 whitespace-nowrap border border-ink/25 bg-card px-3 font-mono text-[10px] uppercase tracking-[0.12em] text-ink/70 transition-all duration-150 hover:border-teal hover:text-teal active:scale-[0.97]"
+                        className="h-9 whitespace-nowrap border border-ink/25 bg-card px-3 font-mono text-[12px] uppercase tracking-[0.12em] text-ink/70 transition-all duration-150 hover:border-teal hover:text-teal active:scale-[0.97]"
                       >
                         Save
                       </button>
@@ -443,7 +443,7 @@ export default function Library() {
                   return (
                     <li key={name} className="flex items-baseline justify-between border-b border-dotted border-ink/15 pb-1">
                       <span className="font-serif text-[14px] text-ink">{name}</span>
-                      <span className="font-mono text-[10px] text-muted-foreground">{count} topics</span>
+                      <span className="font-mono text-[12px] text-muted-foreground">{count} topics</span>
                     </li>
                   );
                 })}
@@ -467,21 +467,21 @@ export default function Library() {
             <Marginalia amber>Before you open a resource</Marginalia>
             <ol className="mt-3 space-y-3">
               <li>
-                <div className="font-mono text-[9px] uppercase tracking-[0.14em] text-teal">1 · Understand</div>
+                <div className="font-mono text-[9px] uppercase tracking-[0.08em] text-teal">1 · Understand</div>
                 <p className="mt-1 text-[12.5px] leading-relaxed text-dark-text/75">
                   Each row states what the resource is and what objective it serves —
                   read the “why recommended” line before beginning.
                 </p>
               </li>
               <li>
-                <div className="font-mono text-[9px] uppercase tracking-[0.14em] text-teal">2 · Cognify is watching</div>
+                <div className="font-mono text-[9px] uppercase tracking-[0.08em] text-teal">2 · Cognify is watching</div>
                 <p className="mt-1 text-[12.5px] leading-relaxed text-dark-text/75">
                   During the session the player logs position, rewinds, speed changes and
                   drop-offs. These become the next DNA update.
                 </p>
               </li>
               <li>
-                <div className="font-mono text-[9px] uppercase tracking-[0.14em] text-teal">3 · After this</div>
+                <div className="font-mono text-[9px] uppercase tracking-[0.08em] text-teal">3 · After this</div>
                 <p className="mt-1 text-[12.5px] leading-relaxed text-dark-text/75">
                   A watched resource is followed by a retrieval check and a practice set —
                   the session never ends at the video.
@@ -491,7 +491,7 @@ export default function Library() {
           </div>
 
           <div className="border border-ink bg-ink p-5 text-ivory">
-            <div className="font-mono text-[9px] uppercase tracking-[0.2em] text-teal">Observation</div>
+            <div className="font-mono text-[9px] uppercase tracking-[0.08em] text-teal">Observation</div>
             <p className="mt-2 font-serif text-[15px] leading-relaxed">
               A catalogue is only useful if it is consulted. Finish a started pass before
               opening a fresh resource — the data favours depth over breadth.

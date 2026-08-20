@@ -15,10 +15,10 @@ import { useLocation } from "wouter";
 import { toast } from "sonner";
 
 const DIFFICULTY_COLORS: Record<string, string> = {
-  foundational: "#7fa894",
-  core: "#1f9d8b",
-  advanced: "#102a43",
-  stretch: "#c9862a",
+  foundational: "#4c83b5",
+  core: "#2b9c8c",
+  advanced: "#132b3b",
+  stretch: "#b8772a",
 };
 
 function sourceGlyph(source: LearningResource["source"]): string {
@@ -78,7 +78,7 @@ export default function Saved() {
                       >
                         {sourceGlyph(r!.source)}
                       </span>
-                      <span className="font-mono text-[10px] text-ink/55">{r!.sourceLabel}</span>
+                      <span className="font-mono text-[12px] text-ink/55">{r!.sourceLabel}</span>
                       <ActionChip action={r!.format === "practice" ? "practice" : r!.format === "revision" ? "revise" : "learn"} />
                       <span
                         className="border px-1.5 py-0.5 font-mono text-[9px] uppercase tracking-wider"
@@ -86,7 +86,7 @@ export default function Saved() {
                       >
                         {r!.difficulty}
                       </span>
-                      <span className="flex items-center gap-1 font-mono text-[10px] text-muted-foreground">
+                      <span className="flex items-center gap-1 font-mono text-[12px] text-muted-foreground">
                         <Clock className="h-3 w-3" /> {r!.durationMinutes} min
                       </span>
                       <span className="font-mono text-[9px] uppercase tracking-[0.1em] text-muted-foreground">
@@ -96,11 +96,11 @@ export default function Saved() {
                     <div className="mt-1.5 font-serif text-[16px] font-bold leading-snug text-ink">
                       {r!.title}
                     </div>
-                    <div className="mt-1 font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+                    <div className="mt-1 font-mono text-[12px] uppercase tracking-wider text-muted-foreground">
                       {r!.topicTitle}
                     </div>
                     {s.note && (
-                      <p className="mt-2 max-w-2xl border-l-2 border-amber/50 bg-amber/5 px-3 py-1.5 text-[13px] italic leading-relaxed text-dark-text/75">
+                      <p className="mt-2 max-w-2xl border-l-2 border-amber/50 bg-amber/5 px-3 py-1.5 text-[14px] italic leading-relaxed text-dark-text/75">
                         “{s.note}”
                       </p>
                     )}
@@ -118,7 +118,7 @@ export default function Saved() {
                         toast("Removed from the shelf");
                         refresh();
                       }}
-                      className="h-9 whitespace-nowrap border border-ink/25 bg-card px-3 font-mono text-[10px] uppercase tracking-[0.12em] text-ink/60 transition-all duration-150 hover:border-destructive hover:text-destructive active:scale-[0.97]"
+                      className="h-9 whitespace-nowrap border border-ink/25 bg-card px-3 font-mono text-[12px] uppercase tracking-[0.12em] text-ink/60 transition-all duration-150 hover:border-destructive hover:text-destructive active:scale-[0.97]"
                     >
                       Remove
                     </button>
@@ -156,7 +156,7 @@ export default function Saved() {
         <aside className="mt-8 grid gap-6 lg:grid-cols-3">
           <div className="border border-ink/10 bg-card p-5">
             <Marginalia>How the shelf is used</Marginalia>
-            <p className="mt-3 text-[13px] leading-relaxed text-dark-text/75">
+            <p className="mt-3 text-[14px] leading-relaxed text-dark-text/75">
               The Command Center draws a <span className="font-semibold text-ink">Continue
               learning</span> rail from started sessions, and the catalogue marks them with a
               progress tick. The shelf is the same discipline, manually curated.
@@ -164,13 +164,13 @@ export default function Saved() {
           </div>
           <div className="border border-ink/10 bg-card p-5">
             <Marginalia>Notes at save time</Marginalia>
-            <p className="mt-3 text-[13px] leading-relaxed text-dark-text/75">
+            <p className="mt-3 text-[14px] leading-relaxed text-dark-text/75">
               A note attached when saving is preserved here — evidence of what you thought
               the resource would help with. Attachments like this later train the reasoner.
             </p>
           </div>
           <div className="border border-ink bg-ink p-5 text-ivory">
-            <div className="font-mono text-[9px] uppercase tracking-[0.2em] text-teal">Observation</div>
+            <div className="font-mono text-[9px] uppercase tracking-[0.08em] text-teal">Observation</div>
             <p className="mt-2 font-serif text-[15px] leading-relaxed">
               Curated beats collected. A shelf of ten consulted items outperforms a shelf of
               fifty untouched ones.

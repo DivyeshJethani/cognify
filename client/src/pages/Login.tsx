@@ -38,13 +38,13 @@ export default function Login() {
         <div className="flex items-center px-6 py-12 sm:px-12 lg:px-20">
           <div className="w-full max-w-sm">
             <div className="marginalia">Entry — sign in</div>
-            <h1 className="mt-4 font-serif text-3xl font-bold text-ink">Return to the laboratory.</h1>
+            <h1 className="mt-4 font-display text-3xl font-bold text-ink">Return to the laboratory.</h1>
             <p className="mt-3 text-[14px] leading-relaxed text-dark-text/75">
               Your Learning DNA picks up exactly where you left it.
             </p>
             <form onSubmit={onSubmit} className="mt-8 space-y-5">
               <div className="space-y-2">
-                <Label htmlFor="name" className="font-mono text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
+                <Label htmlFor="name" className="font-display text-xs uppercase tracking-[0.08em] text-muted-foreground">
                   Your name <span className="text-ink/30">(optional)</span>
                 </Label>
                 <Input
@@ -56,7 +56,7 @@ export default function Login() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="email" className="font-mono text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
+                <Label htmlFor="email" className="font-display text-xs uppercase tracking-[0.08em] text-muted-foreground">
                   Email address
                 </Label>
                 <Input
@@ -69,7 +69,7 @@ export default function Login() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="password" className="font-mono text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
+                <Label htmlFor="password" className="font-display text-xs uppercase tracking-[0.08em] text-muted-foreground">
                   Password
                 </Label>
                 <Input
@@ -85,7 +85,7 @@ export default function Login() {
                 )}
               </Button>
             </form>
-            <p className="mt-6 text-[13px] text-dark-text/60">
+            <p className="mt-6 text-[14px] text-dark-text/60">
               New to COGNIFY?{" "}
               <Link href="/signup" className="border-b border-teal/60 pb-0.5 font-medium text-teal hover:border-teal">
                 Begin your diagnostic
@@ -105,7 +105,7 @@ export default function Login() {
               <h2 className="font-serif text-2xl font-bold leading-snug">
                 Field notes, entry 001
               </h2>
-              <p className="mt-3 max-w-sm text-[13px] leading-relaxed text-white/60">
+              <p className="mt-3 max-w-sm text-[14px] leading-relaxed text-white/60">
                 Today's observations will be added to your Learning DNA the moment
                 you sign in.
               </p>
@@ -117,7 +117,7 @@ export default function Login() {
                 ["Backlog", "4 topics due for spaced revision"],
               ].map(([k, v]) => (
                 <div key={k} className="flex items-baseline justify-between border-b border-white/10 pb-3">
-                  <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-white/40">{k}</span>
+                  <span className="font-display text-xs uppercase tracking-[0.08em] text-white/40">{k}</span>
                   <span className="font-mono text-[12px] text-teal">{v}</span>
                 </div>
               ))}

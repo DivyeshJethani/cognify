@@ -40,10 +40,10 @@ const DIFFICULTIES: { key: Difficulty | "all"; label: string }[] = [
 ];
 
 const DIFFICULTY_COLORS: Record<Difficulty, string> = {
-  foundational: "#7fa894",
-  core: "#1f9d8b",
-  advanced: "#102a43",
-  stretch: "#c9862a",
+  foundational: "#4c83b5",
+  core: "#2b9c8c",
+  advanced: "#132b3b",
+  stretch: "#b8772a",
 };
 
 function sourceGlyph(source: LearningResource["source"]): string {
@@ -92,7 +92,7 @@ export default function Resources() {
             actions={
               <Link
                 href="/curriculum"
-                className="border border-ink/15 bg-card px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.1em] text-ink/70 transition-colors hover:border-teal hover:text-teal"
+                className="border border-ink/15 bg-card px-3 py-1.5 font-mono text-[14px] uppercase tracking-[0.1em] text-ink/70 transition-colors hover:border-teal hover:text-teal"
               >
                 ← Back to explorer
               </Link>
@@ -180,17 +180,17 @@ export default function Resources() {
                 <div className="mt-4 font-serif text-lg font-bold leading-snug text-ink">
                   {resolved.topic.title}
                 </div>
-                <p className="mt-2 text-[13px] leading-relaxed text-dark-text/75">
+                <p className="mt-2 text-[14px] leading-relaxed text-dark-text/75">
                   {resolved.topic.actionReason ??
                     `A topic in ${resolved.chapter.title}. Choose a resource to begin a guided learning session.`}
                 </p>
                 <div className="mt-4 grid grid-cols-2 gap-px bg-ink/10">
                   <div className="bg-card p-3">
-                    <div className="font-mono text-[9px] uppercase tracking-[0.14em] text-muted-foreground">Mastery</div>
+                    <div className="font-mono text-[9px] uppercase tracking-[0.08em] text-muted-foreground">Mastery</div>
                     <div className="mt-1 font-mono text-sm font-medium text-ink">{resolved.topic.mastery}%</div>
                   </div>
                   <div className="bg-card p-3">
-                    <div className="font-mono text-[9px] uppercase tracking-[0.14em] text-muted-foreground">Est. time</div>
+                    <div className="font-mono text-[9px] uppercase tracking-[0.08em] text-muted-foreground">Est. time</div>
                     <div className="mt-1 font-mono text-sm font-medium text-ink">{resolved.topic.estimatedMinutes} min</div>
                   </div>
                 </div>
@@ -252,7 +252,7 @@ function ResourceRow({
             >
               {sourceGlyph(resource.source)}
             </span>
-            <span className="font-mono text-[10px] text-ink/55">{resource.sourceLabel}</span>
+            <span className="font-mono text-[12px] text-ink/55">{resource.sourceLabel}</span>
             <ActionChip action={actionForFormat(resource.format)} />
             <span
               className="border px-1.5 py-0.5 font-mono text-[9px] uppercase tracking-wider"
@@ -260,7 +260,7 @@ function ResourceRow({
             >
               {resource.difficulty}
             </span>
-            <span className="flex items-center gap-1 font-mono text-[10px] text-muted-foreground">
+            <span className="flex items-center gap-1 font-mono text-[12px] text-muted-foreground">
               <Clock className="h-3 w-3" /> {resource.durationMinutes} min
             </span>
           </div>
@@ -272,12 +272,12 @@ function ResourceRow({
           {/* Relevance + why */}
           <div className="mt-2.5 flex flex-wrap items-center gap-3">
             <div className="flex items-center gap-2">
-              <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">Relevance</span>
+              <span className="font-mono text-[12px] uppercase tracking-wider text-muted-foreground">Relevance</span>
               <div className="flex w-28 items-center">
                 <div className="h-1.5 w-full border border-ink/15 bg-ivory-deep">
                   <div className="h-full bg-teal" style={{ width: `${resource.relevance}%` }} />
                 </div>
-                <span className="ml-1.5 font-mono text-[11px] font-medium text-dark-text/70">
+                <span className="ml-1.5 font-mono text-[14px] font-medium text-dark-text/70">
                   {resource.relevance}
                 </span>
               </div>
@@ -292,26 +292,26 @@ function ResourceRow({
           <div className="mt-2 max-w-3xl">
             {whyOpen ? (
               <div className="border-l border-dotted border-ink/15 pl-3">
-                <span className="font-mono text-[10px] font-bold uppercase tracking-[0.1em] text-teal-dark">
+                <span className="font-mono text-[12px] font-bold uppercase tracking-[0.1em] text-teal-dark">
                   Why Cognify recommends
                 </span>
-                <p className="mt-1 text-[13px] leading-relaxed text-dark-text/75">{resource.whyRecommended}</p>
+                <p className="mt-1 text-[14px] leading-relaxed text-dark-text/75">{resource.whyRecommended}</p>
                 <button
                   onClick={() => setWhyOpen(false)}
-                  className="mt-1 font-mono text-[10px] uppercase tracking-[0.14em] text-ink/55 hover:text-teal"
+                  className="mt-1 font-display text-xs uppercase tracking-[0.08em] text-ink/55 hover:text-teal"
                 >
                   Hide evidence ←
                 </button>
               </div>
             ) : (
-              <p className="text-[13px] leading-relaxed text-dark-text/75">
-                <span className="font-mono text-[10px] font-bold uppercase tracking-[0.1em] text-teal-dark">
+              <p className="text-[14px] leading-relaxed text-dark-text/75">
+                <span className="font-mono text-[12px] font-bold uppercase tracking-[0.1em] text-teal-dark">
                   Why Cognify recommends{" "}
                 </span>
                 {resource.whyRecommended.split(".").slice(0, 1).join("")}.
                 <button
                   onClick={() => setWhyOpen(true)}
-                  className="ml-2 border-b border-teal/50 pb-0.5 font-mono text-[10px] uppercase tracking-[0.14em] text-teal transition-colors hover:border-teal"
+                  className="ml-2 border-b border-teal/50 pb-0.5 font-display text-xs uppercase tracking-[0.08em] text-teal transition-colors hover:border-teal"
                 >
                   See evidence →
                 </button>

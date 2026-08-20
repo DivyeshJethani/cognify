@@ -135,7 +135,7 @@ export default function Dashboard() {
 
       {subjectFocus && (
         <div className="mt-6 flex items-center gap-3 border border-teal/30 bg-teal/5 px-5 py-4">
-          <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-teal-dark">
+          <span className="font-display text-xs uppercase tracking-[0.08em] text-teal-dark">
             Focused
           </span>
           <span className="font-serif text-[15px] font-bold text-ink">
@@ -172,7 +172,7 @@ export default function Dashboard() {
           <div className="border-r border-ink/10 p-6 lg:p-7">
             <div className="flex items-center justify-between">
               <Marginalia amber className="[&::before]:hidden">Today — {todayDateString().split(", ").slice(0, 2).join(", ")}</Marginalia>
-              <Link href="/timetable" className="font-mono text-[10px] uppercase tracking-[0.14em] text-teal hover:underline">
+              <Link href="/timetable" className="font-display text-xs uppercase tracking-[0.08em] text-teal hover:underline">
                 Full plan →
               </Link>
             </div>
@@ -184,17 +184,17 @@ export default function Dashboard() {
                   <div className="index-num pt-0.5">{String(it.number).padStart(2, "0")}</div>
                   <div>
                     <div className="flex flex-wrap items-center gap-2">
-                      <span className="border-l-2 px-1.5 py-0.5 font-mono text-[9px] font-medium uppercase tracking-[0.1em] text-teal" style={{ borderLeftColor: "#1f9d8b" }}>
+                      <span className="border-l-2 px-1.5 py-0.5 font-mono text-[10.5px] font-medium uppercase tracking-[0.1em] text-teal" style={{ borderLeftColor: "#2b9c8c" }}>
                         {it.kind === "teach-back" ? "Teach back" : it.kind}
                       </span>
-                      <span className="font-mono text-[9px] uppercase tracking-wider text-ink/50">
+                      <span className="font-mono text-[10.5px] uppercase tracking-wider text-ink/50">
                         {subjectNames[it.subjectCode] ?? it.subjectCode}
                       </span>
                     </div>
                     <div className="mt-1.5 font-serif text-[16px] font-bold leading-snug text-ink">{it.topicTitle}</div>
                     <div className="mt-1.5 flex flex-wrap items-center gap-3">
-                      <span className="font-mono text-[10px] text-muted-foreground">{it.minutes} min</span>
-                      <span className="font-mono text-[10px] text-ink/45">{it.reason}</span>
+                      <span className="font-mono text-[12px] text-muted-foreground">{it.minutes} min</span>
+                      <span className="font-mono text-[12px] text-ink/45">{it.reason}</span>
                     </div>
                   </div>
                 </li>
@@ -208,14 +208,14 @@ export default function Dashboard() {
             </p>
             <Link
               href={slugOf({ id: "t-1-types-of-reactions" }) ? `/topic/${slugOf({ id: "t-1-types-of-reactions" })}` : `/topic/t-1-types-of-reactions`}
-              className="mt-2 inline-flex items-baseline gap-2 border-b border-teal/50 pb-0.5 font-serif text-xl font-bold text-teal transition-colors hover:border-teal"
+              className="mt-2 inline-flex items-baseline gap-2 border-b border-teal/50 pb-0.5 font-display text-[20px] font-bold text-teal transition-colors hover:border-teal"
             >
               {todaySequence().afterToday.topicTitle}
               <span className="font-mono text-sm">→</span>
             </Link>
             <p className="mt-2 footnote">{todaySequence().afterToday.reason}</p>
             <div className="mt-3">
-              <Link href="/adaptive" className="font-mono text-[10px] uppercase tracking-[0.14em] text-ink/55 hover:text-teal">
+              <Link href="/adaptive" className="font-display text-xs uppercase tracking-[0.08em] text-ink/55 hover:text-teal">
                 Why this step? SEE WHY →
               </Link>
             </div>
@@ -229,11 +229,11 @@ export default function Dashboard() {
                     <Link href={c.href} className="font-serif text-[14px] font-bold leading-snug text-ink hover:text-teal">
                       {c.title}
                     </Link>
-                    <span className="shrink-0 font-mono text-[9px] uppercase tracking-[0.12em] text-teal">{c.actionLabel} →</span>
+                    <span className="shrink-0 font-mono text-[10.5px] uppercase tracking-[0.12em] text-teal">{c.actionLabel} →</span>
                   </li>
                 ))}
             </ul>
-            <Link href="/continue" className="mt-3 inline-block border-b border-teal/50 pb-0.5 font-mono text-[10px] uppercase tracking-wider text-teal transition-colors hover:border-teal">
+            <Link href="/continue" className="mt-3 inline-block border-b border-teal/50 pb-0.5 font-mono text-[12px] uppercase tracking-wider text-teal transition-colors hover:border-teal">
               Continue Learning →
             </Link>
           </div>
@@ -246,7 +246,7 @@ export default function Dashboard() {
             <section>
               <div className="flex flex-wrap items-baseline justify-between gap-3">
                 <Marginalia amber>The path — {pathMinutes} min scheduled</Marginalia>
-                <Link href="/adaptive" className="font-mono text-[10px] uppercase tracking-[0.14em] text-teal hover:underline">
+                <Link href="/adaptive" className="font-display text-xs uppercase tracking-[0.08em] text-teal hover:underline">
                   What did Cognify learn about me? →
                 </Link>
               </div>
@@ -258,30 +258,30 @@ export default function Dashboard() {
                     <div className="index-num pt-0.5">{String(i + 1).padStart(2, "0")}</div>
                     <div>
                       <div className="flex flex-wrap items-center gap-2">
-                        <span className="font-mono text-[10px] font-medium uppercase tracking-wider text-ink/50">
+                        <span className="font-mono text-[12px] font-medium uppercase tracking-wider text-ink/50">
                           {subjectNames[item.subject] ?? item.subject}
                         </span>
                         <ActionChip action={item.action} />
                         {item.urgency === "high" && (
-                          <span className="font-mono text-[9px] font-bold uppercase tracking-[0.14em] text-amber-dark">
+                          <span className="font-mono text-[10.5px] font-bold uppercase tracking-[0.08em] text-amber-dark">
                             ● High impact
                           </span>
                         )}
                       </div>
-                      <h3 className="mt-1.5 font-serif text-xl font-bold text-ink">{item.topicTitle}</h3>
+                      <h3 className="mt-1.5 font-display text-[20px] font-bold text-ink">{item.topicTitle}</h3>
                       <div className="mt-2.5 flex items-start gap-2">
-                        <span className="mt-1 shrink-0 font-mono text-[10px] font-bold uppercase tracking-[0.12em] text-teal">
+                        <span className="mt-1 shrink-0 font-mono text-[12px] font-bold uppercase tracking-[0.12em] text-teal">
                           Why
                         </span>
                         <p className="footnote">{item.reason}</p>
                       </div>
                       <div className="mt-4 flex flex-wrap items-center gap-3">
-                        <span className="font-mono text-[11px] text-dark-text/60">
+                        <span className="font-mono text-[14px] text-dark-text/60">
                           {item.minutes} min · timed block
                         </span>
                         <Link
                           href={`/topic/${slugOf({ id: item.topicId })}`}
-                          className="border-b border-teal/50 pb-0.5 font-mono text-[11px] uppercase tracking-wider text-teal transition-colors hover:border-teal"
+                          className="border-b border-teal/50 pb-0.5 font-mono text-[14px] uppercase tracking-wider text-teal transition-colors hover:border-teal"
                         >
                           Open in explorer
                         </Link>
@@ -305,13 +305,13 @@ export default function Dashboard() {
                     <li key={w.topic.id} className="border-l-2 border-amber/60 pl-3">
                       <Link href={`/topic/${slugOf(w.topic)}`} className="group">
                         <div className="flex flex-wrap items-center gap-2">
-                          <span className="font-mono text-[9px] font-medium uppercase tracking-wider text-ink/50">
+                          <span className="font-mono text-[10.5px] font-medium uppercase tracking-wider text-ink/50">
                             {subjectNames[w.subject.code] ?? w.subject.code}
                           </span>
-                          <span className="font-mono text-[9px] uppercase tracking-wider text-muted-foreground">
+                          <span className="font-mono text-[10.5px] uppercase tracking-wider text-muted-foreground">
                             {w.chapterTitle}
                           </span>
-                          <span className="font-mono text-[9px] uppercase tracking-wider text-teal opacity-0 transition-opacity group-hover:opacity-100">
+                          <span className="font-mono text-[10.5px] uppercase tracking-wider text-teal opacity-0 transition-opacity group-hover:opacity-100">
                             View dossier →
                           </span>
                         </div>
@@ -320,7 +320,7 @@ export default function Dashboard() {
                       </div>
                       <div className="mt-2 flex items-center gap-3">
                         <MasteryBar value={w.topic.mastery} className="max-w-[120px]" />
-                        <span className="font-mono text-[11px] font-medium text-amber-dark">
+                        <span className="font-mono text-[14px] font-medium text-amber-dark">
                           {w.topic.mastery}%
                         </span>
                       </div>
@@ -349,18 +349,18 @@ export default function Dashboard() {
                     <li key={r.topic.id} className="border-l-2 border-teal/60 pl-3">
                       <Link href={`/topic/${slugOf(r.topic)}`} className="group">
                         <div className="flex flex-wrap items-center gap-2">
-                          <span className="font-mono text-[9px] font-medium uppercase tracking-wider text-ink/50">
+                          <span className="font-mono text-[10.5px] font-medium uppercase tracking-wider text-ink/50">
                             {subjectNames[r.subject.code] ?? r.subject.code}
                           </span>
                           <RevisionChip dueInDays={r.topic.revisionDueInDays} status={r.topic.revisionStatus} />
-                          <span className="font-mono text-[9px] uppercase tracking-wider text-teal opacity-0 transition-opacity group-hover:opacity-100">
+                          <span className="font-mono text-[10.5px] uppercase tracking-wider text-teal opacity-0 transition-opacity group-hover:opacity-100">
                             View dossier →
                           </span>
                         </div>
                       <div className="mt-1 font-serif text-[15px] font-bold leading-snug text-ink">
                         {r.topic.title}
                       </div>
-                      <div className="mt-1.5 font-mono text-[11px] text-muted-foreground">
+                      <div className="mt-1.5 font-mono text-[14px] text-muted-foreground">
                         Retention risk rising · spaced scheduler flag
                       </div>
                       </Link>
@@ -377,7 +377,7 @@ export default function Dashboard() {
                 </ul>
                 <a
                   href="/revision"
-                  className="mt-3 inline-block border-b border-teal/50 pb-0.5 font-mono text-[10px] uppercase tracking-wider text-teal transition-colors hover:border-teal"
+                  className="mt-3 inline-block border-b border-teal/50 pb-0.5 font-mono text-[12px] uppercase tracking-wider text-teal transition-colors hover:border-teal"
                 >
                   Open Revision Hub →
                 </a>
@@ -398,18 +398,18 @@ export default function Dashboard() {
                   >
                     <div className="relative">
                       <div className="absolute -left-[1.5625rem] top-1.5 h-2 w-2 border border-teal bg-ivory" />
-                      <span className="font-mono text-[10px] text-muted-foreground">{a.when}</span>
+                      <span className="font-mono text-[12px] text-muted-foreground">{a.when}</span>
                     </div>
                     <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
                       <div>
-                        <span className="font-mono text-[9px] font-medium uppercase tracking-wider text-ink/50">
+                        <span className="font-mono text-[10.5px] font-medium uppercase tracking-wider text-ink/50">
                           {subjectNames[a.subject] ?? a.subject}
                         </span>
                         <span className="ml-2 font-serif text-[15px] font-bold text-ink">{a.topic}</span>
                       </div>
                       <span
                         className={cn(
-                          "font-mono text-[11px]",
+                          "font-mono text-[14px]",
                           a.result.startsWith("+") ? "text-teal-dark" : "text-muted-foreground"
                         )}
                       >
@@ -437,7 +437,7 @@ export default function Dashboard() {
               <div className="border-b border-ink/10 px-5 py-4">
                 <div className="flex items-center justify-between">
                   <Marginalia className="[&::before]:hidden">Learning DNA — preview</Marginalia>
-                  <Link href="/profile" className="font-mono text-[10px] uppercase tracking-[0.14em] text-teal hover:underline">
+                  <Link href="/profile" className="font-display text-xs uppercase tracking-[0.08em] text-teal hover:underline">
                     Full analysis →
                   </Link>
                 </div>
@@ -446,12 +446,12 @@ export default function Dashboard() {
                 {dna.insights.slice(0, 3).map((ins) => (
                   <div key={ins.id} className="py-4">
                     <div className="flex items-center justify-between gap-3">
-                      <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-ink/60">
+                      <span className="font-mono text-[12px] uppercase tracking-[0.12em] text-ink/60">
                         {ins.dimension}
                       </span>
-                      <span className="font-mono text-[10px] text-teal-dark">evidence {ins.confidence}%</span>
+                      <span className="font-mono text-[12px] text-teal-dark">evidence {ins.confidence}%</span>
                     </div>
-                    <p className="mt-1.5 text-[13px] font-medium leading-relaxed text-ink">{ins.finding}</p>
+                    <p className="mt-1.5 text-[14px] font-medium leading-relaxed text-ink">{ins.finding}</p>
                     <p className="mt-1 footnote">{ins.implication}</p>
                   </div>
                 ))}
@@ -462,19 +462,19 @@ export default function Dashboard() {
             <section className="grid grid-cols-2 gap-px border border-ink/12 bg-ink/10">
               <div className="bg-card p-5">
                 <Flame className="h-4 w-4 text-amber" />
-                <div className="mt-2 font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
+                <div className="mt-2 font-display text-xs uppercase tracking-[0.08em] text-muted-foreground">
                   Current streak
                 </div>
-                <div className="mt-1 font-serif text-3xl font-bold text-ink">{profile.streakDays}d</div>
-                <div className="mt-1 font-mono text-[10px] text-teal-dark">Keep the chain unbroken</div>
+                <div className="mt-1 font-display text-3xl font-bold text-ink">{profile.streakDays}d</div>
+                <div className="mt-1 font-mono text-[12px] text-teal-dark">Keep the chain unbroken</div>
               </div>
               <div className="bg-card p-5">
                 <TrendingUp className="h-4 w-4 text-teal" />
-                <div className="mt-2 font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
+                <div className="mt-2 font-display text-xs uppercase tracking-[0.08em] text-muted-foreground">
                   Peak focus
                 </div>
                 <div className="mt-1 font-serif text-2xl font-bold text-ink">{dna.peakFocusHour}</div>
-                <div className="mt-1 font-mono text-[10px] text-muted-foreground">avg {dna.avgSessionMinutes}m sessions</div>
+                <div className="mt-1 font-mono text-[12px] text-muted-foreground">avg {dna.avgSessionMinutes}m sessions</div>
               </div>
             </section>
 
@@ -500,9 +500,9 @@ export default function Dashboard() {
                       contentStyle={{ background: "#F7F5EF", border: "1px solid rgba(16,42,67,0.15)", borderRadius: 2, fontSize: 12 }}
                     />
                     <Bar dataKey="value" radius={[2, 2, 0, 0]}>
-                      <Cell fill="#1f9d8b" />
-                      <Cell fill="#e9a23b" />
-                      <Cell fill="#102a43" />
+                      <Cell fill="#2b9c8c" />
+                      <Cell fill="#d9912f" />
+                      <Cell fill="#132b3b" />
                     </Bar>
                   </BarChart>
                 </ResponsiveContainer>
@@ -514,7 +514,7 @@ export default function Dashboard() {
               <div className="border-b border-ink/10 px-5 py-4">
                 <div className="flex items-center justify-between">
                   <Marginalia className="[&::before]:hidden">Timetable — today</Marginalia>
-                  <Link href="/timetable" className="font-mono text-[10px] uppercase tracking-[0.14em] text-teal hover:underline">
+                  <Link href="/timetable" className="font-display text-xs uppercase tracking-[0.08em] text-teal hover:underline">
                     Full plan →
                   </Link>
                 </div>
@@ -526,17 +526,17 @@ export default function Dashboard() {
                   .map((s) => (
                     <div key={s.id} className="py-3.5">
                       <div className="flex items-baseline justify-between gap-2">
-                        <span className="font-mono text-[10px] font-medium uppercase tracking-wider text-ink/50">
+                        <span className="font-mono text-[12px] font-medium uppercase tracking-wider text-ink/50">
                           {subjectNames[s.subjectCode] ?? s.subjectCode}
                         </span>
-                        <span className="font-mono text-[10px] text-muted-foreground">
+                        <span className="font-mono text-[12px] text-muted-foreground">
                           {s.startTime} · {s.durationMinutes}m
                         </span>
                       </div>
                       <div className="mt-1 flex items-baseline justify-between gap-2">
-                        <span className="text-[13px] font-semibold leading-snug text-ink">{s.topicTitle}</span>
+                        <span className="text-[14px] font-semibold leading-snug text-ink">{s.topicTitle}</span>
                         {s.priority === "high" && (
-                          <span className="shrink-0 font-mono text-[9px] font-bold uppercase tracking-[0.14em] text-amber-dark">High</span>
+                          <span className="shrink-0 font-mono text-[10.5px] font-bold uppercase tracking-[0.08em] text-amber-dark">High</span>
                         )}
                       </div>
                     </div>
@@ -552,7 +552,7 @@ export default function Dashboard() {
               <div className="border-b border-ink/10 px-5 py-4">
                 <div className="flex items-center justify-between">
                   <Marginalia className="[&::before]:hidden">Engine is watching</Marginalia>
-                  <Link href="/adaptive" className="font-mono text-[10px] uppercase tracking-[0.14em] text-teal hover:underline">
+                  <Link href="/adaptive" className="font-display text-xs uppercase tracking-[0.08em] text-teal hover:underline">
                     Adaptive Lab →
                   </Link>
                 </div>
@@ -563,12 +563,12 @@ export default function Dashboard() {
                   return (
                     <>
                       <div className="flex items-center gap-2">
-                        <span className="font-mono text-[10px] font-bold uppercase tracking-[0.12em] text-amber-dark">
+                        <span className="font-mono text-[12px] font-bold uppercase tracking-[0.12em] text-amber-dark">
                           ● {iv.label}
                         </span>
                       </div>
                       <p className="mt-1.5 footnote">{iv.action}</p>
-                      <p className="mt-1 font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+                      <p className="mt-1 font-mono text-[12px] uppercase tracking-wider text-muted-foreground">
                         Evidence {iv.evidenceStrength}% · {iv.sessionsObserved} sessions observed
                       </p>
                     </>
@@ -581,13 +581,13 @@ export default function Dashboard() {
             <section className="border border-ink/12 bg-card p-5">
               <div className="flex items-center justify-between">
                 <Marginalia className="[&::before]:hidden">Confidence check</Marginalia>
-                <Link href="/confidence" className="font-mono text-[10px] uppercase tracking-[0.14em] text-teal hover:underline">
+                <Link href="/confidence" className="font-display text-xs uppercase tracking-[0.08em] text-teal hover:underline">
                   Calibration →
                 </Link>
               </div>
               <div className="mt-3 flex items-baseline justify-between">
-                <span className="font-mono text-[10px] uppercase tracking-wider text-ink/60">Avg self vs measured gap</span>
-                <span className="font-serif text-2xl font-bold text-amber-dark">{calibrationSummary().avgGap} pts</span>
+                <span className="font-mono text-[12px] uppercase tracking-wider text-ink/60">Avg self vs measured gap</span>
+                <span className="font-display text-[26px] font-bold text-amber-dark">{calibrationSummary().avgGap} pts</span>
               </div>
               <p className="mt-2 footnote">{calibrationSummary().dnaNote}</p>
             </section>
@@ -596,7 +596,7 @@ export default function Dashboard() {
             <section className="border border-ink/12 bg-card p-5">
               <div className="flex items-center justify-between">
                 <Marginalia className="[&::before]:hidden">Study group</Marginalia>
-                <Link href="/community" className="font-mono text-[10px] uppercase tracking-[0.14em] text-teal hover:underline">
+                <Link href="/community" className="font-display text-xs uppercase tracking-[0.08em] text-teal hover:underline">
                   Community →
                 </Link>
               </div>
@@ -605,7 +605,7 @@ export default function Dashboard() {
               </p>
               <a
                 href="/teach"
-                className="mt-2 inline-block border-b border-teal/50 pb-0.5 font-mono text-[10px] uppercase tracking-wider text-teal transition-colors hover:border-teal"
+                className="mt-2 inline-block border-b border-teal/50 pb-0.5 font-mono text-[12px] uppercase tracking-wider text-teal transition-colors hover:border-teal"
               >
                 Teach Cognify →
               </a>
@@ -615,7 +615,7 @@ export default function Dashboard() {
             <section>
               <div className="flex items-center justify-between">
                 <Marginalia>Current goals</Marginalia>
-                <Link href="/goals" className="font-mono text-[10px] uppercase tracking-[0.14em] text-teal hover:underline">
+                <Link href="/goals" className="font-display text-xs uppercase tracking-[0.08em] text-teal hover:underline">
                   All goals →
                 </Link>
               </div>
@@ -624,10 +624,10 @@ export default function Dashboard() {
                   <li key={g.id}>
                     <div className="flex items-baseline justify-between gap-3">
                       <span className="font-serif text-[14px] font-bold text-ink">{g.title}</span>
-                      <span className="font-mono text-[11px] text-teal-dark">{g.progress}%</span>
+                      <span className="font-mono text-[14px] text-teal-dark">{g.progress}%</span>
                     </div>
                     <MasteryBar value={g.progress} className="mt-2" />
-                    <div className="mt-1 font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+                    <div className="mt-1 font-mono text-[12px] uppercase tracking-wider text-muted-foreground">
                       Due {g.dueDate}
                     </div>
                   </li>
@@ -659,21 +659,21 @@ function PrimaryActionBanner({ item }: { item: NonNullable<ReturnType<typeof tod
     >
       <div className="min-w-0">
         <div className="flex flex-wrap items-center gap-2">
-          <span className="font-mono text-[10px] font-bold uppercase tracking-[0.14em] text-amber-dark">
+          <span className="font-mono text-[12px] font-bold uppercase tracking-[0.08em] text-amber-dark">
             Start with this
           </span>
-          <span className="font-mono text-[9px] uppercase tracking-wider text-ink/50">
+          <span className="font-mono text-[10.5px] uppercase tracking-wider text-ink/50">
             {subjectNames[item.subjectCode] ?? item.subjectCode} · {item.minutes} min
           </span>
         </div>
         <div className="mt-1 font-serif text-lg font-bold leading-snug text-ink sm:text-xl">
           {item.topicTitle}
         </div>
-        <div className="mt-1 max-w-xl truncate font-mono text-[11px] text-ink/60">
+        <div className="mt-1 max-w-xl truncate font-mono text-[14px] text-ink/60">
           {item.reason}
         </div>
       </div>
-      <span className="shrink-0 font-mono text-[11px] uppercase tracking-[0.14em] text-teal-dark">
+      <span className="shrink-0 font-mono text-[14px] uppercase tracking-[0.08em] text-teal-dark">
         Begin →
       </span>
     </Link>

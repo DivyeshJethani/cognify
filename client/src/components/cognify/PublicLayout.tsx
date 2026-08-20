@@ -15,16 +15,16 @@ export function PublicNav() {
       <div className="container flex h-16 items-center justify-between">
         <Link href="/" className="flex items-center gap-2.5">
           <img src={LOGO_URL} alt="COGNIFY logo" className="h-9 w-9" />
-          <span className="font-serif text-xl font-bold tracking-[0.14em] text-ink">COGNIFY</span>
+          <span className="font-display text-[20px] font-bold tracking-[0.08em] text-ink">COGNIFY</span>
         </Link>
         <nav className="hidden items-center gap-8 md:flex">
-          <a href="#how-it-works" className="text-[13px] tracking-wide text-dark-text/70 transition-colors hover:text-ink">
+          <a href="#how-it-works" className="text-[14px] tracking-wide text-dark-text/70 transition-colors hover:text-ink">
             How it works
           </a>
-          <a href="#learning-dna" className="text-[13px] tracking-wide text-dark-text/70 transition-colors hover:text-ink">
+          <a href="#learning-dna" className="text-[14px] tracking-wide text-dark-text/70 transition-colors hover:text-ink">
             Learning DNA
           </a>
-          <a href="#curriculum" className="text-[13px] tracking-wide text-dark-text/70 transition-colors hover:text-ink">
+          <a href="#curriculum" className="text-[14px] tracking-wide text-dark-text/70 transition-colors hover:text-ink">
             Curriculum
           </a>
         </nav>
@@ -65,39 +65,39 @@ export function PublicFooter() {
           <div className="max-w-xs">
             <div className="flex items-center gap-2.5">
               <img src={LOGO_URL} alt="COGNIFY" className="h-9 w-9" />
-              <span className="font-serif text-lg font-bold tracking-[0.14em] text-white">COGNIFY</span>
+              <span className="font-serif text-lg font-bold tracking-[0.08em] text-white">COGNIFY</span>
             </div>
-            <p className="mt-4 text-[13px] leading-relaxed text-white/50">
+            <p className="mt-4 text-[14px] leading-relaxed text-white/50">
               An adaptive learning laboratory. It studies how you learn, then
               shapes every lesson, practice and revision around your Learning DNA.
             </p>
           </div>
           <div className="grid grid-cols-2 gap-10 sm:grid-cols-3">
             <div>
-              <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-teal">Platform</div>
-              <ul className="mt-3 space-y-2 text-[13px]">
+              <div className="font-mono text-[12px] uppercase tracking-[0.08em] text-teal">Platform</div>
+              <ul className="mt-3 space-y-2 text-[14px]">
                 <li><a href="#how-it-works" className="hover:text-white">How it works</a></li>
                 <li><a href="#learning-dna" className="hover:text-white">Learning DNA</a></li>
                 <li><a href="#curriculum" className="hover:text-white">Curriculum</a></li>
               </ul>
             </div>
             <div>
-              <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-teal">Study</div>
-              <ul className="mt-3 space-y-2 text-[13px]">
+              <div className="font-mono text-[12px] uppercase tracking-[0.08em] text-teal">Study</div>
+              <ul className="mt-3 space-y-2 text-[14px]">
                 <li><Link href="/signup" className="hover:text-white">Start learning</Link></li>
                 <li><Link href="/login" className="hover:text-white">Sign in</Link></li>
               </ul>
             </div>
             <div>
-              <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-teal">Foundation</div>
-              <ul className="mt-3 space-y-2 text-[13px]">
+              <div className="font-mono text-[12px] uppercase tracking-[0.08em] text-teal">Foundation</div>
+              <ul className="mt-3 space-y-2 text-[14px]">
                 <li><span>CBSE · ICSE · State boards</span></li>
                 <li><span>All school subjects</span></li>
               </ul>
             </div>
           </div>
         </div>
-        <div className="mt-10 border-t border-white/10 pt-6 font-mono text-[11px] tracking-wider text-white/35">
+        <div className="mt-10 border-t border-white/10 pt-6 font-mono text-[14px] tracking-wider text-white/35">
           © 2026 COGNIFY — The Learning Laboratory. Frontend foundation stage; backend services connecting shortly.
         </div>
       </div>

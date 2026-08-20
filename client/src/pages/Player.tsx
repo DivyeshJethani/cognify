@@ -224,7 +224,7 @@ export default function Player() {
         <div className="border-b border-ink/10 px-5 py-6 sm:px-8 lg:px-10">
           <Marginalia>Lecture Player</Marginalia>
           <h1 className="mt-2 text-2xl font-bold text-ink">Session not found</h1>
-          <Link href="/curriculum" className="mt-3 inline-block font-mono text-[11px] uppercase tracking-[0.1em] text-teal">
+          <Link href="/curriculum" className="mt-3 inline-block font-mono text-[14px] uppercase tracking-[0.1em] text-teal">
             ← Back to curriculum
           </Link>
         </div>
@@ -238,20 +238,20 @@ export default function Player() {
       <header className="flex flex-wrap items-center gap-3 border-b border-ink/10 px-5 py-4 sm:px-8 lg:px-10">
         <button
           onClick={() => navigate(`/session/${resourceId}?topic=${topicId}`)}
-          className="flex items-center gap-1.5 border border-ink/15 bg-card px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.1em] text-ink/70 transition-colors hover:border-teal hover:text-teal"
+          className="flex items-center gap-1.5 border border-ink/15 bg-card px-3 py-1.5 font-mono text-[14px] uppercase tracking-[0.1em] text-ink/70 transition-colors hover:border-teal hover:text-teal"
         >
           <ChevronLeft className="h-3.5 w-3.5" /> Exit session
         </button>
         <div className="min-w-0 flex-1">
           <div className="truncate font-serif text-[15px] font-bold text-ink">{resource.title}</div>
-          <div className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+          <div className="font-mono text-[12px] uppercase tracking-wider text-muted-foreground">
             {resolved.subject.name} · Chapter {String(resolved.chapter.index).padStart(2, "0")} {resolved.chapter.title} · {resource.sourceLabel}
           </div>
         </div>
         <div className="flex shrink-0 items-center gap-4">
           <div className="hidden text-right sm:block">
-            <div className="font-mono text-[9px] uppercase tracking-[0.14em] text-muted-foreground">Session</div>
-            <div className="font-mono text-[11px] font-medium text-ink">{sessionId.slice(0, 24)}</div>
+            <div className="font-mono text-[9px] uppercase tracking-[0.08em] text-muted-foreground">Session</div>
+            <div className="font-mono text-[14px] font-medium text-ink">{sessionId.slice(0, 24)}</div>
           </div>
           <div className="hidden items-center gap-3 sm:flex">
             <button
@@ -287,13 +287,13 @@ export default function Player() {
           {/* Stage */}
           <div className="border border-ink bg-ink text-ivory">
             <div className="relative flex aspect-video flex-col items-center justify-center gap-4 bg-gradient-to-b from-ink via-[#14314e] to-ink p-8">
-              <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-teal">
+              <div className="font-mono text-[12px] uppercase tracking-[0.22em] text-teal">
                 {resource.format} · {resource.sourceLabel}
               </div>
-              <div className="max-w-xl text-center font-serif text-xl font-bold leading-snug sm:text-2xl">
+              <div className="max-w-xl text-center font-display text-[20px] font-bold leading-snug sm:text-2xl">
                 {resource.title}
               </div>
-              <div className="font-mono text-[11px] text-ivory/60">
+              <div className="font-mono text-[14px] text-ivory/60">
                 {resolved.topic.title} — {resolvedSubjectContext ? `${resolvedSubjectContext.board} · ${resolvedSubjectContext.className}` : "CBSE · Class 10"}
               </div>
               {!playing && elapsed < totalSec && (
@@ -302,13 +302,13 @@ export default function Player() {
                     setPlaying(true);
                     emit("PLAY");
                   }}
-                  className="mt-2 border border-teal bg-teal px-6 py-2.5 font-mono text-[11px] uppercase tracking-[0.16em] text-white transition-all duration-150 hover:bg-teal-dark active:scale-[0.97]"
+                  className="mt-2 border border-teal bg-teal px-6 py-2.5 font-mono text-[14px] uppercase tracking-[0.08em] text-white transition-all duration-150 hover:bg-teal-dark active:scale-[0.97]"
                 >
                   {elapsed > 0 ? "Resume" : "Play"}
                 </button>
               )}
               {progress >= 100 && (
-                <div className="mt-2 flex items-center gap-2 border border-teal px-4 py-2 font-mono text-[11px] uppercase tracking-[0.14em] text-teal">
+                <div className="mt-2 flex items-center gap-2 border border-teal px-4 py-2 font-mono text-[14px] uppercase tracking-[0.08em] text-teal">
                   <CheckCircle2 className="h-4 w-4" /> Session complete — mastery evidence queued
                 </div>
               )}
@@ -316,7 +316,7 @@ export default function Player() {
 
             {/* Scrubber + controls */}
             <div className="border-t border-ivory/10 px-5 py-4">
-              <div className="flex items-center justify-between font-mono text-[10px] uppercase tracking-wider text-ivory/55">
+              <div className="flex items-center justify-between font-mono text-[12px] uppercase tracking-wider text-ivory/55">
                 <span>{formatTime(elapsed)}</span>
                 <div className="flex items-center gap-2">
                   <span className={cn("h-1.5 w-1.5 rounded-full", playing ? "bg-teal" : "bg-ivory/30")} />
@@ -349,7 +349,7 @@ export default function Player() {
                     key={s}
                     onClick={() => changeSpeed(s)}
                     className={cn(
-                      "border px-2 py-1 font-mono text-[10px] transition-colors",
+                      "border px-2 py-1 font-mono text-[12px] transition-colors",
                       speed === s
                         ? "border-teal bg-teal text-white"
                         : "border-ivory/20 text-ivory/70 hover:border-ivory/40"
@@ -362,7 +362,7 @@ export default function Player() {
                 <button
                   onClick={markConfusing}
                   disabled={progress >= 100}
-                  className="border border-amber bg-amber px-3 py-1.5 font-mono text-[10px] font-bold uppercase tracking-[0.1em] text-ink transition-all duration-150 hover:bg-amber-dark hover:text-white disabled:opacity-40 active:scale-[0.97]"
+                  className="border border-amber bg-amber px-3 py-1.5 font-mono text-[12px] font-bold uppercase tracking-[0.1em] text-ink transition-all duration-150 hover:bg-amber-dark hover:text-white disabled:opacity-40 active:scale-[0.97]"
                 >
                   Mark confusing
                 </button>
@@ -372,7 +372,7 @@ export default function Player() {
                       emit("DROP_OFF");
                       navigate(`/session/${resourceId}?topic=${topicId}`);
                     }}
-                    className="ml-auto border border-ivory/20 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.1em] text-ivory/60 transition-colors hover:border-ivory/40 hover:text-ivory"
+                    className="ml-auto border border-ivory/20 px-3 py-1.5 font-mono text-[12px] uppercase tracking-[0.1em] text-ivory/60 transition-colors hover:border-ivory/40 hover:text-ivory"
                   >
                     End session early
                   </button>
@@ -387,7 +387,7 @@ export default function Player() {
               <div className="flex flex-wrap items-center gap-3">
                 <div className="flex items-center gap-2">
                   <FlaskConical className="h-4 w-4 text-teal" />
-                  <span className="font-mono text-[10px] font-bold uppercase tracking-[0.14em] text-teal-dark">
+                  <span className="font-mono text-[12px] font-bold uppercase tracking-[0.08em] text-teal-dark">
                     Another explanation available
                   </span>
                 </div>
@@ -397,7 +397,7 @@ export default function Player() {
                 </p>
                 <Link
                   href={`/resources/${topicId}`}
-                  className="ml-auto h-8 whitespace-nowrap border border-teal bg-teal px-3 font-mono text-[9.5px] uppercase tracking-[0.1em] text-white transition-all hover:bg-teal-dark active:scale-[0.97]"
+                  className="ml-auto h-8 whitespace-nowrap border border-teal bg-teal px-3 font-mono text-[10.5px] uppercase tracking-[0.1em] text-white transition-all hover:bg-teal-dark active:scale-[0.97]"
                 >
                   View alternatives →
                 </Link>
@@ -409,13 +409,13 @@ export default function Player() {
           <div className="mt-6 grid gap-px border border-ink/10 bg-ink/10 sm:grid-cols-2">
             <div className="bg-card p-5">
               <div className="marginalia [&::before]:hidden">Current objective</div>
-              <p className="mt-2 text-[13px] leading-relaxed text-dark-text/80">
+              <p className="mt-2 text-[14px] leading-relaxed text-dark-text/80">
                 {resolved.topic.objectives[0]?.text ?? `Master: ${resolved.topic.title}`}
               </p>
             </div>
             <div className="bg-card p-5">
               <div className="marginalia amber [&::before]:hidden">Next activity</div>
-              <p className="mt-2 text-[13px] leading-relaxed text-dark-text/80">
+              <p className="mt-2 text-[14px] leading-relaxed text-dark-text/80">
                 {progress >= 100
                   ? "A timed practice set is now queued — application problems convert viewing into marks."
                   : "Timed practice set follows when this video completes; mastery evidence updates your topic file immediately."}
@@ -427,7 +427,7 @@ export default function Player() {
           <div className="mt-6">
             <div className="flex items-center justify-between">
               <Marginalia className="[&::before]:hidden">Observation log — this session</Marginalia>
-              <span className="font-mono text-[10px] text-muted-foreground">
+              <span className="font-mono text-[12px] text-muted-foreground">
                 Sent to analytics when backend connects
               </span>
             </div>
@@ -441,10 +441,10 @@ export default function Player() {
                   .slice(0, 15)
                   .map((e, i) => (
                     <div key={i} className="flex items-center gap-3 px-4 py-2">
-                      <span className="w-14 shrink-0 font-mono text-[10px] text-muted-foreground">
+                      <span className="w-14 shrink-0 font-mono text-[12px] text-muted-foreground">
                         {formatTime(e.atSec)}
                       </span>
-                      <span className="font-mono text-[10px] uppercase tracking-wider text-ink/70">
+                      <span className="font-mono text-[12px] uppercase tracking-wider text-ink/70">
                         {e.type}
                       </span>
                       <span className="text-[12px] text-dark-text/70">{eventLabel(e)}</span>
@@ -509,7 +509,7 @@ export default function Player() {
                           )}
                         >
                           <div className="flex items-center justify-between">
-                            <span className="font-mono text-[10px] text-muted-foreground">
+                            <span className="font-mono text-[12px] text-muted-foreground">
                               {formatTime(s.startSec)}–{formatTime(s.endSec)}
                             </span>
                             {marked && (
@@ -518,7 +518,7 @@ export default function Player() {
                               </span>
                             )}
                           </div>
-                          <p className={cn("mt-1 font-serif text-[13px] leading-relaxed", active ? "font-bold text-ink" : "text-dark-text/80")}>
+                          <p className={cn("mt-1 font-serif text-[14px] leading-relaxed", active ? "font-bold text-ink" : "text-dark-text/80")}>
                             {s.text}
                           </p>
                         </button>
@@ -540,7 +540,7 @@ export default function Player() {
                       value={noteDraft}
                       onChange={(e) => setNoteDraft(e.target.value)}
                       placeholder="Write in your own words at current position…"
-                      className="w-full resize-none border border-ink/15 bg-ivory-deep/50 p-3 font-serif text-[13px] leading-relaxed outline-none focus:border-teal"
+                      className="w-full resize-none border border-ink/15 bg-ivory-deep/50 p-3 font-serif text-[14px] leading-relaxed outline-none focus:border-teal"
                       rows={4}
                     />
                     <button
@@ -568,12 +568,12 @@ export default function Player() {
                     {notes.map((n, i) => (
                       <div key={i} className="border-l-2 border-teal/40 bg-ivory-deep/40 p-3">
                         <div className="flex items-center justify-between">
-                          <span className="font-mono text-[10px] text-muted-foreground">{formatTime(n.sec)}</span>
+                          <span className="font-mono text-[12px] text-muted-foreground">{formatTime(n.sec)}</span>
                           <span className="font-mono text-[9px] uppercase tracking-wider text-muted-foreground">
                             {new Date(n.at).toLocaleDateString("en-GB", { day: "numeric", month: "short" })}
                           </span>
                         </div>
-                        <p className="mt-1 font-serif text-[13px] leading-relaxed text-ink">{n.text}</p>
+                        <p className="mt-1 font-serif text-[14px] leading-relaxed text-ink">{n.text}</p>
                       </div>
                     ))}
                   </div>
@@ -595,7 +595,7 @@ export default function Player() {
                         return (
                           <div key={sec} className="border border-amber/30 bg-amber/5 p-3">
                             <div className="flex items-center justify-between">
-                              <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-amber-dark">
+                              <span className="font-mono text-[12px] font-bold uppercase tracking-wider text-amber-dark">
                                 {formatTime(Number(sec))}–{seg ? formatTime(seg.endSec) : ""}
                               </span>
                               <button
@@ -609,7 +609,7 @@ export default function Player() {
                                 Replay
                               </button>
                             </div>
-                            <p className="mt-1.5 font-serif text-[13px] italic leading-relaxed text-dark-text/80">
+                            <p className="mt-1.5 font-serif text-[14px] italic leading-relaxed text-dark-text/80">
                               {note}
                             </p>
                           </div>
@@ -649,7 +649,7 @@ export default function Player() {
                         >
                           <div className="flex items-center justify-between">
                             <span className="font-mono text-[9px] uppercase tracking-wider text-muted-foreground">{r.format}</span>
-                            <span className="font-mono text-[10px] text-muted-foreground">{r.durationMinutes} min</span>
+                            <span className="font-mono text-[12px] text-muted-foreground">{r.durationMinutes} min</span>
                           </div>
                           <div className="mt-1 font-serif text-[13.5px] font-bold leading-snug text-ink">{r.title}</div>
                           <p className="mt-1 text-[12px] leading-relaxed text-dark-text/70">{r.whyRecommended}</p>
@@ -677,7 +677,7 @@ export default function Player() {
                         )}
                       >
                         {m.role === "cognify" && (
-                          <span className="mb-1 block font-mono text-[9px] font-bold uppercase tracking-[0.14em] text-teal-dark">
+                          <span className="mb-1 block font-mono text-[9px] font-bold uppercase tracking-[0.08em] text-teal-dark">
                             Cognify
                           </span>
                         )}
@@ -702,7 +702,7 @@ export default function Player() {
                         <button
                           key={q}
                           onClick={() => ask(q)}
-                          className="border border-ink/15 bg-ivory-deep/60 px-2 py-1 font-mono text-[9.5px] text-ink/70 transition-colors hover:border-teal/50 hover:text-ink"
+                          className="border border-ink/15 bg-ivory-deep/60 px-2 py-1 font-mono text-[10.5px] text-ink/70 transition-colors hover:border-teal/50 hover:text-ink"
                         >
                           {q}
                         </button>
@@ -743,7 +743,7 @@ export default function Player() {
             <div className="marginalia [&::before]:hidden">DNA · what Cognify is watching</div>
             <div className="mt-3 space-y-2">
               <div>
-                <div className="flex justify-between font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+                <div className="flex justify-between font-mono text-[12px] uppercase tracking-wider text-muted-foreground">
                   <span>Session completion</span>
                   <span className="text-ink">{progress}%</span>
                 </div>

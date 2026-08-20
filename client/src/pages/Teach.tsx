@@ -137,7 +137,7 @@ export default function Teach() {
                   {submitted && (
                     <button
                       onClick={handleReset}
-                      className="font-mono text-[10px] uppercase tracking-[0.14em] text-ink/50 transition-colors hover:text-ink"
+                      className="font-display text-xs uppercase tracking-[0.08em] text-ink/50 transition-colors hover:text-ink"
                     >
                       Reset
                     </button>
@@ -154,16 +154,16 @@ export default function Teach() {
                       value={text}
                       onChange={(e) => setText(e.target.value)}
                       placeholder="Write your explanation here — no notes, no textbook. Your own words, as if to a classmate…"
-                      className="mt-5 min-h-[180px] resize-y border-ink/20 bg-ivory font-mono text-[13px] leading-relaxed focus-visible:ring-teal/40"
+                      className="mt-5 min-h-[180px] resize-y border-ink/20 bg-ivory font-mono text-[14px] leading-relaxed focus-visible:ring-teal/40"
                     />
                     <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
-                      <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+                      <span className="font-mono text-[12px] uppercase tracking-wider text-muted-foreground">
                         {text.trim().split(/\s+/).filter(Boolean).length} words
                       </span>
                       <Button
                         onClick={handleSubmit}
                         disabled={!text.trim()}
-                        className="border border-ink bg-ink px-5 text-[11px] uppercase tracking-wider text-ivory hover:bg-ink/90 disabled:opacity-40"
+                        className="border border-ink bg-ink px-5 text-[14px] uppercase tracking-wider text-ivory hover:bg-ink/90 disabled:opacity-40"
                       >
                         <Sparkles className="mr-1.5 h-3.5 w-3.5" /> Submit to Cognify
                       </Button>
@@ -179,17 +179,17 @@ export default function Teach() {
                       ].map((r) => (
                         <div key={r.label}>
                           <div className="flex items-baseline justify-between">
-                            <span className="font-mono text-[10px] uppercase tracking-wider text-ink/60">
+                            <span className="font-mono text-[12px] uppercase tracking-wider text-ink/60">
                               {r.label}
                             </span>
-                            <span className="font-mono text-[11px] text-teal-dark">{r.value}%</span>
+                            <span className="font-mono text-[14px] text-teal-dark">{r.value}%</span>
                           </div>
                           <MasteryBar value={r.value} className="mt-1.5" />
                         </div>
                       ))}
                     </div>
                     <div className="border border-ink/10 bg-ivory p-4">
-                      <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.14em] text-ink/60">
+                      <div className="flex items-center gap-2 font-display text-xs uppercase tracking-[0.08em] text-ink/60">
                         <BookOpen className="h-3.5 w-3.5 text-teal" /> Cognify's verdict
                       </div>
                       <p className="mt-2 text-[13.5px] font-medium leading-relaxed text-ink">
@@ -197,7 +197,7 @@ export default function Teach() {
                       </p>
                     </div>
                     <div className="border border-amber/40 bg-amber/5 p-4">
-                      <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.14em] text-amber-dark">
+                      <div className="flex items-center gap-2 font-display text-xs uppercase tracking-[0.08em] text-amber-dark">
                         <Lightbulb className="h-3.5 w-3.5" /> The idea you missed
                       </div>
                       <p className="mt-2 text-[13.5px] font-medium leading-relaxed text-ink">
@@ -209,13 +209,13 @@ export default function Teach() {
                       </p>
                     </div>
                     <div className="flex flex-wrap items-center gap-4">
-                      <span className="font-mono text-[10px] uppercase tracking-wider text-teal">
+                      <span className="font-mono text-[12px] uppercase tracking-wider text-teal">
                         <Check className="mr-1 inline h-3 w-3" />
                         Reading written to Learning DNA · evidence {analysis.evidence}%
                       </span>
                       <Link
                         href={`/topic/${slugOf(prompt!.topicId)}`}
-                        className="border-b border-teal/50 pb-0.5 font-mono text-[11px] uppercase tracking-wider text-teal transition-colors hover:border-teal"
+                        className="border-b border-teal/50 pb-0.5 font-mono text-[14px] uppercase tracking-wider text-teal transition-colors hover:border-teal"
                       >
                         Revisit the concept →
                       </Link>
@@ -236,7 +236,7 @@ export default function Teach() {
                   >
                     <div className="relative">
                       <div className="absolute -left-[1.5625rem] top-1.5 h-2 w-2 border border-teal bg-ivory" />
-                      <span className="font-mono text-[10px] text-muted-foreground">
+                      <span className="font-mono text-[12px] text-muted-foreground">
                         {String(i + 1).padStart(2, "0")}
                       </span>
                     </div>
@@ -273,7 +273,7 @@ export default function Teach() {
                   },
                 ].map((r) => (
                   <div key={r.t} className="py-3.5">
-                    <div className="font-mono text-[10px] uppercase tracking-[0.12em] text-ink/60">
+                    <div className="font-mono text-[12px] uppercase tracking-[0.12em] text-ink/60">
                       {r.t}
                     </div>
                     <p className="mt-1 text-[12.5px] leading-relaxed text-ink/80">{r.n}</p>
@@ -290,7 +290,7 @@ export default function Teach() {
               </p>
               <Link
                 href="/community"
-                className="mt-4 inline-flex items-center gap-1.5 border-b border-teal/50 pb-0.5 font-mono text-[11px] uppercase tracking-wider text-teal transition-colors hover:border-teal"
+                className="mt-4 inline-flex items-center gap-1.5 border-b border-teal/50 pb-0.5 font-mono text-[14px] uppercase tracking-wider text-teal transition-colors hover:border-teal"
               >
                 Open study groups <ArrowRight className="h-3 w-3" />
               </Link>

@@ -35,9 +35,9 @@ export default function Confidence() {
   const summary = calibrationSummary();
 
   const verdictMeta: Record<string, { icon: typeof Gauge; tone: string; label: string }> = {
-    overestimating: { icon: AlertTriangle, tone: "#e9a23b", label: "Overestimating" },
-    underestimating: { icon: TrendingDown, tone: "#1f9d8b", label: "Underestimating" },
-    calibrated: { icon: ShieldCheck, tone: "#102a43", label: "Calibrated" },
+    overestimating: { icon: AlertTriangle, tone: "#d9912f", label: "Overestimating" },
+    underestimating: { icon: TrendingDown, tone: "#2b9c8c", label: "Underestimating" },
+    calibrated: { icon: ShieldCheck, tone: "#132b3b", label: "Calibrated" },
   };
 
   const chartData = readings
@@ -131,17 +131,17 @@ export default function Confidence() {
                       type="monotone"
                       dataKey="self"
                       name="Self-reported"
-                      stroke="#e9a23b"
+                      stroke="#d9912f"
                       strokeWidth={1.5}
-                      dot={{ r: 3, fill: "#e9a23b" }}
+                      dot={{ r: 3, fill: "#d9912f" }}
                     />
                     <Line
                       type="monotone"
                       dataKey="actual"
                       name="Measured"
-                      stroke="#1f9d8b"
+                      stroke="#2b9c8c"
                       strokeWidth={1.5}
-                      dot={{ r: 3, fill: "#1f9d8b" }}
+                      dot={{ r: 3, fill: "#2b9c8c" }}
                     />
                   </LineChart>
                 </ResponsiveContainer>
@@ -160,7 +160,7 @@ export default function Confidence() {
                       <div className="index-num pt-0.5">{String(i + 1).padStart(2, "0")}</div>
                       <div>
                         <div className="flex flex-wrap items-center gap-2">
-                          <span className="font-mono text-[10px] font-medium uppercase tracking-wider text-ink/50">
+                          <span className="font-mono text-[12px] font-medium uppercase tracking-wider text-ink/50">
                             {r.subjectCode}
                           </span>
                           <span
@@ -170,21 +170,21 @@ export default function Confidence() {
                             <Icon className="h-3 w-3" /> {meta.label}
                           </span>
                           <span
-                            className="font-mono text-[10px] font-bold"
+                            className="font-mono text-[12px] font-bold"
                             style={{ color: meta.tone }}
                           >
                             {r.gap > 0 ? "+" : ""}
                             {r.gap} pts
                           </span>
                         </div>
-                        <h3 className="mt-1.5 font-serif text-xl font-bold text-ink">{r.topicTitle}</h3>
+                        <h3 className="mt-1.5 font-display text-[20px] font-bold text-ink">{r.topicTitle}</h3>
                         <div className="mt-4 grid gap-4 sm:grid-cols-2">
                           <div>
                             <div className="flex items-baseline justify-between">
-                              <span className="font-mono text-[10px] uppercase tracking-wider text-ink/60">
+                              <span className="font-mono text-[12px] uppercase tracking-wider text-ink/60">
                                 You felt
                               </span>
-                              <span className="font-mono text-[11px] text-amber-dark">
+                              <span className="font-mono text-[14px] text-amber-dark">
                                 {r.selfReported}%
                               </span>
                             </div>
@@ -192,10 +192,10 @@ export default function Confidence() {
                           </div>
                           <div>
                             <div className="flex items-baseline justify-between">
-                              <span className="font-mono text-[10px] uppercase tracking-wider text-ink/60">
+                              <span className="font-mono text-[12px] uppercase tracking-wider text-ink/60">
                                 You scored
                               </span>
-                              <span className="font-mono text-[11px] text-teal-dark">
+                              <span className="font-mono text-[14px] text-teal-dark">
                                 {r.actualPerformance}%
                               </span>
                             </div>
@@ -204,7 +204,7 @@ export default function Confidence() {
                         </div>
                         <p className="mt-3 footnote">{r.observation}</p>
                         <div className="mt-2 flex items-start gap-2">
-                          <span className="mt-1 shrink-0 font-mono text-[10px] font-bold uppercase tracking-[0.12em] text-teal">
+                          <span className="mt-1 shrink-0 font-mono text-[12px] font-bold uppercase tracking-[0.12em] text-teal">
                             Engine response
                           </span>
                           <p className="footnote">{r.recommendation}</p>
@@ -225,7 +225,7 @@ export default function Confidence() {
               </div>
               <div className="divide-y divide-ink/8 px-5">
                 <div className="py-4">
-                  <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.12em] text-amber-dark">
+                  <div className="flex items-center gap-2 font-mono text-[12px] uppercase tracking-[0.12em] text-amber-dark">
                     <AlertTriangle className="h-3.5 w-3.5" /> Overestimate (&gt;+15)
                   </div>
                   <p className="mt-1.5 text-[12.5px] leading-relaxed text-ink/80">
@@ -234,7 +234,7 @@ export default function Confidence() {
                   </p>
                 </div>
                 <div className="py-4">
-                  <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.12em] text-teal">
+                  <div className="flex items-center gap-2 font-mono text-[12px] uppercase tracking-[0.12em] text-teal">
                     <TrendingDown className="h-3.5 w-3.5" /> Underestimate (&lt;−15)
                   </div>
                   <p className="mt-1.5 text-[12.5px] leading-relaxed text-ink/80">
@@ -243,7 +243,7 @@ export default function Confidence() {
                   </p>
                 </div>
                 <div className="py-4">
-                  <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.12em] text-ink/60">
+                  <div className="flex items-center gap-2 font-mono text-[12px] uppercase tracking-[0.12em] text-ink/60">
                     <ShieldCheck className="h-3.5 w-3.5" /> Calibrated (±5)
                   </div>
                   <p className="mt-1.5 text-[12.5px] leading-relaxed text-ink/80">
@@ -284,7 +284,7 @@ export default function Confidence() {
                 </p>
                 <Link
                   href={`/topic/${slugOf("t-1-relationship-between-zeros-c")}`}
-                  className="mt-3 inline-flex items-center gap-1.5 border-b border-teal/50 pb-0.5 font-mono text-[11px] uppercase tracking-wider text-teal transition-colors hover:border-teal"
+                  className="mt-3 inline-flex items-center gap-1.5 border-b border-teal/50 pb-0.5 font-mono text-[14px] uppercase tracking-wider text-teal transition-colors hover:border-teal"
                 >
                   Open topic →
                 </Link>

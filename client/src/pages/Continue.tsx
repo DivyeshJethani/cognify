@@ -19,11 +19,11 @@ import { Link, useLocation } from "wouter";
 import { toast } from "sonner";
 
 const STATE_META: Record<ContinuationItem["state"], { glyph: string; color: string; label: string }> = {
-  continue: { glyph: "▷", color: "#1f9d8b", label: "CONTINUE" },
-  resume: { glyph: "⟳", color: "#7fa894", label: "RESUME" },
-  due: { glyph: "◐", color: "#e9a23b", label: "REVISE" },
-  retry: { glyph: "↺", color: "#102a43", label: "RETRY" },
-  saved: { glyph: "⌖", color: "#1f9d8b", label: "OPEN" },
+  continue: { glyph: "▷", color: "#2b9c8c", label: "CONTINUE" },
+  resume: { glyph: "⟳", color: "#4c83b5", label: "RESUME" },
+  due: { glyph: "◐", color: "#d9912f", label: "REVISE" },
+  retry: { glyph: "↺", color: "#132b3b", label: "RETRY" },
+  saved: { glyph: "⌖", color: "#2b9c8c", label: "OPEN" },
 };
 
 function StateCell({ item }: { item: ContinuationItem }) {
@@ -40,10 +40,10 @@ function StateCell({ item }: { item: ContinuationItem }) {
 }
 
 const DIFFICULTY_COLORS: Record<string, string> = {
-  foundational: "#7fa894",
-  core: "#1f9d8b",
-  advanced: "#102a43",
-  stretch: "#c9862a",
+  foundational: "#4c83b5",
+  core: "#2b9c8c",
+  advanced: "#132b3b",
+  stretch: "#b8772a",
 };
 
 function sourceGlyph(source: LearningResource["source"]): string {
@@ -128,7 +128,7 @@ export default function Continue() {
                   <div className="flex flex-col justify-center">
                     <Link
                       href={item.href}
-                      className="shrink-0 border border-ink/25 bg-ivory-deep px-4 py-2 text-center font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-ink transition-all duration-150 hover:border-teal hover:text-teal active:scale-[0.97]"
+                      className="shrink-0 border border-ink/25 bg-ivory-deep px-4 py-2 text-center font-mono text-[12px] font-medium uppercase tracking-[0.08em] text-ink transition-all duration-150 hover:border-teal hover:text-teal active:scale-[0.97]"
                     >
                       {item.actionLabel}
                     </Link>
@@ -160,11 +160,11 @@ export default function Continue() {
                       >
                         {sourceGlyph(r!.source)}
                       </span>
-                      <span className="font-mono text-[10px] text-ink/55">{r!.sourceLabel}</span>
+                      <span className="font-mono text-[12px] text-ink/55">{r!.sourceLabel}</span>
                       <span className="font-mono text-[9px] uppercase tracking-[0.1em] text-muted-foreground">
                         {r!.topicTitle}
                       </span>
-                      <span className="flex items-center gap-1 font-mono text-[10px] text-muted-foreground">
+                      <span className="flex items-center gap-1 font-mono text-[12px] text-muted-foreground">
                         <Clock className="h-3 w-3" /> {r!.durationMinutes} min
                       </span>
                       <span className="font-mono text-[9px] uppercase tracking-[0.1em] text-muted-foreground">
@@ -185,7 +185,7 @@ export default function Continue() {
                           />
                         </div>
                       </div>
-                      <span className="font-mono text-[11px] font-medium text-dark-text/70">
+                      <span className="font-mono text-[14px] font-medium text-dark-text/70">
                         {Math.round(p.fraction * 100)}% complete
                       </span>
                       {p.fraction > 0.85 && (
@@ -217,7 +217,7 @@ export default function Continue() {
                         toast("Pass completed — logged as a finished session");
                         refresh();
                       }}
-                      className="flex h-8 items-center gap-1.5 border border-ink/25 bg-card px-3 font-mono text-[10px] uppercase tracking-[0.12em] text-ink/60 transition-all duration-150 hover:border-teal hover:text-teal active:scale-[0.97]"
+                      className="flex h-8 items-center gap-1.5 border border-ink/25 bg-card px-3 font-mono text-[12px] uppercase tracking-[0.12em] text-ink/60 transition-all duration-150 hover:border-teal hover:text-teal active:scale-[0.97]"
                     >
                       <Check className="h-3 w-3" /> Mark done
                     </button>
@@ -247,7 +247,7 @@ export default function Continue() {
         <aside className="mt-8 grid gap-6 md:grid-cols-2">
           <div className="border border-ink/10 bg-card p-5">
             <Marginalia>What Cognify watched while you were away</Marginalia>
-            <ul className="mt-3 space-y-1.5 font-mono text-[10px] uppercase tracking-[0.06em] text-ink/60">
+            <ul className="mt-3 space-y-1.5 font-mono text-[12px] uppercase tracking-[0.06em] text-ink/60">
               <li>· watched fraction of each started lecture</li>
               <li>· retrieval attempts left unfinished</li>
               <li>· revision intervals on the spaced schedule</li>
@@ -256,7 +256,7 @@ export default function Continue() {
             </ul>
           </div>
           <div className="border border-ink bg-ink p-5 text-ivory">
-            <div className="font-mono text-[9px] uppercase tracking-[0.2em] text-teal">Observation</div>
+            <div className="font-mono text-[9px] uppercase tracking-[0.08em] text-teal">Observation</div>
             <p className="mt-2 font-serif text-[15px] leading-relaxed">
               The most instructive move after a pause is the return. One resumed pass beats
               three abandoned beginnings.

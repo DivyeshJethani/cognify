@@ -47,12 +47,12 @@ export default function Profile() {
         {/* Dossier header */}
         <div className="rise-in grid gap-6 border-b border-ink/10 pb-7 lg:grid-cols-[1.4fr_1fr]">
           <div className="flex items-start gap-5">
-            <div className="flex h-16 w-16 shrink-0 items-center justify-center border border-ink/20 bg-card font-serif text-xl font-bold text-teal">
+            <div className="flex h-16 w-16 shrink-0 items-center justify-center border border-ink/20 bg-card font-display text-[20px] font-bold text-teal">
               {profile.name.split(" ").map((n) => n[0]).join("").slice(0, 2)}
             </div>
             <div>
               <h2 className="font-serif text-2xl font-bold text-ink">{profile.name}</h2>
-              <div className="mt-1 font-mono text-[11px] uppercase tracking-[0.12em] text-muted-foreground">
+              <div className="mt-1 font-mono text-[14px] uppercase tracking-[0.12em] text-muted-foreground">
                 {profile.board} · {profile.className} · File opened {formatDate(profile.createdAt)}
               </div>
               <p className="mt-3 max-w-xl text-[13.5px] leading-relaxed text-dark-text/75">
@@ -70,7 +70,7 @@ export default function Profile() {
               ["Weekly target", `${Math.round(profile.weeklyTargetMinutes / 60)}h`],
             ].map(([k, v]) => (
               <div key={k} className="bg-card p-3.5">
-                <div className="font-mono text-[8.5px] uppercase tracking-[0.14em] text-muted-foreground">{k}</div>
+                <div className="font-mono text-[8.5px] uppercase tracking-[0.08em] text-muted-foreground">{k}</div>
                 <div className="mt-1 font-serif text-[13.5px] font-bold leading-snug text-ink">{v}</div>
               </div>
             ))}
@@ -88,7 +88,7 @@ export default function Profile() {
                     <span className="font-serif text-xl italic text-teal">A</span>
                     <div>
                       <div className="flex flex-wrap items-center gap-3">
-                        <span className="font-mono text-[10px] font-medium uppercase tracking-[0.12em] text-ink/60">
+                        <span className="font-mono text-[12px] font-medium uppercase tracking-[0.12em] text-ink/60">
                           {ins.dimension}
                         </span>
                         <span className="border border-teal/40 px-2 py-0.5 font-mono text-[9px] uppercase tracking-wider text-teal-dark">
@@ -124,13 +124,13 @@ export default function Profile() {
                         contentStyle={{ background: "#F7F5EF", border: "1px solid rgba(16,42,67,0.15)", borderRadius: 2, fontSize: 12 }}
                         formatter={(v) => [`${v}% success`, ""]}
                       />
-                      <Bar dataKey="success" fill="#1f9d8b" radius={[0, 2, 2, 0]} barSize={12} />
+                      <Bar dataKey="success" fill="#2b9c8c" radius={[0, 2, 2, 0]} barSize={12} />
                     </BarChart>
                   </ResponsiveContainer>
                 </div>
                 <div className="mt-3 border-t border-ink/10 pt-3">
-                  <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">Best-performing format</span>
-                  <span className="ml-2 font-mono text-[11px] font-medium text-teal-dark">
+                  <span className="font-mono text-[12px] uppercase tracking-[0.12em] text-muted-foreground">Best-performing format</span>
+                  <span className="ml-2 font-mono text-[14px] font-medium text-teal-dark">
                     {formatLabels[dna.topFormat]} — {dna.formatExperimentResults[0]?.success}% success
                   </span>
                 </div>
@@ -147,16 +147,16 @@ export default function Profile() {
               </p>
               <div className="mt-5 flex gap-2">
                 {[
-                  ["Conceptual", dna.mistakeProfile.conceptual, "#1f9d8b"],
-                  ["Careless", dna.mistakeProfile.careless, "#e9a23b"],
-                  ["Procedural", dna.mistakeProfile.procedural, "#102a43"],
+                  ["Conceptual", dna.mistakeProfile.conceptual, "#2b9c8c"],
+                  ["Careless", dna.mistakeProfile.careless, "#d9912f"],
+                  ["Procedural", dna.mistakeProfile.procedural, "#132b3b"],
                 ].map(([label, value, color]) => (
                   <div key={label as string} className="flex-1 border border-ink/10 bg-card p-4">
                     <div className="h-1.5 w-full bg-ivory-deep">
                       <div className="h-full" style={{ width: `${value}%`, background: color as string }} />
                     </div>
-                    <div className="mt-3 font-serif text-xl font-bold text-ink">{value}%</div>
-                    <div className="mt-0.5 font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+                    <div className="mt-3 font-display text-[20px] font-bold text-ink">{value}%</div>
+                    <div className="mt-0.5 font-mono text-[12px] uppercase tracking-wider text-muted-foreground">
                       {label}
                     </div>
                   </div>
@@ -188,8 +188,8 @@ export default function Profile() {
                       <span
                         className="mt-1 border px-1.5 py-0.5 font-mono text-[9px] uppercase tracking-wider"
                         style={{
-                          borderColor: r.verdict === "overestimating" ? "#e9a23b" : r.verdict === "underestimating" ? "#7fa894" : "#1f9d8b",
-                          color: r.verdict === "overestimating" ? "#9c5a0c" : r.verdict === "underestimating" ? "#2c6e5e" : "#1f9d8b",
+                          borderColor: r.verdict === "overestimating" ? "#d9912f" : r.verdict === "underestimating" ? "#4c83b5" : "#2b9c8c",
+                          color: r.verdict === "overestimating" ? "#9c5a0c" : r.verdict === "underestimating" ? "#2c6e5e" : "#2b9c8c",
                         }}
                       >
                         {r.verdict}
@@ -211,7 +211,7 @@ export default function Profile() {
                     <span className="font-serif text-xl italic text-amber">!</span>
                     <div>
                       <div className="flex flex-wrap items-center gap-3">
-                        <span className="font-mono text-[10px] font-medium uppercase tracking-[0.12em] text-ink/60">
+                        <span className="font-mono text-[12px] font-medium uppercase tracking-[0.12em] text-ink/60">
                           {iv.label}
                         </span>
                         <span className="border border-amber/50 bg-amber/5 px-2 py-0.5 font-mono text-[9px] uppercase tracking-wider text-amber-dark">
@@ -228,9 +228,9 @@ export default function Profile() {
                 ))}
               </div>
               <div className="mt-5 border border-ink bg-ink p-5 text-ivory">
-                <div className="font-mono text-[9px] uppercase tracking-[0.2em] text-teal">Featured change in effect</div>
+                <div className="font-mono text-[9px] uppercase tracking-[0.08em] text-teal">Featured change in effect</div>
                 <p className="mt-2 font-serif text-[15px] leading-relaxed">{featuredIntervention().observation}</p>
-                <p className="mt-2 font-mono text-[11px] leading-relaxed text-white/70">{featuredIntervention().action}</p>
+                <p className="mt-2 font-mono text-[14px] leading-relaxed text-white/70">{featuredIntervention().action}</p>
                 <JourneyLink href="/adaptive" className="mt-3 text-white/60 hover:text-teal">
                   See the full decision ledger
                 </JourneyLink>
@@ -244,19 +244,19 @@ export default function Profile() {
               <div className="marginalia [&::before]:hidden">Rhythm — when you study best</div>
               <dl className="mt-3 space-y-3">
                 <div className="flex items-baseline justify-between border-b border-ink/8 pb-2">
-                  <dt className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">Peak focus hour</dt>
+                  <dt className="font-mono text-[12px] uppercase tracking-[0.12em] text-muted-foreground">Peak focus hour</dt>
                   <dd className="font-mono text-[12px] font-medium text-ink">{dna.peakFocusHour}</dd>
                 </div>
                 <div className="flex items-baseline justify-between border-b border-ink/8 pb-2">
-                  <dt className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">Avg session</dt>
+                  <dt className="font-mono text-[12px] uppercase tracking-[0.12em] text-muted-foreground">Avg session</dt>
                   <dd className="font-mono text-[12px] font-medium text-ink">{dna.avgSessionMinutes} min</dd>
                 </div>
                 <div className="flex items-baseline justify-between border-b border-ink/8 pb-2">
-                  <dt className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">Weekly target</dt>
+                  <dt className="font-mono text-[12px] uppercase tracking-[0.12em] text-muted-foreground">Weekly target</dt>
                   <dd className="font-mono text-[12px] font-medium text-ink">{Math.round(profile.weeklyTargetMinutes / 60)}h 00m</dd>
                 </div>
                 <div className="flex items-baseline justify-between">
-                  <dt className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">Profile strength</dt>
+                  <dt className="font-mono text-[12px] uppercase tracking-[0.12em] text-muted-foreground">Profile strength</dt>
                   <dd className="font-mono text-[12px] font-medium text-teal-dark">{dna.profileStrength}%</dd>
                 </div>
               </dl>
@@ -277,7 +277,7 @@ export default function Profile() {
                   <li key={g.id}>
                     <div className="flex items-baseline justify-between gap-2">
                       <span className="font-serif text-[14px] font-bold text-ink">{g.title}</span>
-                      <span className="font-mono text-[11px] text-teal-dark">{g.progress}%</span>
+                      <span className="font-mono text-[14px] text-teal-dark">{g.progress}%</span>
                     </div>
                     <MasteryBar value={g.progress} className="mt-1.5" />
                   </li>
@@ -286,7 +286,7 @@ export default function Profile() {
             </section>
 
             <section className="border border-ink bg-ink p-5 text-ivory">
-              <div className="font-mono text-[9px] uppercase tracking-[0.2em] text-teal">This file changes</div>
+              <div className="font-mono text-[9px] uppercase tracking-[0.08em] text-teal">This file changes</div>
               <p className="mt-2 font-serif text-[14.5px] leading-relaxed">
                 The DNA file rewrites itself after every session. What you read here is the
                 snapshot at your last login — the ledger updates on the next activity.

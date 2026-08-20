@@ -95,7 +95,7 @@ export default function Onboarding() {
                 </div>
                 <span
                   className={cn(
-                    "font-mono text-[9px] uppercase tracking-[0.14em]",
+                    "font-mono text-[9px] uppercase tracking-[0.08em]",
                     i <= step ? "text-ink" : "text-muted-foreground"
                   )}
                 >
@@ -116,7 +116,7 @@ export default function Onboarding() {
           {step === 0 && (
             <div>
               <div className="marginalia">Setup — step 1 of 4</div>
-              <h1 className="mt-3 font-serif text-3xl font-bold text-ink">Which board do you study under?</h1>
+              <h1 className="mt-3 font-display text-3xl font-bold text-ink">Which board do you study under?</h1>
               <p className="mt-2 text-[14px] text-dark-text/70">COGNIFY supports the complete school curriculum.</p>
               <div className="mt-8 grid gap-3 sm:grid-cols-3">
                 {boards.map((b) => {
@@ -132,8 +132,8 @@ export default function Onboarding() {
                         active ? "border-teal bg-teal/5 shadow-[4px_4px_0_0_rgba(31,157,139,0.15)]" : "border-ink/15 bg-card hover:border-ink/35"
                       )}
                     >
-                      <div className="font-serif text-xl font-bold text-ink">{b.name}</div>
-                      <div className="mt-1 font-mono text-[11px] uppercase tracking-wider text-muted-foreground">
+                      <div className="font-display text-[20px] font-bold text-ink">{b.name}</div>
+                      <div className="mt-1 font-mono text-[14px] uppercase tracking-wider text-muted-foreground">
                         {b.classes.length} classes mapped · {b.classes.reduce((n, c) => n + c.subjects.length, 0)} subjects
                       </div>
                     </button>
@@ -148,7 +148,7 @@ export default function Onboarding() {
           {step === 1 && board && (
             <div>
               <div className="marginalia">Setup — step 2 of 4</div>
-              <h1 className="mt-3 font-serif text-3xl font-bold text-ink">Which class are you in?</h1>
+              <h1 className="mt-3 font-display text-3xl font-bold text-ink">Which class are you in?</h1>
               <p className="mt-2 text-[14px] text-dark-text/70">
                 {board.name} — pick the class that matches your current year.
               </p>
@@ -166,8 +166,8 @@ export default function Onboarding() {
                         active ? "border-teal bg-teal/5 shadow-[4px_4px_0_0_rgba(31,157,139,0.15)]" : "border-ink/15 bg-card hover:border-ink/35"
                       )}
                     >
-                      <div className="font-serif text-xl font-bold text-ink">{c.name}</div>
-                      <div className="mt-1 font-mono text-[11px] uppercase tracking-wider text-muted-foreground">
+                      <div className="font-display text-[20px] font-bold text-ink">{c.name}</div>
+                      <div className="mt-1 font-mono text-[14px] uppercase tracking-wider text-muted-foreground">
                         {c.subjects.length} subjects · full chapter mapping
                       </div>
                     </button>
@@ -181,7 +181,7 @@ export default function Onboarding() {
           {step === 2 && board && cls && (
             <div>
               <div className="marginalia">Setup — step 3 of 4</div>
-              <h1 className="mt-3 font-serif text-3xl font-bold text-ink">Choose your subjects.</h1>
+              <h1 className="mt-3 font-display text-3xl font-bold text-ink">Choose your subjects.</h1>
               <p className="mt-2 text-[14px] text-dark-text/70">
                 {board.name} · {cls.name} — select all that apply. You can change this later.
               </p>
@@ -205,7 +205,7 @@ export default function Onboarding() {
                     >
                       <div
                         className={cn(
-                          "flex h-8 w-8 shrink-0 items-center justify-center border font-mono text-[10px] font-bold",
+                          "flex h-8 w-8 shrink-0 items-center justify-center border font-mono text-[12px] font-bold",
                           active ? "border-teal bg-teal text-white" : "border-ink/25 text-ink/60"
                         )}
                       >
@@ -213,7 +213,7 @@ export default function Onboarding() {
                       </div>
                       <div>
                         <div className="font-serif text-lg font-bold text-ink">{s.name}</div>
-                        <div className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+                        <div className="font-mono text-[12px] uppercase tracking-wider text-muted-foreground">
                           {s.chapters.length} chapters · {s.chapters.reduce((n, c) => n + c.topics.length, 0)} topics
                         </div>
                       </div>
@@ -232,7 +232,7 @@ export default function Onboarding() {
           {step === 3 && (
             <div>
               <div className="marginalia">Setup — step 4 of 4</div>
-              <h1 className="mt-3 font-serif text-3xl font-bold text-ink">What are you working towards?</h1>
+              <h1 className="mt-3 font-display text-3xl font-bold text-ink">What are you working towards?</h1>
               <p className="mt-2 text-[14px] text-dark-text/70">
                 Pick any number of directions — your learning path is built from them.
               </p>
@@ -258,13 +258,13 @@ export default function Onboarding() {
                         <div className="font-serif text-lg font-bold text-ink">{g.title}</div>
                         {active && <Check className="h-4 w-4 text-teal" />}
                       </div>
-                      <div className="mt-1.5 text-[13px] leading-relaxed text-dark-text/70">{g.desc}</div>
+                      <div className="mt-1.5 text-[14px] leading-relaxed text-dark-text/70">{g.desc}</div>
                     </button>
                   );
                 })}
               </div>
               <div className="mt-6">
-                <label className="font-mono text-[10px] uppercase tracking-[0.16em] text-muted-foreground" htmlFor="own-goal">
+                <label className="font-display text-xs uppercase tracking-[0.08em] text-muted-foreground" htmlFor="own-goal">
                   Or write your own goal <span className="text-ink/30">(optional)</span>
                 </label>
                 <input
@@ -283,7 +283,7 @@ export default function Onboarding() {
         <div className="mt-12 flex items-center justify-between border-t border-ink/10 pt-6">
           <button
             onClick={() => (step > 0 ? setStep(step - 1) : navigate("/signup"))}
-            className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.14em] text-muted-foreground transition-colors hover:text-ink"
+            className="inline-flex items-center gap-2 font-mono text-[14px] uppercase tracking-[0.08em] text-muted-foreground transition-colors hover:text-ink"
           >
             <ArrowLeft className="h-3.5 w-3.5" /> Back
           </button>

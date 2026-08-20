@@ -22,10 +22,10 @@ import { useEffect, useMemo, useState } from "react";
 import { cn } from "@/lib/utils";
 
 const DIFFICULTY_COLORS: Record<string, string> = {
-  foundational: "#7fa894",
-  core: "#1f9d8b",
-  advanced: "#102a43",
-  stretch: "#c9862a",
+  foundational: "#4c83b5",
+  core: "#2b9c8c",
+  advanced: "#132b3b",
+  stretch: "#b8772a",
 };
 
 function sourceGlyph(source: LearningResource["source"]): string {
@@ -126,7 +126,7 @@ export default function TopicLearning() {
         actions={
           <button
             onClick={() => navigate("/curriculum")}
-            className="border border-ink/15 bg-card px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.1em] text-ink/70 transition-colors hover:border-teal hover:text-teal"
+            className="border border-ink/15 bg-card px-3 py-1.5 font-mono text-[14px] uppercase tracking-[0.1em] text-ink/70 transition-colors hover:border-teal hover:text-teal"
           >
             ← Curriculum Explorer
           </button>
@@ -147,17 +147,17 @@ export default function TopicLearning() {
                 </p>
               </div>
               <div className="w-full shrink-0 sm:w-56">
-                <div className="font-mono text-[9px] uppercase tracking-[0.14em] text-muted-foreground">
+                <div className="font-mono text-[9px] uppercase tracking-[0.08em] text-muted-foreground">
                   Mastery — {topic.mastery}%
                 </div>
                 <MasteryBar value={topic.mastery} className="mt-2" />
                 <div className="mt-3 grid grid-cols-2 gap-px bg-ink/10">
                   <div className="bg-ivory p-2.5">
-                    <div className="font-mono text-[9px] uppercase tracking-[0.14em] text-muted-foreground">Est. time</div>
+                    <div className="font-mono text-[9px] uppercase tracking-[0.08em] text-muted-foreground">Est. time</div>
                     <div className="mt-0.5 font-mono text-sm font-medium text-ink">{topic.estimatedMinutes} min</div>
                   </div>
                   <div className="bg-ivory p-2.5">
-                    <div className="font-mono text-[9px] uppercase tracking-[0.14em] text-muted-foreground">Status</div>
+                    <div className="font-mono text-[9px] uppercase tracking-[0.08em] text-muted-foreground">Status</div>
                     <div className="mt-0.5 font-mono text-sm font-medium text-ink">{topic.mastery < 50 ? "In progress" : topic.mastery < 85 ? "Strengthening" : "Mastered"}</div>
                   </div>
                 </div>
@@ -192,10 +192,10 @@ export default function TopicLearning() {
                               {STAGE_GLYPH[s.key]}
                               {s.label}
                             </span>
-                            <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+                            <span className="font-mono text-[12px] uppercase tracking-wider text-muted-foreground">
                               {s.purpose}
                             </span>
-                            <span className="flex items-center gap-1 font-mono text-[10px] text-muted-foreground">
+                            <span className="flex items-center gap-1 font-mono text-[12px] text-muted-foreground">
                               <Clock className="h-3 w-3" /> {s.timeMinutes} min
                             </span>
                           </div>
@@ -221,17 +221,17 @@ export default function TopicLearning() {
                       {isExpanded && (
                         <div className="ml-8 border-l border-ink/15 pb-4 pl-5">
                           {(s.teachPrompt || s.practiceNote || (s.resourceId && s.body == null)) && (
-                            <p className="mb-3 text-[13px] leading-relaxed text-dark-text/75">
+                            <p className="mb-3 text-[14px] leading-relaxed text-dark-text/75">
                               {s.teachPrompt ?? s.practiceNote ?? "Begin a focused session below and return to mark it complete."}
                             </p>
                           )}
                           {s.teachPoints && (
                             <div className="mb-3">
-                              <div className="font-mono text-[9.5px] uppercase tracking-[0.14em] text-muted-foreground">Key points to cover</div>
+                              <div className="font-mono text-[9.5px] uppercase tracking-[0.08em] text-muted-foreground">Key points to cover</div>
                               <ol className="mt-2 space-y-1.5">
                                 {s.teachPoints.map((p, i) => (
                                   <li key={i} className="flex gap-2 text-[12.5px] leading-relaxed text-dark-text/75">
-                                    <span className="font-mono text-[10px] text-teal">{String(i + 1).padStart(2, "0")}</span>
+                                    <span className="font-mono text-[12px] text-teal">{String(i + 1).padStart(2, "0")}</span>
                                     {p}
                                   </li>
                                 ))}
@@ -242,7 +242,7 @@ export default function TopicLearning() {
                             {s.resourceId && s.key !== "retrieval" && s.key !== "teach-back" && (
                               <button
                                 onClick={() => navigate(`/session/${s.resourceId}?topic=${topicId}`)}
-                                className="border border-ink bg-ink px-4 py-2 font-mono text-[10px] uppercase tracking-[0.12em] text-ivory transition-colors hover:bg-teal hover:border-teal active:scale-[0.97]"
+                                className="border border-ink bg-ink px-4 py-2 font-mono text-[12px] uppercase tracking-[0.12em] text-ivory transition-colors hover:bg-teal hover:border-teal active:scale-[0.97]"
                               >
                                 Begin stage session →
                               </button>
@@ -250,7 +250,7 @@ export default function TopicLearning() {
                             {s.key === "retrieval" && (
                               <button
                                 onClick={() => navigate(`/teach`)}
-                                className="border border-amber bg-amber px-4 py-2 font-mono text-[10px] uppercase tracking-[0.12em] text-white transition-colors hover:bg-amber-dark active:scale-[0.97]"
+                                className="border border-amber bg-amber px-4 py-2 font-mono text-[12px] uppercase tracking-[0.12em] text-white transition-colors hover:bg-amber-dark active:scale-[0.97]"
                               >
                                 Start the retrieval check →
                               </button>
@@ -258,7 +258,7 @@ export default function TopicLearning() {
                             {s.key === "teach-back" && (
                               <button
                                 onClick={() => navigate(`/teach`)}
-                                className="border border-teal px-4 py-2 font-mono text-[10px] uppercase tracking-[0.12em] text-teal transition-colors hover:bg-teal hover:text-white active:scale-[0.97]"
+                                className="border border-teal px-4 py-2 font-mono text-[12px] uppercase tracking-[0.12em] text-teal transition-colors hover:bg-teal hover:text-white active:scale-[0.97]"
                               >
                                 Teach Cognify →
                               </button>
@@ -266,7 +266,7 @@ export default function TopicLearning() {
                             <button
                               onClick={() => toggleStageDone(s.key)}
                               className={cn(
-                                "border px-4 py-2 font-mono text-[10px] uppercase tracking-[0.12em] transition-colors active:scale-[0.97]",
+                                "border px-4 py-2 font-mono text-[12px] uppercase tracking-[0.12em] transition-colors active:scale-[0.97]",
                                 isDone
                                   ? "border-ink/25 bg-card text-ink/60 hover:border-teal hover:text-teal"
                                   : "border-teal/50 bg-teal/5 text-teal hover:bg-teal/10"
@@ -310,7 +310,7 @@ export default function TopicLearning() {
                           >
                             {sourceGlyph(r.source)}
                           </span>
-                          <span className="font-mono text-[10px] text-ink/55">{r.sourceLabel}</span>
+                          <span className="font-mono text-[12px] text-ink/55">{r.sourceLabel}</span>
                           <ActionChip action={r.format === "practice" ? "practice" : r.format === "revision" ? "revise" : "learn"} />
                           <span
                             className="border px-1.5 py-0.5 font-mono text-[9px] uppercase tracking-wider"
@@ -318,7 +318,7 @@ export default function TopicLearning() {
                           >
                             {r.difficulty}
                           </span>
-                          <span className="flex items-center gap-1 font-mono text-[10px] text-muted-foreground">
+                          <span className="flex items-center gap-1 font-mono text-[12px] text-muted-foreground">
                             <Clock className="h-3 w-3" /> {r.durationMinutes} min
                           </span>
                           {i === 0 && (
@@ -363,7 +363,7 @@ export default function TopicLearning() {
           {alts.length > 0 && (
             <div className="mt-8">
               <div className="marginalia">Another explanation</div>
-              <p className="mt-2 max-w-2xl text-[13px] leading-relaxed text-dark-text/70">
+              <p className="mt-2 max-w-2xl text-[14px] leading-relaxed text-dark-text/70">
                 If the first pass above did not hold, do not repeat it — meet the idea in a
                 different format. These surface after a session registers a replay or an
                 “I need another explanation” reflection.
@@ -377,7 +377,7 @@ export default function TopicLearning() {
                         <div className="font-serif text-[15px] font-bold leading-snug text-ink">
                           {a.title}
                         </div>
-                        <div className="mt-1 font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+                        <div className="mt-1 font-mono text-[12px] uppercase tracking-wider text-muted-foreground">
                           {a.context}
                         </div>
                       </div>
@@ -408,7 +408,7 @@ export default function TopicLearning() {
         {/* Margin */}
         <aside className="w-full shrink-0 space-y-6 lg:w-80">
           <div className="border border-ink bg-ink p-5 text-ivory">
-            <div className="font-mono text-[9px] uppercase tracking-[0.2em] text-teal">DNA note</div>
+            <div className="font-mono text-[9px] uppercase tracking-[0.08em] text-teal">DNA note</div>
             <p className="mt-2 font-serif text-[15px] leading-relaxed">
               {dnaItems[0]?.why ??
                 `Your profile suggests a ${firstRecommended?.resourceType.replace("-", " ") ?? "guided lecture"}-first approach for this topic — ${topic.mastery < 50 ? "the idea needs building, not polishing" : "the gaps are specific, not systemic"}.`}

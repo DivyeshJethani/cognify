@@ -54,7 +54,7 @@ export default function SubjectPage() {
           actions={
             <button
               onClick={() => navigate("/curriculum")}
-              className="border border-ink/15 bg-card px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.1em] text-ink/70 transition-colors hover:border-teal hover:text-teal"
+              className="border border-ink/15 bg-card px-3 py-1.5 font-mono text-[14px] uppercase tracking-[0.1em] text-ink/70 transition-colors hover:border-teal hover:text-teal"
             >
               ← Curriculum Explorer
             </button>
@@ -99,7 +99,7 @@ export default function SubjectPage() {
         actions={
           <button
             onClick={() => navigate("/curriculum")}
-            className="border border-ink/15 bg-card px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.1em] text-ink/70 transition-colors hover:border-teal hover:text-teal"
+            className="border border-ink/15 bg-card px-3 py-1.5 font-mono text-[14px] uppercase tracking-[0.1em] text-ink/70 transition-colors hover:border-teal hover:text-teal"
           >
             ← All subjects
           </button>
@@ -110,10 +110,10 @@ export default function SubjectPage() {
         {/* Margin — subject abstract */}
         <aside className="w-full shrink-0 space-y-6 lg:w-80">
           <div className="border border-ink bg-ink p-5 text-ivory">
-            <div className="font-mono text-[9px] uppercase tracking-[0.2em] text-teal">Subject abstract</div>
+            <div className="font-mono text-[9px] uppercase tracking-[0.08em] text-teal">Subject abstract</div>
             <div className="mt-2 flex items-center gap-2">
               {overview?.recommendedAction && (
-                <span className="border border-teal/40 bg-teal/10 px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.14em] text-teal">
+                <span className="border border-teal/40 bg-teal/10 px-2 py-0.5 font-display text-xs uppercase tracking-[0.08em] text-teal">
                   {overview.recommendedAction}
                 </span>
               )}
@@ -124,11 +124,11 @@ export default function SubjectPage() {
             </p>
             <div className="mt-5 grid grid-cols-2 gap-px bg-teal/30">
               <div className="bg-ink p-2.5">
-                <div className="font-mono text-[8px] uppercase tracking-[0.14em] text-ink/60">Mastery</div>
+                <div className="font-mono text-[8px] uppercase tracking-[0.08em] text-ink/60">Mastery</div>
                 <div className="mt-0.5 font-mono text-[15px] font-medium text-ivory">{totalMastery}%</div>
               </div>
               <div className="bg-ink p-2.5">
-                <div className="font-mono text-[8px] uppercase tracking-[0.14em] text-ink/60">Topics</div>
+                <div className="font-mono text-[8px] uppercase tracking-[0.08em] text-ink/60">Topics</div>
                 <div className="mt-0.5 font-mono text-[15px] font-medium text-ivory">{topicsTotal}</div>
               </div>
             </div>
@@ -241,7 +241,7 @@ export default function SubjectPage() {
                               {ch.index}.{String(ch.topics.indexOf(t) + 1).padStart(2, "0")}
                             </span>
                             <span className="min-w-0">
-                              <span className="block truncate text-[13px] font-medium text-dark-text/85 group-hover:text-ink">
+                              <span className="block truncate text-[14px] font-medium text-dark-text/85 group-hover:text-ink">
                                 {t.title}
                               </span>
                               <span className="mt-0.5 flex flex-wrap items-center gap-2">
@@ -252,23 +252,23 @@ export default function SubjectPage() {
                             </span>
                             <span className="flex items-center gap-2 shrink-0">
                               <MasteryBar value={t.mastery} className="w-16" />
-                              <span className="font-mono text-[10px] text-dark-text/60">{t.mastery}%</span>
+                              <span className="font-mono text-[12px] text-dark-text/60">{t.mastery}%</span>
                             </span>
                           </button>
                         </li>
                       ))}
                     </ul>
                     <div className="mt-2 flex items-center gap-3">
-                      <span className="font-mono text-[9px] uppercase tracking-[0.14em] text-muted-foreground">
+                      <span className="font-mono text-[9px] uppercase tracking-[0.08em] text-muted-foreground">
                         Chapter mastery
                       </span>
                       <MasteryBar value={mastery} className="max-w-[140px]" />
-                      <span className="font-mono text-[11px] font-medium text-dark-text/60">{mastery}%</span>
+                      <span className="font-mono text-[14px] font-medium text-dark-text/60">{mastery}%</span>
                     </div>
                   </div>
                   <button
                     onClick={() => ch.topics[0] && navigate(`/topic/${topicAlias(ch.topics[0].id)}`)}
-                    className="mt-1 h-9 whitespace-nowrap border border-ink/25 bg-card px-4 font-mono text-[10px] uppercase tracking-[0.12em] text-ink/70 transition-all duration-150 hover:border-teal hover:text-teal active:scale-[0.97]"
+                    className="mt-1 h-9 whitespace-nowrap border border-ink/25 bg-card px-4 font-mono text-[12px] uppercase tracking-[0.12em] text-ink/70 transition-all duration-150 hover:border-teal hover:text-teal active:scale-[0.97]"
                   >
                     Open chapter →
                   </button>

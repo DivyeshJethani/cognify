@@ -137,11 +137,12 @@ export const TOPIC_ALIASES: Record<string, string> = {
   "t-3-properties-of-acids-bases": "t-0-properties-of-acids-bases",
   "t-4-ph-scale-strength": "t-1-ph-scale-strength",
   "t-5-nutrition-in-plants": "t-0-nutrition-in-plants",
-  "t-6-nutrition-in-humans": "t-1-nutrition-in-humans",
+  "t-2-relationship-between-zeros-coefficients": "t-4-relationship-between-zeros-coefficients",
+  "t-1-substitution-elimination-methods": "t-7-substitution-elimination-methods",
+  "t-0-nutrition-in-humans": "t-6-nutrition-in-humans",
   "t-7-transportation-excretion": "t-2-transportation-excretion",
   "t-0-french-revolution-idea-of-nation": "t-0-the-french-revolution-the-id",
   "t-1-making-of-nationalism-italy-germany": "t-1-making-of-nationalism-in-ita",
-  "t-2-nationalism-imperialism": "t-2-nationalism-imperialism",
   "t-3-first-world-war-non-cooperation": "t-0-the-first-world-war-non-coop",
   "t-4-civil-disobedience-collective-belonging": "t-1-civil-disobedience-sense-of-",
   "t-0-a-letter-to-god": "t-0-a-letter-to-god",
@@ -159,11 +160,18 @@ export function resolveAlias(slug: string): string | null {
   if (!slug) return null;
   // direct inventory hit — slug is already an alias key
   if (slug in INVENTORY) return slug;
-  // slug is an alias → it is its own inventory key
-  if (slug in TOPIC_ALIASES) return slug;
+  // slug is a known alias → its mapped value is the INVENTORY key when it
+  // lives in the inventory; otherwise fall through to reverse mapping
+  if (slug in TOPIC_ALIASES && TOPIC_ALIASES[slug] in INVENTORY) return TOPIC_ALIASES[slug];
   // slug is a runtime id → find its alias key
   const aliasKey = Object.entries(TOPIC_ALIASES).find(([, realId]) => realId === slug)?.[0] ?? null;
   if (aliasKey && aliasKey in INVENTORY) return aliasKey;
+  // slug is a known alias whose value is not in the inventory — reverse map
+  // by the value instead (covers truncated canonical ids)
+  if (slug in TOPIC_ALIASES) {
+    const rev = Object.entries(TOPIC_ALIASES).find(([, realId]) => realId === TOPIC_ALIASES[slug])?.[0] ?? null;
+    if (rev && rev in INVENTORY) return rev;
+  }
   return null;
 }
 

@@ -120,7 +120,7 @@ export default function Curriculum() {
                 >
                   <div className="flex items-baseline justify-between">
                     <span className="index-num">{String(subjects.indexOf(s) + 1).padStart(2, "0")}</span>
-                    <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+                    <span className="font-mono text-[12px] uppercase tracking-[0.1em] text-muted-foreground">
                       {s.code}
                     </span>
                   </div>
@@ -132,15 +132,15 @@ export default function Curriculum() {
                   </p>
                   <div className="mt-auto grid grid-cols-2 gap-px bg-ink/10">
                     <div className="bg-ivory p-2.5">
-                      <div className="font-mono text-[9px] uppercase tracking-[0.14em] text-muted-foreground">Mastery</div>
+                      <div className="font-mono text-[9px] uppercase tracking-[0.08em] text-muted-foreground">Mastery</div>
                       <div className="mt-0.5 font-mono text-[15px] font-medium text-ink">{overview.mastery}%</div>
                     </div>
                     <div className="bg-ivory p-2.5">
-                      <div className="font-mono text-[9px] uppercase tracking-[0.14em] text-muted-foreground">Chapters</div>
+                      <div className="font-mono text-[9px] uppercase tracking-[0.08em] text-muted-foreground">Chapters</div>
                       <div className="mt-0.5 font-mono text-[15px] font-medium text-ink">{s.chapters.length}</div>
                     </div>
                   </div>
-                  <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-teal transition-transform group-hover:translate-x-0.5">
+                  <span className="font-mono text-[12px] uppercase tracking-[0.12em] text-teal transition-transform group-hover:translate-x-0.5">
                     Open subject ledger →
                   </span>
                 </button>
@@ -179,7 +179,7 @@ export default function Curriculum() {
           const nb = boards.find((b) => b.id === v)!;
           setClassId(nb.classes[0].id);
         }}>
-          <SelectTrigger className="h-9 w-36 border-ink/20 bg-card text-[13px]">
+          <SelectTrigger className="h-9 w-36 border-ink/20 bg-card text-[14px]">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -196,7 +196,7 @@ export default function Curriculum() {
           const nc = nb.classes.find((c) => c.id === v)!;
           setSubjectId(nc.subjects.find((s) => s.code === subject?.code)?.id ?? nc.subjects[0].id);
         }}>
-          <SelectTrigger className="h-9 w-32 border-ink/20 bg-card text-[13px]">
+          <SelectTrigger className="h-9 w-32 border-ink/20 bg-card text-[14px]">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -212,7 +212,7 @@ export default function Curriculum() {
             setSubjectId(v);
           }
         }}>
-          <SelectTrigger className="h-9 w-48 border-ink/20 bg-card text-[13px]">
+          <SelectTrigger className="h-9 w-48 border-ink/20 bg-card text-[14px]">
             <SelectValue placeholder="All subjects" />
           </SelectTrigger>
           <SelectContent>
@@ -240,7 +240,7 @@ export default function Curriculum() {
               key={mode}
               onClick={() => setViewMode(mode)}
               className={cn(
-                "px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.12em] transition-colors",
+                "px-3 py-1.5 font-mono text-[12px] uppercase tracking-[0.12em] transition-colors",
                 viewMode === mode ? "bg-ink text-ivory" : "text-muted-foreground hover:text-ink"
               )}
             >
@@ -276,7 +276,7 @@ export default function Curriculum() {
                     <span className={cn("block truncate font-serif text-[14px] font-bold", active ? "text-ink" : "text-ink/75")}>
                       {ch.title}
                     </span>
-                    <span className="mt-0.5 block font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+                    <span className="mt-0.5 block font-mono text-[12px] uppercase tracking-wider text-muted-foreground">
                       {ch.topics.length} topics · {mastery}% chapter mastery
                     </span>
                   </span>
@@ -418,9 +418,9 @@ function TopicRow({
           <div className="mt-1.5 font-serif text-[16px] font-bold text-ink">{topic.title}</div>
           <div className="mt-2.5 flex items-center gap-3">
             <MasteryBar value={topic.mastery} className="max-w-[160px]" />
-            <span className="font-mono text-[11px] font-medium text-dark-text/60">{topic.mastery}%</span>
+            <span className="font-mono text-[14px] font-medium text-dark-text/60">{topic.mastery}%</span>
             {topic.lastStudied && (
-              <span className="font-mono text-[10px] text-muted-foreground">
+              <span className="font-mono text-[12px] text-muted-foreground">
                 last studied {formatDate(topic.lastStudied)}
               </span>
             )}
@@ -432,7 +432,7 @@ function TopicRow({
             </div>
           )}
         </div>
-        <span className="hidden shrink-0 font-mono text-[10px] uppercase tracking-wider text-muted-foreground sm:block">
+        <span className="hidden shrink-0 font-mono text-[12px] uppercase tracking-wider text-muted-foreground sm:block">
           {topic.estimatedMinutes} min
         </span>
       </button>
@@ -464,7 +464,7 @@ function TopicDetail({
             </Marginalia>
             <button
               onClick={onClose}
-              className="font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground hover:text-ink"
+              className="font-display text-xs uppercase tracking-[0.08em] text-muted-foreground hover:text-ink"
             >
               Close
             </button>
@@ -509,10 +509,10 @@ function TopicDetail({
           {/* Why recommended */}
           {topic.recommendedAction && topic.actionReason && (
             <section className="border border-amber/40 bg-amber/5 p-4">
-              <div className="font-mono text-[10px] font-bold uppercase tracking-[0.14em] text-amber-dark">
+              <div className="font-mono text-[12px] font-bold uppercase tracking-[0.08em] text-amber-dark">
                 Why Cognify recommends: {topic.recommendedAction}
               </div>
-              <p className="mt-2 text-[13px] leading-relaxed text-dark-text/80">{topic.actionReason}</p>
+              <p className="mt-2 text-[14px] leading-relaxed text-dark-text/80">{topic.actionReason}</p>
             </section>
           )}
 
@@ -526,12 +526,12 @@ function TopicDetail({
                     <div className="font-serif text-[14px] font-bold text-ink">{r.label}</div>
                     <div className="mt-0.5 flex items-center gap-2">
                       <ActionChip action={r.type === "video" ? "learn" : r.type} />
-                      <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+                      <span className="font-mono text-[12px] uppercase tracking-wider text-muted-foreground">
                         {r.durationMinutes} min
                       </span>
                     </div>
                   </div>
-                  <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+                  <span className="font-mono text-[12px] uppercase tracking-wider text-muted-foreground">
                     In explorer
                   </span>
                 </li>
@@ -546,7 +546,7 @@ function TopicDetail({
               </button>
               <a
                 href={`/topic/${topicAlias(topic.id) ?? topic.id}`}
-                className="block border border-ink/20 px-4 py-2.5 text-center font-mono text-[10px] uppercase tracking-[0.12em] text-ink/70 transition-colors hover:border-teal hover:text-teal"
+                className="block border border-ink/20 px-4 py-2.5 text-center font-mono text-[12px] uppercase tracking-[0.12em] text-ink/70 transition-colors hover:border-teal hover:text-teal"
               >
                 Open learning dossier →
               </a>
@@ -556,13 +556,13 @@ function TopicDetail({
           {/* Meta */}
           <section className="grid grid-cols-2 gap-px border border-ink/10 bg-ink/10">
             <div className="bg-card p-4">
-              <div className="font-mono text-[9px] uppercase tracking-[0.14em] text-muted-foreground">Last studied</div>
+              <div className="font-mono text-[9px] uppercase tracking-[0.08em] text-muted-foreground">Last studied</div>
               <div className="mt-1 font-mono text-[12px] font-medium text-ink">
                 {topic.lastStudied ? formatDate(topic.lastStudied) : "Never"}
               </div>
             </div>
             <div className="bg-card p-4">
-              <div className="font-mono text-[9px] uppercase tracking-[0.14em] text-muted-foreground">Next revision</div>
+              <div className="font-mono text-[9px] uppercase tracking-[0.08em] text-muted-foreground">Next revision</div>
               <div className="mt-1 font-mono text-[12px] font-medium text-ink">
                 {topic.revisionDueInDays === null
                   ? "Not scheduled"

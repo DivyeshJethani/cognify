@@ -30,11 +30,11 @@ import { Link } from "wouter";
 const slugOf = (id: string) => topicAlias(id) ?? id;
 
 const categoryMeta: Record<string, { icon: typeof Flame; tone: string }> = {
-  conceptual: { icon: Lightbulb, tone: "#e9a23b" },
-  careless: { icon: Sparkles, tone: "#102a43" },
-  procedural: { icon: BookOpen, tone: "#1f9d8b" },
-  recall: { icon: Flame, tone: "#e9a23b" },
-  interpretation: { icon: Lightbulb, tone: "#102a43" },
+  conceptual: { icon: Lightbulb, tone: "#d9912f" },
+  careless: { icon: Sparkles, tone: "#132b3b" },
+  procedural: { icon: BookOpen, tone: "#2b9c8c" },
+  recall: { icon: Flame, tone: "#d9912f" },
+  interpretation: { icon: Lightbulb, tone: "#132b3b" },
 };
 
 export default function Mistakes() {
@@ -105,7 +105,7 @@ export default function Mistakes() {
                       <div>
                         <div className="flex flex-wrap items-center gap-2">
                           <span className="font-serif text-[17px] font-bold text-ink">{m.label}</span>
-                          <span className="flex items-center gap-1 font-mono text-[11px] font-bold text-amber-dark">
+                          <span className="flex items-center gap-1 font-mono text-[14px] font-bold text-amber-dark">
                             {mistakeTrendIcon(m.trend)} {m.percentage}%
                           </span>
                           <span className="font-mono text-[9px] uppercase tracking-wider text-muted-foreground">
@@ -115,7 +115,7 @@ export default function Mistakes() {
                         <p className="mt-2.5 footnote">{m.pattern}</p>
                         <div className="mt-3 flex items-center gap-2">
                           <Icon className="h-3.5 w-3.5 shrink-0" style={{ color: meta.tone }} />
-                          <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-ink/60">
+                          <span className="font-mono text-[12px] uppercase tracking-[0.12em] text-ink/60">
                             Intervention
                           </span>
                           <p className="footnote ml-1">{m.intervention}</p>
@@ -124,7 +124,7 @@ export default function Mistakes() {
                           {m.affectedTopics.map((t) => (
                             <span
                               key={t}
-                              className="border border-ink/12 px-2 py-0.5 font-mono text-[10px] text-ink/70"
+                              className="border border-ink/12 px-2 py-0.5 font-mono text-[12px] text-ink/70"
                             >
                               {t}
                             </span>
@@ -141,7 +141,7 @@ export default function Mistakes() {
             <section>
               <div className="flex flex-wrap items-baseline justify-between gap-3">
                 <Marginalia>Recent classified mistakes — the raw evidence</Marginalia>
-                <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+                <span className="font-mono text-[12px] uppercase tracking-wider text-muted-foreground">
                   each feeds a dimension of your Learning DNA
                 </span>
               </div>
@@ -158,7 +158,7 @@ export default function Mistakes() {
                       >
                         <div className="flex flex-wrap items-center justify-between gap-2">
                           <div className="min-w-0 flex flex-wrap items-center gap-2">
-                            <span className="border-l-2 px-1.5 py-0.5 font-mono text-[10px] font-medium uppercase tracking-[0.1em] text-amber-dark" style={{ borderLeftColor: categoryMeta[m.category]?.tone }}>
+                            <span className="border-l-2 px-1.5 py-0.5 font-mono text-[12px] font-medium uppercase tracking-[0.1em] text-amber-dark" style={{ borderLeftColor: categoryMeta[m.category]?.tone }}>
                               {m.category}
                             </span>
                             <span className="font-serif text-[15px] font-bold leading-snug text-ink">
@@ -171,7 +171,7 @@ export default function Mistakes() {
                             <ChevronDown className="h-4 w-4 shrink-0 text-ink/40" />
                           )}
                         </div>
-                        <p className="mt-2 font-mono text-[11px] leading-relaxed text-ink/70">
+                        <p className="mt-2 font-mono text-[14px] leading-relaxed text-ink/70">
                           Q: {m.question}
                         </p>
                       </button>
@@ -179,13 +179,13 @@ export default function Mistakes() {
                         <div className="rise-in mt-4 space-y-3 border-l border-ink/10 pl-4">
                           <div className="grid gap-3 sm:grid-cols-2">
                             <div className="border border-ink/10 bg-ivory p-3">
-                              <div className="font-mono text-[9px] uppercase tracking-[0.14em] text-amber-dark">
+                              <div className="font-mono text-[9px] uppercase tracking-[0.08em] text-amber-dark">
                                 Your answer
                               </div>
                               <div className="mt-1 font-mono text-[12px] text-ink/80">{m.studentAnswer}</div>
                             </div>
                             <div className="border border-teal/40 bg-ivory p-3">
-                              <div className="font-mono text-[9px] uppercase tracking-[0.14em] text-teal">
+                              <div className="font-mono text-[9px] uppercase tracking-[0.08em] text-teal">
                                 Correct
                               </div>
                               <div className="mt-1 font-mono text-[12px] text-ink/80">{m.correctAnswer}</div>
@@ -194,7 +194,7 @@ export default function Mistakes() {
                           <div className="flex items-start gap-2">
                             <Lightbulb className="mt-0.5 h-3.5 w-3.5 shrink-0 text-amber" />
                             <p className="footnote">
-                              <span className="font-mono text-[9px] uppercase tracking-[0.14em] text-ink/50">
+                              <span className="font-mono text-[9px] uppercase tracking-[0.08em] text-ink/50">
                                 Likely cause ·{" "}
                               </span>
                               {m.likelyCause}
@@ -211,7 +211,7 @@ export default function Mistakes() {
                           {pathResult && pathResult.stages.length > 0 && (
                             <Link
                               href={`/topic/${slugOf(m.topicId)}`}
-                              className="inline-flex items-center gap-1.5 border-b border-teal/50 pb-0.5 font-mono text-[11px] uppercase tracking-wider text-teal transition-colors hover:border-teal"
+                              className="inline-flex items-center gap-1.5 border-b border-teal/50 pb-0.5 font-mono text-[14px] uppercase tracking-wider text-teal transition-colors hover:border-teal"
                             >
                               View learning path →
                             </Link>
@@ -255,7 +255,7 @@ export default function Mistakes() {
                   },
                 ].map((r) => (
                   <div key={r.cls} className="py-3.5">
-                    <div className="font-mono text-[10px] uppercase tracking-[0.12em] text-ink/60">{r.cls}</div>
+                    <div className="font-mono text-[12px] uppercase tracking-[0.12em] text-ink/60">{r.cls}</div>
                     <p className="mt-1 text-[12.5px] leading-relaxed text-ink/80">{r.note}</p>
                   </div>
                 ))}
@@ -272,10 +272,10 @@ export default function Mistakes() {
                 {analytics.slice(0, 3).map((m) => (
                   <div key={m.category}>
                     <div className="flex items-baseline justify-between">
-                      <span className="font-mono text-[10px] uppercase tracking-wider text-ink/60">
+                      <span className="font-mono text-[12px] uppercase tracking-wider text-ink/60">
                         {m.label} cluster
                       </span>
-                      <span className="font-mono text-[10px] text-teal-dark">evidence ~{70 + m.percentage / 4}%</span>
+                      <span className="font-mono text-[12px] text-teal-dark">evidence ~{70 + m.percentage / 4}%</span>
                     </div>
                     <MasteryBar value={70 + m.percentage / 4} className="mt-1.5" />
                   </div>
@@ -287,7 +287,7 @@ export default function Mistakes() {
               <Marginalia>Mistakes this week</Marginalia>
               <div className="mt-4 grid grid-cols-2 gap-px border border-ink/12 bg-ink/10">
                 <div className="bg-card p-4">
-                  <div className="font-serif text-3xl font-bold text-amber-dark">
+                  <div className="font-display text-3xl font-bold text-amber-dark">
                     {mistakes.filter((m) => m.confidence === "low").length}
                   </div>
                   <div className="mt-1 font-mono text-[9px] uppercase tracking-wider text-muted-foreground">
@@ -295,7 +295,7 @@ export default function Mistakes() {
                   </div>
                 </div>
                 <div className="bg-card p-4">
-                  <div className="font-serif text-3xl font-bold text-teal-dark">
+                  <div className="font-display text-3xl font-bold text-teal-dark">
                     {mistakes.filter((m) => m.confidence === "high").length}
                   </div>
                   <div className="mt-1 font-mono text-[9px] uppercase tracking-wider text-muted-foreground">
@@ -305,7 +305,7 @@ export default function Mistakes() {
               </div>
               <Link
                 href="/confidence"
-                className="mt-4 inline-flex items-center gap-1.5 border-b border-teal/50 pb-0.5 font-mono text-[11px] uppercase tracking-wider text-teal transition-colors hover:border-teal"
+                className="mt-4 inline-flex items-center gap-1.5 border-b border-teal/50 pb-0.5 font-mono text-[14px] uppercase tracking-wider text-teal transition-colors hover:border-teal"
               >
                 See confidence calibration →
               </Link>

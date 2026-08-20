@@ -41,7 +41,7 @@ export default function Signup() {
         <div className="flex items-center px-6 py-12 sm:px-12 lg:px-20">
           <div className="w-full max-w-sm">
             <div className="marginalia">Enrolment — new student</div>
-            <h1 className="mt-4 font-serif text-3xl font-bold text-ink">
+            <h1 className="mt-4 font-display text-3xl font-bold text-ink">
               Open your learning file.
             </h1>
             <p className="mt-3 text-[14px] leading-relaxed text-dark-text/75">
@@ -50,7 +50,7 @@ export default function Signup() {
             </p>
             <form onSubmit={onSubmit} className="mt-8 space-y-5">
               <div className="space-y-2">
-                <Label htmlFor="s-name" className="font-mono text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
+                <Label htmlFor="s-name" className="font-display text-xs uppercase tracking-[0.08em] text-muted-foreground">
                   Full name
                 </Label>
                 <Input
@@ -62,7 +62,7 @@ export default function Signup() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="s-email" className="font-mono text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
+                <Label htmlFor="s-email" className="font-display text-xs uppercase tracking-[0.08em] text-muted-foreground">
                   Email address
                 </Label>
                 <Input
@@ -75,7 +75,7 @@ export default function Signup() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="s-password" className="font-mono text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
+                <Label htmlFor="s-password" className="font-display text-xs uppercase tracking-[0.08em] text-muted-foreground">
                   Create a password
                 </Label>
                 <Input
@@ -91,7 +91,7 @@ export default function Signup() {
                 )}
               </Button>
             </form>
-            <p className="mt-6 text-[13px] text-dark-text/60">
+            <p className="mt-6 text-[14px] text-dark-text/60">
               Already enrolled?{" "}
               <Link href="/login" className="border-b border-teal/60 pb-0.5 font-medium text-teal hover:border-teal">
                 Sign in instead
@@ -118,12 +118,12 @@ export default function Signup() {
                 ["Step III", "COGNIFY maps your curriculum and opens the Command Center with your first learning path."],
               ].map(([k, v]) => (
                 <li key={k} className="grid grid-cols-[3rem_1fr] gap-4 border-l border-white/10 pl-4">
-                  <span className="font-mono text-[11px] uppercase tracking-widest text-teal">{k}</span>
-                  <p className="text-[13px] leading-relaxed text-white/65">{v}</p>
+                  <span className="font-mono text-[14px] uppercase tracking-widest text-teal">{k}</span>
+                  <p className="text-[14px] leading-relaxed text-white/65">{v}</p>
                 </li>
               ))}
             </ol>
-            <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/35">
+            <div className="font-mono text-[12px] uppercase tracking-[0.08em] text-white/35">
               No payment · No ads · Your data stays yours
             </div>
           </div>

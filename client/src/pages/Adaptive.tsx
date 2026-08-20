@@ -112,7 +112,7 @@ export default function Adaptive() {
                 <div className="flex items-center gap-2.5 border border-ink/15 bg-ivory px-3 py-2.5">
                   <step.icon className="h-3.5 w-3.5 text-teal" />
                   <div>
-                    <div className="font-serif text-[13px] font-bold text-ink">{step.label}</div>
+                    <div className="font-serif text-[14px] font-bold text-ink">{step.label}</div>
                     <div className="font-mono text-[9px] uppercase tracking-wider text-muted-foreground">
                       {step.detail}
                     </div>
@@ -121,7 +121,7 @@ export default function Adaptive() {
                 {i < 4 && <ArrowRight className="h-3.5 w-3.5 shrink-0 text-amber" />}
               </div>
             ))}
-            <span className="ml-auto hidden font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground lg:inline">
+            <span className="ml-auto hidden font-display text-xs uppercase tracking-[0.08em] text-muted-foreground lg:inline">
               loops continuously · evidence stored per session
             </span>
           </div>
@@ -136,7 +136,7 @@ export default function Adaptive() {
                 <Marginalia amber>
                   Today's adaptive path — ranked {path.length} · engine decision ledger
                 </Marginalia>
-                <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+                <span className="font-mono text-[12px] uppercase tracking-wider text-muted-foreground">
                   ranked by evidence
                 </span>
               </div>
@@ -148,24 +148,24 @@ export default function Adaptive() {
                     <div className="index-num pt-0.5">{String(rec.rank).padStart(2, "0")}</div>
                     <div>
                       <div className="flex flex-wrap items-center gap-2">
-                        <span className="font-mono text-[10px] font-medium uppercase tracking-wider text-ink/50">
+                        <span className="font-mono text-[12px] font-medium uppercase tracking-wider text-ink/50">
                           {rec.subjectLabel}
                         </span>
                         {rec.priority === "high" && (
-                          <span className="font-mono text-[9px] font-bold uppercase tracking-[0.14em] text-amber-dark">
+                          <span className="font-mono text-[9px] font-bold uppercase tracking-[0.08em] text-amber-dark">
                             ● High priority
                           </span>
                         )}
-                        <span className="font-mono text-[10px] text-teal-dark">
+                        <span className="font-mono text-[12px] text-teal-dark">
                           evidence {rec.evidenceStrength}%
                         </span>
                       </div>
-                      <h3 className="mt-1.5 font-serif text-xl font-bold text-ink">{rec.topicTitle}</h3>
+                      <h3 className="mt-1.5 font-display text-[20px] font-bold text-ink">{rec.topicTitle}</h3>
                       {/* Progressive disclosure: one human line first, full
                           evidence hidden behind "See evidence" */}
                       <div className="mt-2.5 space-y-1.5">
                         <div className="flex items-start gap-2">
-                          <span className="mt-1 shrink-0 font-mono text-[10px] font-bold uppercase tracking-[0.12em] text-teal">
+                          <span className="mt-1 shrink-0 font-mono text-[12px] font-bold uppercase tracking-[0.12em] text-teal">
                             Why
                           </span>
                           <p className="footnote">{rec.reason}</p>
@@ -173,13 +173,13 @@ export default function Adaptive() {
                         {expanded ? (
                           <div className="space-y-1.5 border-l border-dotted border-ink/15 pl-3">
                             <div className="flex items-start gap-2">
-                              <span className="mt-1 shrink-0 font-mono text-[10px] font-bold uppercase tracking-[0.12em] text-teal">
+                              <span className="mt-1 shrink-0 font-mono text-[12px] font-bold uppercase tracking-[0.12em] text-teal">
                                 Evidence
                               </span>
                               <p className="footnote">{rec.whyChoseThis}</p>
                             </div>
                             <div className="flex items-start gap-2">
-                              <span className="mt-1 shrink-0 font-mono text-[10px] font-bold uppercase tracking-[0.12em] text-amber">
+                              <span className="mt-1 shrink-0 font-mono text-[12px] font-bold uppercase tracking-[0.12em] text-amber">
                                 How
                               </span>
                               <p className="footnote">
@@ -190,19 +190,19 @@ export default function Adaptive() {
                         ) : (
                           <button
                             onClick={() => setExpandedRec(expanded ? null : rec.topicId)}
-                            className="mt-1 font-mono text-[10px] uppercase tracking-[0.14em] text-ink/55 hover:text-teal"
+                            className="mt-1 font-display text-xs uppercase tracking-[0.08em] text-ink/55 hover:text-teal"
                           >
                             See evidence →
                           </button>
                         )}
                       </div>
                       <div className="mt-4 flex flex-wrap items-center gap-3">
-                        <span className="font-mono text-[11px] text-dark-text/60">
+                        <span className="font-mono text-[14px] text-dark-text/60">
                           {rec.estimatedMinutes} min · {rec.dnaLink}
                         </span>
                         <Link
                           href={`/topic/${slugOf(rec.topicId)}`}
-                          className="border-b border-teal/50 pb-0.5 font-mono text-[11px] uppercase tracking-wider text-teal transition-colors hover:border-teal"
+                          className="border-b border-teal/50 pb-0.5 font-mono text-[14px] uppercase tracking-wider text-teal transition-colors hover:border-teal"
                         >
                           Open in explorer
                         </Link>
@@ -220,7 +220,7 @@ export default function Adaptive() {
                 <Marginalia>Mistake clusters — classification & pattern</Marginalia>
                 <Link
                   href="/mistakes"
-                  className="font-mono text-[10px] uppercase tracking-[0.14em] text-teal hover:underline"
+                  className="font-display text-xs uppercase tracking-[0.08em] text-teal hover:underline"
                 >
                   Full analysis →
                 </Link>
@@ -230,7 +230,7 @@ export default function Adaptive() {
                   <div key={m.category} className="bg-card p-5">
                     <div className="flex items-baseline justify-between gap-3">
                       <span className="font-serif text-[15px] font-bold text-ink">{m.label}</span>
-                      <span className="flex items-center gap-1.5 font-mono text-[11px] text-amber-dark">
+                      <span className="flex items-center gap-1.5 font-mono text-[14px] text-amber-dark">
                         {m.trend === "rising" ? (
                           <TrendingUp className="h-3 w-3" />
                         ) : m.trend === "falling" ? (
@@ -240,7 +240,7 @@ export default function Adaptive() {
                       </span>
                     </div>
                     <p className="mt-2 footnote">{m.pattern}</p>
-                    <p className="mt-2 font-mono text-[10px] uppercase tracking-wider text-teal">
+                    <p className="mt-2 font-mono text-[12px] uppercase tracking-wider text-teal">
                       {m.trendNote}
                     </p>
                   </div>
@@ -252,7 +252,7 @@ export default function Adaptive() {
             <section>
               <div className="flex flex-wrap items-baseline justify-between gap-3">
                 <Marginalia>Active interventions — what Cognify has changed</Marginalia>
-                <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+                <span className="font-mono text-[12px] uppercase tracking-wider text-muted-foreground">
                   each writes evidence to Learning DNA
                 </span>
               </div>
@@ -260,7 +260,7 @@ export default function Adaptive() {
                 <li className="grid grid-cols-[1.5rem_1fr] gap-4 border-l border-ink/10 pb-5 pl-4">
                   <div className="relative">
                     <div className="absolute -left-[1.5625rem] top-1.5 h-2 w-2 border border-teal bg-ivory" />
-                    <span className="font-mono text-[10px] text-muted-foreground">format</span>
+                    <span className="font-mono text-[12px] text-muted-foreground">format</span>
                   </div>
                   <div>
                     <span className="font-serif text-[15px] font-bold text-ink">
@@ -275,7 +275,7 @@ export default function Adaptive() {
                 <li className="grid grid-cols-[1.5rem_1fr] gap-4 border-l border-ink/10 pb-5 pl-4">
                   <div className="relative">
                     <div className="absolute -left-[1.5625rem] top-1.5 h-2 w-2 border border-amber bg-ivory" />
-                    <span className="font-mono text-[10px] text-muted-foreground">revision</span>
+                    <span className="font-mono text-[12px] text-muted-foreground">revision</span>
                   </div>
                   <div>
                     <span className="font-serif text-[15px] font-bold text-ink">
@@ -290,7 +290,7 @@ export default function Adaptive() {
                 <li className="grid grid-cols-[1.5rem_1fr] gap-4 border-l border-ink/10 pb-5 pl-4">
                   <div className="relative">
                     <div className="absolute -left-[1.5625rem] top-1.5 h-2 w-2 border border-ink/40 bg-ivory" />
-                    <span className="font-mono text-[10px] text-muted-foreground">sequence</span>
+                    <span className="font-mono text-[12px] text-muted-foreground">sequence</span>
                   </div>
                   <div>
                     <span className="font-serif text-[15px] font-bold text-ink">
@@ -316,7 +316,7 @@ export default function Adaptive() {
                   <Marginalia className="[&::before]:hidden">
                     Confidence calibration
                   </Marginalia>
-                  <Link href="/confidence" className="font-mono text-[10px] uppercase tracking-[0.14em] text-teal hover:underline">
+                  <Link href="/confidence" className="font-display text-xs uppercase tracking-[0.08em] text-teal hover:underline">
                     Readings →
                   </Link>
                 </div>
@@ -324,20 +324,20 @@ export default function Adaptive() {
               <div className="divide-y divide-ink/8 px-5">
                 <div className="py-4">
                   <div className="flex items-baseline justify-between">
-                    <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-ink/60">
+                    <span className="font-mono text-[12px] uppercase tracking-[0.12em] text-ink/60">
                       Avg self-report gap
                     </span>
-                    <span className="font-serif text-xl font-bold text-amber-dark">+{calib.avgGap}</span>
+                    <span className="font-display text-[20px] font-bold text-amber-dark">+{calib.avgGap}</span>
                   </div>
                   <p className="mt-2 footnote">{calib.dnaNote}</p>
                 </div>
                 <div className="py-4">
-                  <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-ink/60">
+                  <span className="font-mono text-[12px] uppercase tracking-[0.12em] text-ink/60">
                     Overestimating
                   </span>
                   <div className="mt-2 flex items-center gap-3">
                     <MasteryBar value={(calib.overCount / calib.total) * 100} className="max-w-[160px]" />
-                    <span className="font-mono text-[11px] text-amber-dark">
+                    <span className="font-mono text-[14px] text-amber-dark">
                       {calib.overCount} of {calib.total}
                     </span>
                   </div>
@@ -349,7 +349,7 @@ export default function Adaptive() {
             <section>
               <div className="flex items-center justify-between">
                 <Marginalia>Due today — spaced revision</Marginalia>
-                <Link href="/revision" className="font-mono text-[10px] uppercase tracking-[0.14em] text-teal hover:underline">
+                <Link href="/revision" className="font-display text-xs uppercase tracking-[0.08em] text-teal hover:underline">
                   Revision hub →
                 </Link>
               </div>
@@ -364,11 +364,11 @@ export default function Adaptive() {
                         {e.topicTitle}
                       </div>
                       <div className="mt-1.5 flex items-center gap-3">
-                        <span className="font-mono text-[10px] text-muted-foreground">
+                        <span className="font-mono text-[12px] text-muted-foreground">
                           retention ~{e.retentionEstimate}%
                         </span>
                         {e.priority === "high" && (
-                          <span className="font-mono text-[9px] font-bold uppercase tracking-[0.14em] text-amber-dark">
+                          <span className="font-mono text-[9px] font-bold uppercase tracking-[0.08em] text-amber-dark">
                             ● High
                           </span>
                         )}
@@ -421,7 +421,7 @@ export default function Adaptive() {
                   <l.icon className="h-4 w-4 shrink-0 text-teal" />
                   <div className="min-w-0 flex-1">
                     <div className="font-serif text-[14px] font-bold text-ink">{l.label}</div>
-                    <div className="font-mono text-[10px] text-muted-foreground">{l.detail}</div>
+                    <div className="font-mono text-[12px] text-muted-foreground">{l.detail}</div>
                   </div>
                   <ArrowUpRight className="h-3.5 w-3.5 shrink-0 text-ink/30 transition-colors group-hover:text-teal" />
                 </Link>

@@ -132,7 +132,7 @@ export default function TimetablePage() {
                   <Marginalia amber={p === "today"}>
                     {p === "today" ? "Today — your adaptive plan" : p === "week" ? "This week — generated in advance" : "Upcoming — provisional blocks"}
                   </Marginalia>
-                  <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+                  <span className="font-mono text-[12px] uppercase tracking-wider text-muted-foreground">
                     {rows.length} {rows.length === 1 ? "session" : "sessions"}
                   </span>
                 </div>
@@ -152,12 +152,12 @@ export default function TimetablePage() {
                         <div className="index-num pt-0.5">{String(i + 1).padStart(2, "0")}</div>
                         <div>
                           <div className="flex flex-wrap items-center gap-2">
-                            <span className="font-mono text-[10px] font-medium uppercase tracking-wider text-ink/50">
+                            <span className="font-mono text-[12px] font-medium uppercase tracking-wider text-ink/50">
                               {subjectNames[s.subjectCode] ?? s.subjectCode}
                             </span>
                             <ActionChip action={s.activityType} />
                             {s.priority === "high" && (
-                              <span className="font-mono text-[9px] font-bold uppercase tracking-[0.14em] text-amber-dark">
+                              <span className="font-mono text-[9px] font-bold uppercase tracking-[0.08em] text-amber-dark">
                                 ● High impact
                               </span>
                             )}
@@ -177,15 +177,15 @@ export default function TimetablePage() {
                               </span>
                             )}
                           </div>
-                          <h3 className="mt-1.5 font-serif text-xl font-bold text-ink">{s.topicTitle}</h3>
+                          <h3 className="mt-1.5 font-display text-[20px] font-bold text-ink">{s.topicTitle}</h3>
                           <div className="mt-2.5 flex items-start gap-2">
-                            <span className="mt-1 shrink-0 font-mono text-[10px] font-bold uppercase tracking-[0.12em] text-teal">
+                            <span className="mt-1 shrink-0 font-mono text-[12px] font-bold uppercase tracking-[0.12em] text-teal">
                               Why this block
                             </span>
                             <p className="footnote">{s.reason}</p>
                           </div>
                           <div className="mt-4 flex flex-wrap items-center gap-4">
-                            <span className="font-mono text-[11px] text-dark-text/60">
+                            <span className="font-mono text-[14px] text-dark-text/60">
                               {isLive ? `${s.startTime}–${s.endTime}` : "auto-scheduled"} ·{" "}
                               {s.durationMinutes} min
                             </span>
@@ -193,14 +193,14 @@ export default function TimetablePage() {
                               <div className="flex flex-wrap items-center gap-2">
                                 <Button
                                   size="sm"
-                                  className="h-8 border border-teal bg-teal px-3 text-[11px] uppercase tracking-wider text-ivory hover:bg-teal/90"
+                                  className="h-8 border border-teal bg-teal px-3 text-[14px] uppercase tracking-wider text-ivory hover:bg-teal/90"
                                   onClick={() => handleStart(s.id)}
                                 >
                                   Begin
                                 </Button>
                                 <Button
                                   size="sm"
-                                  className="h-8 border border-ink bg-ink px-3 text-[11px] uppercase tracking-wider text-ivory hover:bg-ink/90"
+                                  className="h-8 border border-ink bg-ink px-3 text-[14px] uppercase tracking-wider text-ivory hover:bg-ink/90"
                                   onClick={() => handleComplete(s.id)}
                                 >
                                   <Check className="mr-1 h-3.5 w-3.5" /> Mark complete
@@ -208,7 +208,7 @@ export default function TimetablePage() {
                                 <Button
                                   size="sm"
                                   variant="outline"
-                                  className="h-8 border-ink/25 bg-transparent px-3 text-[11px] uppercase tracking-wider text-ink/80 hover:bg-ink/5"
+                                  className="h-8 border-ink/25 bg-transparent px-3 text-[14px] uppercase tracking-wider text-ink/80 hover:bg-ink/5"
                                   onClick={() => handleReschedule(s.id)}
                                 >
                                   <RotateCw className="mr-1 h-3.5 w-3.5" /> Reschedule
@@ -216,7 +216,7 @@ export default function TimetablePage() {
                                 <Button
                                   size="sm"
                                   variant="outline"
-                                  className="h-8 border-ink/15 bg-transparent px-3 text-[11px] uppercase tracking-wider text-ink/50 hover:bg-ink/5"
+                                  className="h-8 border-ink/15 bg-transparent px-3 text-[14px] uppercase tracking-wider text-ink/50 hover:bg-ink/5"
                                   onClick={() => handleSkip(s.id)}
                                 >
                                   <X className="mr-1 h-3.5 w-3.5" /> Skip
@@ -226,7 +226,7 @@ export default function TimetablePage() {
                             {s.status === "in-progress" && (
                               <Button
                                 size="sm"
-                                className="h-8 border border-ink bg-ink px-3 text-[11px] uppercase tracking-wider text-ivory hover:bg-ink/90"
+                                className="h-8 border border-ink bg-ink px-3 text-[14px] uppercase tracking-wider text-ivory hover:bg-ink/90"
                                 onClick={() => handleComplete(s.id)}
                               >
                                 <Check className="mr-1 h-3.5 w-3.5" /> Mark complete
@@ -235,20 +235,20 @@ export default function TimetablePage() {
                             {(s.status === "in-progress" || done) && (
                               <Link
                                 href={`/topic/${slugOf(s.topicId)}`}
-                                className="border-b border-teal/50 pb-0.5 font-mono text-[11px] uppercase tracking-wider text-teal transition-colors hover:border-teal"
+                                className="border-b border-teal/50 pb-0.5 font-mono text-[14px] uppercase tracking-wider text-teal transition-colors hover:border-teal"
                               >
                                 Continue learning
                               </Link>
                             )}
                             {s.status === "rescheduled" && (
-                              <span className="font-mono text-[10px] text-amber-dark">
+                              <span className="font-mono text-[12px] text-amber-dark">
                                 moved to {s.rescheduledTo ?? "tomorrow"}
                               </span>
                             )}
                             {isLive && (
                               <Link
                                 href={`/topic/${slugOf(s.topicId)}`}
-                                className="border-b border-teal/50 pb-0.5 font-mono text-[11px] uppercase tracking-wider text-teal transition-colors hover:border-teal"
+                                className="border-b border-teal/50 pb-0.5 font-mono text-[14px] uppercase tracking-wider text-teal transition-colors hover:border-teal"
                               >
                                 Open topic
                               </Link>

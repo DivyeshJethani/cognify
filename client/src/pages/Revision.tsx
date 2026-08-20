@@ -106,8 +106,8 @@ export default function Revision() {
                       onClick={() => setActiveBucket(b)}
                       className={
                         active
-                          ? "border border-ink bg-ink px-3.5 py-2 font-mono text-[11px] uppercase tracking-[0.1em] text-ivory"
-                          : "border border-ink/20 bg-ivory px-3.5 py-2 font-mono text-[11px] uppercase tracking-[0.1em] text-ink/70 transition-colors hover:border-ink/50"
+                          ? "border border-ink bg-ink px-3.5 py-2 font-mono text-[14px] uppercase tracking-[0.1em] text-ivory"
+                          : "border border-ink/20 bg-ivory px-3.5 py-2 font-mono text-[14px] uppercase tracking-[0.1em] text-ink/70 transition-colors hover:border-ink/50"
                       }
                     >
                       {bucketLabel(b)} <span className="text-ink/40">· {n}</span>
@@ -128,14 +128,14 @@ export default function Revision() {
                       <div className="index-num pt-0.5">{String(i + 1).padStart(2, "0")}</div>
                       <div>
                         <div className="flex flex-wrap items-center gap-2">
-                          <span className="font-mono text-[10px] font-medium uppercase tracking-wider text-ink/50">
+                          <span className="font-mono text-[12px] font-medium uppercase tracking-wider text-ink/50">
                             {subjectNames[e.subjectCode] ?? e.subjectCode}
                           </span>
                           <span className="font-mono text-[9px] uppercase tracking-wider text-muted-foreground">
                             {e.chapterTitle}
                           </span>
                           {e.priority === "high" && (
-                            <span className="font-mono text-[9px] font-bold uppercase tracking-[0.14em] text-amber-dark">
+                            <span className="font-mono text-[9px] font-bold uppercase tracking-[0.08em] text-amber-dark">
                               ● High priority
                             </span>
                           )}
@@ -144,9 +144,9 @@ export default function Revision() {
                             {e.estimatedMinutes} min · next review {e.nextReview}
                           </span>
                         </div>
-                        <h3 className="mt-1.5 font-serif text-xl font-bold text-ink">{e.topicTitle}</h3>
+                        <h3 className="mt-1.5 font-display text-[20px] font-bold text-ink">{e.topicTitle}</h3>
                         <div className="mt-3 flex items-start gap-2">
-                          <span className="mt-1 shrink-0 font-mono text-[10px] font-bold uppercase tracking-[0.12em] text-amber">
+                          <span className="mt-1 shrink-0 font-mono text-[12px] font-bold uppercase tracking-[0.12em] text-amber">
                             Why now
                           </span>
                           <p className="footnote">{e.priorityReason}</p>
@@ -154,19 +154,19 @@ export default function Revision() {
                         <div className="mt-3 grid gap-4 sm:grid-cols-2">
                           <div>
                             <div className="flex items-baseline justify-between">
-                              <span className="font-mono text-[10px] uppercase tracking-wider text-ink/60">
+                              <span className="font-mono text-[12px] uppercase tracking-wider text-ink/60">
                                 Mastery
                               </span>
-                              <span className="font-mono text-[11px] text-ink/70">{e.mastery}%</span>
+                              <span className="font-mono text-[14px] text-ink/70">{e.mastery}%</span>
                             </div>
                             <MasteryBar value={e.mastery} className="mt-1.5" trackClassName="border-ink/20" />
                           </div>
                           <div>
                             <div className="flex items-baseline justify-between">
-                              <span className="font-mono text-[10px] uppercase tracking-wider text-ink/60">
+                              <span className="font-mono text-[12px] uppercase tracking-wider text-ink/60">
                                 Retention estimate
                               </span>
-                              <span className="font-mono text-[11px] text-amber-dark">
+                              <span className="font-mono text-[14px] text-amber-dark">
                                 {e.retentionEstimate}%
                               </span>
                             </div>
@@ -174,16 +174,16 @@ export default function Revision() {
                           </div>
                         </div>
                         <div className="mt-4 flex flex-wrap items-center gap-3">
-                          <span className="border border-teal/30 px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider text-teal">
+                          <span className="border border-teal/30 px-2 py-0.5 font-mono text-[12px] uppercase tracking-wider text-teal">
                             {formatLabels[e.recommendedFormat] ?? e.recommendedFormat}
                           </span>
                           <Link
                             href={`/topic/${slugOf(e.topicId)}`}
-                            className="border-b border-teal/50 pb-0.5 font-mono text-[11px] uppercase tracking-wider text-teal transition-colors hover:border-teal"
+                            className="border-b border-teal/50 pb-0.5 font-mono text-[14px] uppercase tracking-wider text-teal transition-colors hover:border-teal"
                           >
                             Start review
                           </Link>
-                          <span className="font-mono text-[10px] text-muted-foreground">
+                          <span className="font-mono text-[12px] text-muted-foreground">
                             last studied {e.lastStudied}
                           </span>
                         </div>
@@ -205,7 +205,7 @@ export default function Revision() {
                 <div className="px-5 py-5">
                   <div className="flex flex-wrap items-center gap-2">
                     <span className="font-serif text-[16px] font-bold text-ink">{demo.topicTitle}</span>
-                    <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+                    <span className="font-mono text-[12px] uppercase tracking-wider text-muted-foreground">
                       three-round reading
                     </span>
                   </div>
@@ -217,10 +217,10 @@ export default function Revision() {
                     ].map((r) => (
                       <div key={r.label}>
                         <div className="flex items-baseline justify-between">
-                          <span className="font-mono text-[10px] uppercase tracking-wider text-ink/60">
+                          <span className="font-mono text-[12px] uppercase tracking-wider text-ink/60">
                             {r.label}
                           </span>
-                          <span className="font-mono text-[11px] text-teal-dark">{r.value}%</span>
+                          <span className="font-mono text-[14px] text-teal-dark">{r.value}%</span>
                         </div>
                         <MasteryBar value={r.value} className="mt-1.5" />
                       </div>
@@ -230,7 +230,7 @@ export default function Revision() {
                     <Sparkles className="mr-1.5 inline h-3.5 w-3.5 text-teal" />
                     {demo.decision} Next review in {demo.nextReviewIn}.
                   </p>
-                  <p className="mt-1.5 font-mono text-[10px] uppercase tracking-wider text-teal">
+                  <p className="mt-1.5 font-mono text-[12px] uppercase tracking-wider text-teal">
                     {demo.dnaNote}
                   </p>
                 </div>
@@ -264,7 +264,7 @@ export default function Revision() {
                   <span>Day 0</span>
                   <span>Day 12</span>
                 </div>
-                <p className="mt-2 font-mono text-[10px] uppercase tracking-wider text-amber-dark">
+                <p className="mt-2 font-mono text-[12px] uppercase tracking-wider text-amber-dark">
                   Reviewes land before day 7 for weak topics
                 </p>
               </div>
@@ -313,7 +313,7 @@ export default function Revision() {
                       <div className="mt-0.5 font-serif text-[14px] font-bold leading-snug text-ink">
                         {e.topicTitle}
                       </div>
-                      <span className="mt-1 inline-block font-mono text-[10px] uppercase tracking-wider text-teal opacity-0 transition-opacity group-hover:opacity-100">
+                      <span className="mt-1 inline-block font-mono text-[12px] uppercase tracking-wider text-teal opacity-0 transition-opacity group-hover:opacity-100">
                         Begin review →
                       </span>
                     </Link>

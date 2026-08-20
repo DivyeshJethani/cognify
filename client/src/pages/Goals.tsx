@@ -18,9 +18,9 @@ import { useState } from "react";
 import { toast } from "sonner";
 
 const statusTone: Record<string, string> = {
-  "on-track": "#1f9d8b",
-  "at-risk": "#e9a23b",
-  achieved: "#1f9d8b",
+  "on-track": "#2b9c8c",
+  "at-risk": "#d9912f",
+  achieved: "#2b9c8c",
   paused: "#8b949e",
 };
 
@@ -94,7 +94,7 @@ export default function GoalsPage() {
                     <Marginalia amber={!done}>
                       Goal {String(i + 1).padStart(2, "0")} — {statusLabel[g.status] ?? g.status}
                     </Marginalia>
-                    <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+                    <span className="font-mono text-[12px] uppercase tracking-wider text-muted-foreground">
                       due {g.deadline}
                     </span>
                   </div>
@@ -105,7 +105,7 @@ export default function GoalsPage() {
                         <p className="mt-2 footnote">{g.whyItMatters}</p>
                       </div>
                       <span
-                        className="inline-flex items-center gap-1.5 border px-2 py-0.5 font-mono text-[10px] font-medium uppercase tracking-[0.08em]"
+                        className="inline-flex items-center gap-1.5 border px-2 py-0.5 font-mono text-[12px] font-medium uppercase tracking-[0.08em]"
                         style={{ borderColor: tone, color: tone }}
                       >
                         <span className="h-1.5 w-1.5 rounded-full" style={{ background: tone }} />
@@ -113,7 +113,7 @@ export default function GoalsPage() {
                       </span>
                     </div>
                     <div className="mt-5 flex items-baseline justify-between">
-                      <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
+                      <span className="font-display text-xs uppercase tracking-[0.08em] text-muted-foreground">
                         Progress
                       </span>
                       <span className="font-serif text-2xl font-bold text-ink">{g.progress}%</span>
@@ -121,7 +121,7 @@ export default function GoalsPage() {
                     <MasteryBar value={g.progress} className="mt-2" trackClassName="border-ink/20" />
                     {!done && (
                       <div className="mt-5">
-                        <div className="font-mono text-[10px] uppercase tracking-[0.14em] text-ink/60">
+                        <div className="font-display text-xs uppercase tracking-[0.08em] text-ink/60">
                           Suggested actions — each logs evidence
                         </div>
                         <div className="mt-3 flex flex-wrap gap-2">
@@ -130,7 +130,7 @@ export default function GoalsPage() {
                               key={a}
                               size="sm"
                               variant="outline"
-                              className="h-8 border-ink/25 bg-transparent px-3 text-[11px] uppercase tracking-wider text-ink/80 hover:bg-ink/5"
+                              className="h-8 border-ink/25 bg-transparent px-3 text-[14px] uppercase tracking-wider text-ink/80 hover:bg-ink/5"
                               onClick={() =>
                                 handleBump(
                                   g.id,
@@ -146,7 +146,7 @@ export default function GoalsPage() {
                       </div>
                     )}
                     {done && (
-                      <div className="mt-5 flex items-center gap-2 font-mono text-[11px] uppercase tracking-wider text-teal-dark">
+                      <div className="mt-5 flex items-center gap-2 font-mono text-[14px] uppercase tracking-wider text-teal-dark">
                         <Award className="h-4 w-4" /> Goal achieved — logged to Learning DNA
                       </div>
                     )}
@@ -201,7 +201,7 @@ export default function GoalsPage() {
                       className="group flex items-baseline justify-between border-b border-ink/10 pb-2"
                     >
                       <span className="font-serif text-[14px] font-bold text-ink">{l.label}</span>
-                      <span className="font-mono text-[10px] uppercase tracking-wider text-teal opacity-0 transition-opacity group-hover:opacity-100">
+                      <span className="font-mono text-[12px] uppercase tracking-wider text-teal opacity-0 transition-opacity group-hover:opacity-100">
                         {l.detail} <ArrowRight className="ml-1 inline h-3 w-3" />
                       </span>
                     </a>

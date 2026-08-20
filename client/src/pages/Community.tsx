@@ -96,7 +96,7 @@ export default function Community() {
                     </div>
                     <div>
                       <div className="flex flex-wrap items-center gap-2">
-                        <span className="font-mono text-[10px] font-medium uppercase tracking-wider text-ink/50">
+                        <span className="font-mono text-[12px] font-medium uppercase tracking-wider text-ink/50">
                           {subjectNames[r.subjectCode] ?? r.subjectCode}
                         </span>
                         <span className="font-mono text-[9px] uppercase tracking-wider text-muted-foreground">
@@ -109,18 +109,18 @@ export default function Community() {
                         <Button
                           size="sm"
                           variant="outline"
-                          className="mt-3 h-8 border-ink/25 bg-transparent px-3 text-[11px] uppercase tracking-wider text-ink/80 hover:bg-ink/5"
+                          className="mt-3 h-8 border-ink/25 bg-transparent px-3 text-[14px] uppercase tracking-wider text-ink/80 hover:bg-ink/5"
                           onClick={() => handleFindPeer(r)}
                         >
                           <Users className="mr-1.5 h-3.5 w-3.5" /> Find a peer who cleared this
                         </Button>
                       ) : matched[r.id] ? (
-                        <div className="mt-3 flex items-center gap-2 font-mono text-[11px] text-teal-dark">
+                        <div className="mt-3 flex items-center gap-2 font-mono text-[14px] text-teal-dark">
                           <BookOpen className="h-3.5 w-3.5" />
                           {matched[r.id]} has cleared this topic · teach session queued
                         </div>
                       ) : (
-                        <div className="mt-3 font-mono text-[11px] text-muted-foreground">
+                        <div className="mt-3 font-mono text-[14px] text-muted-foreground">
                           No peer has cleared this yet — it has been flagged for a guided review.
                         </div>
                       )}
@@ -144,7 +144,7 @@ export default function Community() {
                     </div>
                     <div>
                       <div className="flex flex-wrap items-center gap-2">
-                        <span className="inline-flex h-7 w-7 shrink-0 items-center justify-center border border-teal font-mono text-[10px] font-medium text-teal">
+                        <span className="inline-flex h-7 w-7 shrink-0 items-center justify-center border border-teal font-mono text-[12px] font-medium text-teal">
                           {d.initials}
                         </span>
                         <span className="font-serif text-[15px] font-bold text-ink">{d.author}</span>
@@ -176,7 +176,7 @@ export default function Community() {
                     <div className="mt-1 font-serif text-[15px] font-bold leading-snug text-ink">
                       {c.topicTitle}
                     </div>
-                    <div className="mt-2 flex items-center gap-2 font-mono text-[10px] uppercase tracking-wider text-teal">
+                    <div className="mt-2 flex items-center gap-2 font-mono text-[12px] uppercase tracking-wider text-teal">
                       <Lightbulb className="h-3 w-3" /> You can teach this
                     </div>
                   </div>
@@ -195,7 +195,7 @@ export default function Community() {
               <p className="mt-2 footnote">{groupActivityNote()}</p>
               <div className="mt-4 flex items-center gap-2 border-t border-ink/10 pt-3">
                 <Users className="h-4 w-4 text-teal" />
-                <span className="font-mono text-[11px] text-muted-foreground">
+                <span className="font-mono text-[14px] text-muted-foreground">
                   {group.memberCount} members · {group.board} board
                 </span>
               </div>
@@ -207,7 +207,7 @@ export default function Community() {
               </div>
               <div className="divide-y divide-ink/8 px-5">
                 <div className="py-3.5">
-                  <div className="font-mono text-[10px] uppercase tracking-[0.12em] text-ink/60">
+                  <div className="font-mono text-[12px] uppercase tracking-[0.12em] text-ink/60">
                     Gap → mastery map
                   </div>
                   <p className="mt-1 text-[12.5px] leading-relaxed text-ink/80">
@@ -216,7 +216,7 @@ export default function Community() {
                   </p>
                 </div>
                 <div className="py-3.5">
-                  <div className="font-mono text-[10px] uppercase tracking-[0.12em] text-ink/60">
+                  <div className="font-mono text-[12px] uppercase tracking-[0.12em] text-ink/60">
                     Teaching is evidence
                   </div>
                   <p className="mt-1 text-[12.5px] leading-relaxed text-ink/80">
@@ -225,7 +225,7 @@ export default function Community() {
                   </p>
                 </div>
                 <div className="py-3.5">
-                  <div className="font-mono text-[10px] uppercase tracking-[0.12em] text-ink/60">
+                  <div className="font-mono text-[12px] uppercase tracking-[0.12em] text-ink/60">
                     Guardrails
                   </div>
                   <p className="mt-1 text-[12.5px] leading-relaxed text-ink/80">
@@ -250,7 +250,7 @@ export default function Community() {
                       className="group flex items-baseline justify-between border-b border-ink/10 pb-2"
                     >
                       <span className="font-serif text-[14px] font-bold text-ink">{l.label}</span>
-                      <span className="font-mono text-[10px] uppercase tracking-wider text-teal opacity-0 transition-opacity group-hover:opacity-100">
+                      <span className="font-mono text-[12px] uppercase tracking-wider text-teal opacity-0 transition-opacity group-hover:opacity-100">
                         {l.detail} <ArrowRight className="ml-1 inline h-3 w-3" />
                       </span>
                     </a>

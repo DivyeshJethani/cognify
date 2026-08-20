@@ -56,7 +56,7 @@ function Hero() {
               ["Personalisation", "Continuous, not one-time"],
             ].map(([k, v]) => (
               <div key={k}>
-                <div className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">{k}</div>
+                <div className="font-display text-xs uppercase tracking-[0.08em] text-muted-foreground">{k}</div>
                 <div className="mt-1 font-serif text-lg font-bold text-ink">{v}</div>
               </div>
             ))}
@@ -71,7 +71,7 @@ function Hero() {
             />
           </div>
           <div className="mt-3 flex items-center justify-between px-1">
-            <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
+            <span className="font-display text-xs uppercase tracking-[0.08em] text-muted-foreground">
               Fig. 1 — The knowledge map, drawn per student
             </span>
           </div>
@@ -130,7 +130,7 @@ function HowItWorks() {
                   <s.icon className="h-4 w-4 text-ink/40" />
                 </div>
                 <div>
-                  <h3 className="font-serif text-xl font-bold text-ink">{s.title}</h3>
+                  <h3 className="font-display text-[20px] font-bold text-ink">{s.title}</h3>
                   <p className="mt-2 text-[13.5px] leading-relaxed text-dark-text/75">{s.body}</p>
                 </div>
               </div>
@@ -156,7 +156,7 @@ function DnaSection() {
           <div className="border border-white/15 bg-white/[0.04] p-2">
             <img src={dnaImg} alt="DNA helix transforming into a curriculum tree" className="w-full" />
           </div>
-          <div className="mt-3 font-mono text-[10px] uppercase tracking-[0.18em] text-white/40">
+          <div className="mt-3 font-display text-xs uppercase tracking-[0.08em] text-white/40">
             Fig. 2 — Learning DNA → curriculum tree
           </div>
         </div>
@@ -179,8 +179,8 @@ function DnaSection() {
               ["Teaching-format fit", "Diagrams? Worked examples? The format that wins for you"],
             ].map(([k, v]) => (
               <div key={k} className="grid grid-cols-[11rem_1fr] gap-4 py-4">
-                <dt className="font-mono text-[11px] uppercase tracking-[0.12em] text-teal">{k}</dt>
-                <dd className="text-[13px] leading-relaxed text-white/70">{v}</dd>
+                <dt className="font-mono text-[14px] uppercase tracking-[0.12em] text-teal">{k}</dt>
+                <dd className="text-[14px] leading-relaxed text-white/70">{v}</dd>
               </div>
             ))}
           </dl>
@@ -193,11 +193,11 @@ function DnaSection() {
 function CurriculumSection() {
   const subjects = [
     { code: "MATH", name: "Mathematics", color: "border-teal text-teal" },
-    { code: "SCI", name: "Science", color: "border-green-mid text-green-mid" },
+    { code: "SCI", name: "Science", color: "border-blue-soft text-blue-soft" },
     { code: "SST", name: "Social Science", color: "border-amber text-amber" },
     { code: "ENG", name: "English", color: "border-white/40 text-white" },
     { code: "HIN", name: "Hindi & second languages", color: "border-teal text-teal" },
-    { code: "SKT", name: "Sanskrit & more", color: "border-green-mid text-green-mid" },
+    { code: "SKT", name: "Sanskrit & more", color: "border-blue-soft text-blue-soft" },
   ];
   return (
     <section id="curriculum" className="border-t border-ink/10 bg-ivory paper-grain">
@@ -218,9 +218,9 @@ function CurriculumSection() {
           <table className="w-full min-w-[560px] border-collapse bg-card text-left">
             <thead>
               <tr className="border-b border-ink/15 bg-ivory-deep">
-                <th className="px-5 py-3 font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">Code</th>
-                <th className="px-5 py-3 font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">Subject</th>
-                <th className="px-5 py-3 font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">Structure</th>
+                <th className="px-5 py-3 font-display text-xs uppercase tracking-[0.08em] text-muted-foreground">Code</th>
+                <th className="px-5 py-3 font-display text-xs uppercase tracking-[0.08em] text-muted-foreground">Subject</th>
+                <th className="px-5 py-3 font-display text-xs uppercase tracking-[0.08em] text-muted-foreground">Structure</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-ink/8">
@@ -228,7 +228,7 @@ function CurriculumSection() {
                 <tr key={s.code} className="transition-colors hover:bg-ivory-deep/50">
                   <td className={`px-5 py-3.5 font-mono text-xs font-medium ${s.color}`}>{s.code}</td>
                   <td className="px-5 py-3.5 font-serif text-base font-bold text-ink">{s.name}</td>
-                  <td className="px-5 py-3.5 text-[13px] text-dark-text/70">
+                  <td className="px-5 py-3.5 text-[14px] text-dark-text/70">
                     Chapters → Topics → Learning objectives
                   </td>
                 </tr>
@@ -242,7 +242,7 @@ function CurriculumSection() {
               Explore the curriculum <ArrowRight className="ml-1.5 h-4 w-4" />
             </Link>
           </Button>
-          <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-muted-foreground">
+          <span className="font-mono text-[14px] uppercase tracking-[0.08em] text-muted-foreground">
             CBSE Class 10 shown in demo · more boards & classes mapped
           </span>
         </div>

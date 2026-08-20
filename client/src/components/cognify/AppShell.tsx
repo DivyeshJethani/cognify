@@ -99,7 +99,7 @@ function SearchBox() {
         onClick={() => setOpen(true)}
         className="mx-5 flex items-center justify-between border border-white/15 bg-white/[0.04] px-3 py-2 text-left transition-colors hover:border-teal/50"
       >
-        <span className="font-mono text-[10.5px] uppercase tracking-[0.14em] text-white/45">
+        <span className="font-mono text-[10.5px] uppercase tracking-[0.08em] text-white/45">
           Search the laboratory…
         </span>
         <span className="ml-3 border border-white/20 px-1.5 py-0.5 font-mono text-[9px] uppercase tracking-wider text-white/40">
@@ -120,9 +120,9 @@ function SearchBox() {
           </div>
           <div className="max-h-96 overflow-y-auto">
             {grouped.groups.every((g) => g.items.length === 0) && query.length >= 2 && (
-              <p className="px-4 py-8 font-serif text-[13.5px] leading-relaxed text-muted-foreground">
+              <p className="px-4 py-8 font-display text-[15px] leading-relaxed text-muted-foreground">
                 The catalogue has no entry for “{query.trim()}” yet —
-                <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-ink/50">
+                <span className="font-mono text-[12px] uppercase tracking-[0.1em] text-ink/50">
                   {" "}try a subject, chapter or topic instead.
                 </span>
               </p>
@@ -131,7 +131,7 @@ function SearchBox() {
               <>
                 {recent.length > 0 && (
                   <div className="border-b border-ink/10 px-4 py-3">
-                    <span className="font-mono text-[9px] uppercase tracking-[0.16em] text-teal-dark">
+                    <span className="font-mono text-[9px] uppercase tracking-[0.08em] text-teal-dark">
                       Recent searches
                     </span>
                     <ul className="mt-2 space-y-0.5">
@@ -140,7 +140,7 @@ function SearchBox() {
                           <button
                             type="button"
                             onClick={() => setQuery(r)}
-                            className="flex w-full items-center gap-2.5 border-b border-dotted border-ink/10 py-2 text-left text-[13px] text-ink transition-colors hover:bg-ink/[0.04]"
+                            className="flex w-full items-center gap-2.5 border-b border-dotted border-ink/10 py-2 text-left text-[14px] text-ink transition-colors hover:bg-ink/[0.04]"
                           >
                             <span className="font-mono text-[9px] text-ink/40">↻</span>
                             {r}
@@ -154,7 +154,7 @@ function SearchBox() {
                   </div>
                 )}
                 <div className={recent.length > 0 ? "border-b border-ink/10 px-4 py-3" : "px-4 py-3"}>
-                  <span className="font-mono text-[9px] uppercase tracking-[0.16em] text-teal-dark">
+                  <span className="font-mono text-[9px] uppercase tracking-[0.08em] text-teal-dark">
                     {recent.length > 0 ? "Destinations" : "Where to begin"}
                   </span>
                   <ul className="mt-2 space-y-0.5">
@@ -163,7 +163,7 @@ function SearchBox() {
                         <Link
                           href={item.href}
                           onClick={() => setOpen(false)}
-                          className="flex items-center gap-2.5 border-b border-dotted border-ink/10 py-2 text-[13px] text-ink transition-colors hover:bg-ink/[0.04]"
+                          className="flex items-center gap-2.5 border-b border-dotted border-ink/10 py-2 text-[14px] text-ink transition-colors hover:bg-ink/[0.04]"
                         >
                           <item.icon className="h-3.5 w-3.5 text-teal" />
                           {item.label}
@@ -183,7 +183,7 @@ function SearchBox() {
                 .map((g) => (
                   <div key={g.key} className="border-b border-ink/8 last:border-0">
                     <div className="sticky top-0 border-b border-dotted border-ink/12 bg-ivory px-4 py-1.5">
-                      <span className="font-mono text-[9.5px] uppercase tracking-[0.16em] text-teal-dark">
+                      <span className="font-mono text-[9.5px] uppercase tracking-[0.08em] text-teal-dark">
                         {g.label} · {g.items.length}
                       </span>
                     </div>
@@ -203,7 +203,7 @@ function SearchBox() {
                               {KIND_GLYPH[item.kind] ?? "·"}
                             </span>
                             <span className="min-w-0 flex-1">
-                              <span className="block truncate font-serif text-[13.5px] font-bold text-ink">
+                              <span className="block truncate font-display text-[15px] font-bold text-ink">
                                 {item.title}
                               </span>
                               <span className="mt-0.5 flex flex-wrap items-center gap-2 font-mono text-[9.5px] text-muted-foreground">
@@ -243,7 +243,7 @@ function SubjectSwitcher() {
 
   return (
     <div className="border-b border-white/[0.08] px-5 pb-3">
-      <div className="marginalia [&::before]:hidden mb-1.5 font-mono text-[9px] uppercase tracking-[0.18em] text-white/35">
+      <div className="marginalia [&::before]:hidden mb-1.5 font-mono text-[9px] uppercase tracking-[0.08em] text-white/35">
         Subject focus
       </div>
       <div className="flex flex-wrap gap-1.5">
@@ -251,7 +251,7 @@ function SubjectSwitcher() {
         <button
           onClick={() => saveContext({ subjectFocus: null })}
           className={cn(
-            "border px-2 py-1 font-mono text-[10px] uppercase tracking-wider transition-colors duration-150 active:scale-[0.97]",
+            "border px-2 py-1 font-mono text-[12px] uppercase tracking-wider transition-colors duration-150 active:scale-[0.97]",
             ctx.subjectFocus === null
               ? "border-teal bg-teal/15 text-teal"
               : "border-white/15 text-white/45 hover:border-white/30 hover:text-white/80"
@@ -272,7 +272,7 @@ function SubjectSwitcher() {
                 })
               }
               className={cn(
-                "border px-2 py-1 font-mono text-[10px] uppercase tracking-wider transition-colors duration-150 active:scale-[0.97]",
+                "border px-2 py-1 font-mono text-[12px] uppercase tracking-wider transition-colors duration-150 active:scale-[0.97]",
                 active
                   ? "border-teal bg-teal/15 text-teal"
                   : "border-white/15 text-white/45 hover:border-white/30 hover:text-white/80"
@@ -299,7 +299,7 @@ function ContextIndicator() {
       <span className="flex h-5 w-5 items-center justify-center border border-white/15 font-mono text-[9px] font-bold text-amber">
         ▣
       </span>
-      <span className="font-mono text-[10.5px] uppercase tracking-[0.14em] text-white/70">
+      <span className="font-mono text-[10.5px] uppercase tracking-[0.08em] text-white/70">
         {boardName} · {className}
       </span>
     </div>
@@ -316,7 +316,7 @@ function MobileSubjectStrip() {
   return (
     <div className="border-b border-border bg-ivory px-4 py-2 lg:hidden">
       <div className="flex items-center gap-2 overflow-x-auto">
-        <span className="shrink-0 font-mono text-[9px] uppercase tracking-[0.14em] text-muted-foreground">
+        <span className="shrink-0 font-mono text-[9px] uppercase tracking-[0.08em] text-muted-foreground">
           {getStudyContext().boardName} · {getStudyContext().className}
         </span>
         <span className="shrink-0 text-border">│</span>
@@ -376,7 +376,7 @@ function NavLinks({ onNavigate }: { onNavigate?: () => void }) {
                 toast(`${item.label} — coming in the next stage`);
               }
             }}
-            className={`group flex items-center gap-3 border-l-2 px-4 py-2.5 text-[13px] transition-colors duration-150 ${
+            className={`group flex items-center gap-3 border-l-2 px-4 py-2.5 text-[14px] transition-colors duration-150 ${
               active
                 ? "border-teal bg-white/[0.07] text-white"
                 : "border-transparent text-white/60 hover:border-white/20 hover:text-white/90"
@@ -428,19 +428,19 @@ function ShellContent({ children }: { children: React.ReactNode }) {
               {profile.name.split(" ").map((n) => n[0]).join("").slice(0, 2)}
             </div>
             <div className="min-w-0 flex-1">
-              <div className="truncate text-[13px] font-medium text-white">{profile.name}</div>
-              <div className="font-mono text-[10px] uppercase tracking-wider text-white/40">
+              <div className="truncate text-[14px] font-medium text-white">{profile.name}</div>
+              <div className="font-mono text-[12px] uppercase tracking-wider text-white/40">
                 {profile.board} · {profile.className}
               </div>
             </div>
           </Link>
           <div className="mt-3 flex items-center justify-between border-t border-white/[0.08] pt-3">
-            <div className="font-mono text-[10px] uppercase tracking-widest text-white/40">
+            <div className="font-mono text-[12px] uppercase tracking-widest text-white/40">
               DNA profile <span className="text-teal">{dna.profileStrength}%</span>
             </div>
             <button
               onClick={logout}
-              className="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-widest text-white/40 transition-colors hover:text-amber"
+              className="flex items-center gap-1.5 font-mono text-[12px] uppercase tracking-widest text-white/40 transition-colors hover:text-amber"
             >
               <LogOut className="h-3 w-3" /> Sign out
             </button>
@@ -469,7 +469,7 @@ function MobileHeader() {
         <span className="font-serif text-base font-bold tracking-[0.12em] text-ink">COGNIFY</span>
       </Link>
       <div className="flex items-center gap-3">
-        <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+        <span className="font-mono text-[12px] uppercase tracking-widest text-muted-foreground">
           DNA {dna.profileStrength}%
         </span>
         <Sheet open={open} onOpenChange={setOpen}>
@@ -489,10 +489,10 @@ function MobileHeader() {
             </div>
             <div className="absolute bottom-0 left-0 right-0 border-t border-white/[0.08] px-5 py-4">
               <div className="flex items-center justify-between">
-                <div className="font-mono text-[10px] uppercase tracking-widest text-white/40">
+                <div className="font-mono text-[12px] uppercase tracking-widest text-white/40">
                   {profile.name}
                 </div>
-                <button onClick={() => { setOpen(false); }} className="font-mono text-[10px] uppercase tracking-widest text-white/40 hover:text-amber">
+                <button onClick={() => { setOpen(false); }} className="font-mono text-[12px] uppercase tracking-widest text-white/40 hover:text-amber">
                   Close
                 </button>
               </div>
@@ -524,9 +524,9 @@ export function PageHeader({
     <div className="rise-in flex flex-wrap items-end justify-between gap-4 border-b border-ink/10 px-5 py-6 sm:px-8 lg:px-10">
       <div className="min-w-0">
         <div className="marginalia">{overline}</div>
-        <h1 className="mt-2 text-2xl font-bold text-ink sm:text-3xl">{title}</h1>
+        <h1 className="mt-2 font-display text-[34px] font-bold leading-tight text-ink sm:text-[40px]">{title}</h1>
         {subtitle && (
-          <p className="mt-1.5 max-w-xl text-sm leading-relaxed text-muted-foreground">{subtitle}</p>
+          <p className="mt-2 max-w-xl text-[15px] leading-[1.7] text-muted-foreground">{subtitle}</p>
         )}
       </div>
       {actions && <div className="flex shrink-0 items-center gap-2">{actions}</div>}
