@@ -99,7 +99,6 @@ export default function TopicLearning() {
     return (
       <AppShell>
         <PageHeader
-          overline="Topic Dossier"
           title="Topic not found"
           subtitle="Select a topic from the Curriculum Explorer to open its dossier."
         />
@@ -121,9 +120,8 @@ export default function TopicLearning() {
   return (
     <AppShell>
       <PageHeader
-        overline="Learning this topic"
         title={topic.title}
-        subtitle={`${subject.name} · ${chapter.title} · about ${topic.estimatedMinutes} minutes to make this stick`}
+        subtitle={`${subject.name} · ${chapter.title} · about ${topic.estimatedMinutes} minutes to master this topic`}
         actions={
           <button
             onClick={() => navigate("/curriculum")}
@@ -169,8 +167,8 @@ export default function TopicLearning() {
                 className="flex flex-col items-start gap-1 border border-ink/12 bg-card px-4 py-3.5 text-left transition-colors hover:border-teal"
               >
                 <Lightbulb className="h-4 w-4 text-teal" />
-                <span className="font-display text-[14px] font-bold text-ink">Teach it</span>
-                <span className="font-mono text-[10px] uppercase tracking-wider text-ink/45">Explain it back</span>
+                <span className="font-display text-[14px] font-bold text-ink">Teach Back</span>
+                <span className="font-mono text-[10px] uppercase tracking-wider text-ink/45">Explain in your words</span>
               </button>
             </div>
           )}
@@ -188,10 +186,10 @@ export default function TopicLearning() {
                 </p>
               </div>
               <div className="w-full shrink-0 sm:w-56">
-                <div className="font-mono text-[9px] uppercase tracking-[0.08em] text-muted-foreground">
-                  Mastery — {topic.mastery}%
-                </div>
-                <MasteryBar value={topic.mastery} className="mt-2" />
+	                <div className="font-mono text-[9px] uppercase tracking-[0.08em] text-muted-foreground">
+	                  Understanding — {topic.mastery}%
+	                </div>
+	                <MasteryBar value={topic.mastery} className="mt-2" />
                 <div className="mt-3 grid grid-cols-2 gap-px bg-ink/10">
                   <div className="bg-ivory p-2.5">
                     <div className="font-mono text-[9px] uppercase tracking-[0.08em] text-muted-foreground">Est. time</div>
@@ -199,7 +197,7 @@ export default function TopicLearning() {
                   </div>
                   <div className="bg-ivory p-2.5">
                     <div className="font-mono text-[9px] uppercase tracking-[0.08em] text-muted-foreground">Status</div>
-                    <div className="mt-0.5 font-mono text-sm font-medium text-ink">{topic.mastery < 50 ? "In progress" : topic.mastery < 85 ? "Strengthening" : "Mastered"}</div>
+	                    <div className="mt-0.5 font-mono text-sm font-medium text-ink">{topic.mastery < 50 ? "Learning" : topic.mastery < 85 ? "Improving" : "Strong"}</div>
                   </div>
                 </div>
               </div>
@@ -452,8 +450,8 @@ export default function TopicLearning() {
             <p className="mt-2 font-serif text-[15px] leading-relaxed">
               {dnaItems[0]?.why ??
                 topic.mastery < 50
-                  ? "This idea needs building, not polishing — a video walkthrough first, then practice."
-                  : "The gaps here are specific, not systemic — short focused sessions beat long ones."}
+                  ? "Start with a video walkthrough to build your understanding before trying practice problems."
+                  : "Short, focused sessions are best for mastering the remaining parts of this topic."}
             </p>
           </div>
 
@@ -472,15 +470,15 @@ export default function TopicLearning() {
                 ))}
               </ol>
               <p className="mt-4 text-[12px] leading-relaxed text-ink/55">
-                Completing each stage quietly adjusts what Cognify suggests next.
+                Each step you complete helps us personalize your learning journey.
               </p>
             </div>
           )}
 
           <div className="border border-ink/10 bg-card p-5">
-            <Marginalia>What a pass builds</Marginalia>
+            <Marginalia>What you'll get</Marginalia>
             <div className="mt-3 space-y-2">
-              {["Playback behaviour (speed, rewinds)", "Confusing-segment marks", "Notes with timestamps", "Completion signal"].map((item, i) => (
+              {["Personalized learning path", "Points you've marked to review", "Your own study notes", "Topic mastery progress"].map((item, i) => (
                 <div key={item} className="flex items-center gap-2 border-b border-dotted border-ink/15 pb-1.5 last:border-0">
                   <Lightbulb className="h-3 w-3 shrink-0 text-teal" />
                   <span className="text-[12.5px] text-dark-text/75">{item}</span>

@@ -1,40 +1,36 @@
 /**
- * COGNIFY — Mistake Analysis (Day 4)
- * Every mistake is classified: conceptual / careless / procedural / recall /
- * interpretation — and each classification routes a different intervention.
- *
- * Style: Scholar's Atelier — ledger, marginalia, mono stats, hairline rules.
+ * COGNIFY — Mistake Analysis (Day 12 Redesign)
+ * High-fidelity redesign with de-exposed DNA metrics.
  */
 import AppShell, { PageHeader } from "@/components/cognify/AppShell";
-import {
-  Marginalia,
-  MasteryBar,
-  StatCell,
-} from "@/components/cognify/Primitives";
+import { MasteryBar } from "@/components/cognify/Primitives";
 import { Button } from "@/components/ui/button";
 import { mistakeAnalytics, categoryLabel, recentMistakes, mistakeTrendIcon } from "@/lib/mistakes";
-import { learningPathFor } from "@/lib/adaptive";
 import { topicAlias } from "@/lib/curriculum";
 import {
   ArrowRight,
-  BookOpen,
   ChevronDown,
   ChevronUp,
   Flame,
   Lightbulb,
   Sparkles,
+  Brain,
+  Zap,
+  Clock,
+  Info
 } from "lucide-react";
 import { useState } from "react";
 import { Link } from "wouter";
+import { cn } from "@/lib/utils";
 
 const slugOf = (id: string) => topicAlias(id) ?? id;
 
-const categoryMeta: Record<string, { icon: typeof Flame; tone: string }> = {
-  conceptual: { icon: Lightbulb, tone: "#d9912f" },
-  careless: { icon: Sparkles, tone: "#132b3b" },
-  procedural: { icon: BookOpen, tone: "#2b9c8c" },
-  recall: { icon: Flame, tone: "#d9912f" },
-  interpretation: { icon: Lightbulb, tone: "#132b3b" },
+const categoryMeta: Record<string, { icon: any, color: string, bg: string }> = {
+  conceptual: { icon: Brain, color: "text-teal", bg: "bg-teal/10" },
+  careless: { icon: Zap, color: "text-orange", bg: "bg-orange/10" },
+  procedural: { icon: Clock, color: "text-navy", bg: "bg-navy/10" },
+  recall: { icon: Flame, color: "text-purple", bg: "bg-purple/10" },
+  interpretation: { icon: Lightbulb, color: "text-amber-500", bg: "bg-amber-500/10" },
 };
 
 export default function Mistakes() {
@@ -45,270 +41,184 @@ export default function Mistakes() {
 
   return (
     <AppShell>
-      <PageHeader
-        overline="Mistake Analysis"
-        title="Every mistake is a lesson — none are wasted"
-        subtitle="A conceptual error changes how you learn a topic; a careless one changes how you check your work. Here's what happened recently, and what changed because of it."
-        actions={
-          <Button
-            asChild
-            variant="outline"
-            className="border-ink/25 bg-transparent text-ink hover:bg-ink/5"
-          >
+      <div className="py-6 animate-fade-in">
+        <PageHeader
+          title="Learning from Mistakes"
+          subtitle="Every error is an opportunity to refine your understanding."
+          actions={
             <Link href="/adaptive">
-              Adaptive Lab <ArrowRight className="ml-1 h-3.5 w-3.5" />
+               <Button variant="outline" size="sm" className="rounded-xl border-slate-200 bg-white text-xs h-9">
+                  Adaptive Lab <ArrowRight className="ml-2 h-4 w-4" />
+               </Button>
             </Link>
-          </Button>
-        }
-      />
+          }
+        />
 
-      <div className="px-5 py-7 sm:px-8 lg:px-10">
-        {/* Stats ledger */}
-        <div className="rise-in grid grid-cols-2 gap-y-6 border-b border-ink/10 pb-7 sm:grid-cols-4">
-          <StatCell
-            label="Classified mistakes"
-            value={`${total}`}
-            sub="last two weeks"
-          />
-          <StatCell
-            label="Dominant class"
-            value={categoryLabel("conceptual")}
-            sub={`${analytics[0]?.percentage ?? 0}% of errors`}
-          />
-          <StatCell
-            label="Rising clusters"
-            value={`${analytics.filter((a) => a.trend === "rising").length}`}
-            sub="under active intervention"
-          />
-          <StatCell
-            label="Falling clusters"
-            value={`${analytics.filter((a) => a.trend === "falling").length}`}
-            sub="intervention working"
-          />
+        {/* Stats Overview */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+           {[
+             { label: "Total Errors", value: total, sub: "last two weeks", icon: Info, color: "bg-navy" },
+             { label: "Main Focus", value: categoryLabel("conceptual"), sub: "conceptual understanding", icon: Brain, color: "bg-teal" },
+             { label: "Improvements", value: analytics.filter(a => a.trend === 'falling').length, sub: "patterns decreasing", icon: Zap, color: "bg-green-500" },
+             { label: "New Patterns", value: analytics.filter(a => a.trend === 'rising').length, sub: "needs attention", icon: Flame, color: "bg-orange" },
+           ].map((stat, i) => (
+             <div key={i} className="card-rounded p-6 bg-white shadow-soft border border-slate-100">
+                <div className={cn("mb-4 flex h-10 w-10 items-center justify-center rounded-xl text-white shadow-lg", stat.color)}>
+                   <stat.icon className="h-5 w-5" />
+                </div>
+                <div className="text-2xl font-bold text-navy">{stat.value}</div>
+                <div className="text-[10px] font-bold text-slate-light uppercase tracking-widest">{stat.label}</div>
+                <div className="mt-1 text-[10px] text-slate-light italic">{stat.sub}</div>
+             </div>
+           ))}
         </div>
 
-        <div className="mt-10 grid gap-10 lg:grid-cols-[1.6fr_1fr]">
-          {/* ---------- Main column: category ledger ---------- */}
-          <div className="min-w-0 space-y-10">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-8">
+          {/* Main Analysis Column */}
+          <div className="space-y-8">
             <section>
-              <Marginalia amber>Error-class ledger — share of recent mistakes</Marginalia>
-              <div className="mt-5 divide-y divide-ink/10 border-y border-ink/10">
-                {analytics.map((m, i) => {
-                  const meta = categoryMeta[m.category];
-                  const Icon = meta.icon;
-                  return (
-                    <div
-                      key={m.category}
-                      className="rise-in grid gap-4 py-6 sm:grid-cols-[2.5rem_1fr]"
-                    >
-                      <div className="index-num pt-0.5">{String(i + 1).padStart(2, "0")}</div>
-                      <div>
-                        <div className="flex flex-wrap items-center gap-2">
-                          <span className="font-serif text-[17px] font-bold text-ink">{m.label}</span>
-                          <span className="flex items-center gap-1 font-mono text-[14px] font-bold text-amber-dark">
-                            {mistakeTrendIcon(m.trend)} {m.percentage}%
-                          </span>
-                          <span className="font-mono text-[9px] uppercase tracking-wider text-muted-foreground">
-                            {m.count} errors · {m.trendNote}
-                          </span>
-                        </div>
-                        <p className="mt-2.5 footnote">{m.pattern}</p>
-                        <div className="mt-3 flex items-center gap-2">
-                          <Icon className="h-3.5 w-3.5 shrink-0" style={{ color: meta.tone }} />
-                          <span className="font-mono text-[12px] uppercase tracking-[0.12em] text-ink/60">
-                            Intervention
-                          </span>
-                          <p className="footnote ml-1">{m.intervention}</p>
-                        </div>
-                        <div className="mt-3 flex flex-wrap gap-1.5">
-                          {m.affectedTopics.map((t) => (
-                            <span
-                              key={t}
-                              className="border border-ink/12 px-2 py-0.5 font-mono text-[12px] text-ink/70"
-                            >
-                              {t}
-                            </span>
-                          ))}
-                        </div>
+               <h2 className="text-lg font-bold text-navy mb-6">Error Patterns</h2>
+               <div className="space-y-4">
+                  {analytics.map((m) => {
+                    const meta = categoryMeta[m.category] || categoryMeta.conceptual;
+                    const Icon = meta.icon;
+                    return (
+                      <div key={m.category} className="card-rounded p-6 bg-white border border-slate-100 shadow-soft">
+                         <div className="flex items-start gap-4">
+                            <div className={cn("flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl", meta.bg, meta.color)}>
+                               <Icon className="h-6 w-6" />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                               <div className="flex items-center justify-between mb-2">
+                                  <h3 className="text-lg font-bold text-navy">{m.label}</h3>
+                                  <div className="flex items-center gap-2">
+                                     <span className={cn("text-xs font-bold", m.trend === 'rising' ? "text-orange" : "text-green-500")}>
+                                        {mistakeTrendIcon(m.trend)} {m.percentage}%
+                                     </span>
+                                  </div>
+                               </div>
+                               <p className="text-sm text-slate-light leading-relaxed mb-4">{m.pattern}</p>
+                               
+                               <div className="p-4 rounded-xl bg-slate-50 border border-slate-100 flex gap-3">
+                                  <Lightbulb className="h-4 w-4 text-teal shrink-0 mt-0.5" />
+                                  <div>
+                                     <p className="text-[10px] font-bold text-navy uppercase tracking-widest mb-1">Our Adjustment</p>
+                                     <p className="text-xs text-slate-600 leading-relaxed">{m.intervention}</p>
+                                  </div>
+                                </div>
+                            </div>
+                         </div>
                       </div>
-                    </div>
-                  );
-                })}
-              </div>
+                    );
+                  })}
+               </div>
             </section>
 
-            {/* Individual mistakes */}
             <section>
-              <div className="flex flex-wrap items-baseline justify-between gap-3">
-                <Marginalia>Recent mistakes, and what they teach</Marginalia>
-                <span className="font-mono text-[12px] uppercase tracking-wider text-muted-foreground">
-                  each quietly shapes what Cognify suggests next
-                </span>
-              </div>
-              <div className="mt-5 divide-y divide-ink/10 border-y border-ink/10">
-                {mistakes.map((m) => {
-                  const open = expandedId === m.id;
-                  const pathResult = learningPathFor(m.topicId);
-                  return (
-                    <div key={m.id} className="py-5">
-                      <button
-                        onClick={() => setExpandedId(open ? null : m.id)}
-                        className="w-full text-left"
-                        aria-expanded={open}
-                      >
-                        <div className="flex flex-wrap items-center justify-between gap-2">
-                          <div className="min-w-0 flex flex-wrap items-center gap-2">
-                            <span className="border-l-2 px-1.5 py-0.5 font-mono text-[12px] font-medium uppercase tracking-[0.1em] text-amber-dark" style={{ borderLeftColor: categoryMeta[m.category]?.tone }}>
-                              {m.category}
-                            </span>
-                            <span className="font-serif text-[15px] font-bold leading-snug text-ink">
-                              {m.topicTitle}
-                            </span>
-                          </div>
-                          {open ? (
-                            <ChevronUp className="h-4 w-4 shrink-0 text-ink/40" />
-                          ) : (
-                            <ChevronDown className="h-4 w-4 shrink-0 text-ink/40" />
-                          )}
-                        </div>
-                        <p className="mt-2 font-mono text-[14px] leading-relaxed text-ink/70">
-                          Q: {m.question}
-                        </p>
-                      </button>
-                      {open && (
-                        <div className="rise-in mt-4 space-y-3 border-l border-ink/10 pl-4">
-                          <div className="grid gap-3 sm:grid-cols-2">
-                            <div className="border border-ink/10 bg-ivory p-3">
-                              <div className="font-mono text-[9px] uppercase tracking-[0.08em] text-amber-dark">
-                                Your answer
-                              </div>
-                              <div className="mt-1 font-mono text-[12px] text-ink/80">{m.studentAnswer}</div>
+               <h2 className="text-lg font-bold text-navy mb-6">Recent Review</h2>
+               <div className="space-y-3">
+                  {mistakes.map((m) => {
+                    const open = expandedId === m.id;
+                    const meta = categoryMeta[m.category] || categoryMeta.conceptual;
+                    return (
+                      <div key={m.id} className="card-rounded overflow-hidden border border-slate-100 shadow-soft bg-white">
+                         <button 
+                           onClick={() => setExpandedId(open ? null : m.id)}
+                           className="w-full text-left p-5 flex items-center justify-between hover:bg-slate-50 transition-colors"
+                         >
+                            <div className="flex items-center gap-4">
+                               <div className={cn("h-8 w-8 rounded-lg flex items-center justify-center", meta.bg, meta.color)}>
+                                  <meta.icon className="h-4 w-4" />
+                               </div>
+                               <div>
+                                  <h4 className="text-sm font-bold text-navy">{m.topicTitle}</h4>
+                                  <p className="text-[10px] font-bold text-slate-light uppercase tracking-widest">{m.category}</p>
+                               </div>
                             </div>
-                            <div className="border border-teal/40 bg-ivory p-3">
-                              <div className="font-mono text-[9px] uppercase tracking-[0.08em] text-teal">
-                                Correct
+                            {open ? <ChevronUp className="h-4 w-4 text-slate-light" /> : <ChevronDown className="h-4 w-4 text-slate-light" />}
+                         </button>
+                         
+                         {open && (
+                           <div className="px-5 pb-5 animate-slide-down">
+                              <div className="pt-4 border-t border-slate-50 space-y-4">
+                                 <div className="p-4 rounded-xl bg-slate-50 text-xs font-medium text-navy leading-relaxed italic">
+                                    "{m.question}"
+                                 </div>
+                                 
+                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div className="p-4 rounded-xl border border-orange/10 bg-orange/5">
+                                       <p className="text-[9px] font-bold text-orange uppercase tracking-widest mb-1">Your Answer</p>
+                                       <p className="text-xs text-navy font-bold">{m.studentAnswer}</p>
+                                    </div>
+                                    <div className="p-4 rounded-xl border border-teal/10 bg-teal/5">
+                                       <p className="text-[9px] font-bold text-teal uppercase tracking-widest mb-1">Correct Answer</p>
+                                       <p className="text-xs text-navy font-bold">{m.correctAnswer}</p>
+                                    </div>
+                                 </div>
+
+                                 <div className="flex items-start gap-3 p-2">
+                                    <Info className="h-4 w-4 text-navy shrink-0 mt-0.5" />
+                                    <p className="text-xs text-slate-600 leading-relaxed">
+                                       <span className="font-bold text-navy">Cause:</span> {m.likelyCause}
+                                    </p>
+                                 </div>
+
+                                 <div className="flex justify-end">
+                                    <Link href={`/topic/${slugOf(m.topicId)}`}>
+                                       <Button variant="ghost" size="sm" className="text-teal text-[10px] font-bold uppercase tracking-widest hover:bg-teal/5">
+                                          Fix this Topic <ArrowRight className="ml-2 h-3 w-3" />
+                                       </Button>
+                                    </Link>
+                                 </div>
                               </div>
-                              <div className="mt-1 font-mono text-[12px] text-ink/80">{m.correctAnswer}</div>
-                            </div>
-                          </div>
-                          <div className="flex items-start gap-2">
-                            <Lightbulb className="mt-0.5 h-3.5 w-3.5 shrink-0 text-amber" />
-                            <p className="footnote">
-                              <span className="font-mono text-[9px] uppercase tracking-[0.08em] text-ink/50">
-                                Likely cause ·{" "}
-                              </span>
-                              {m.likelyCause}
-                            </p>
-                          </div>
-                          <ul className="space-y-1">
-                            {m.actions.map((a, i) => (
-                              <li key={i} className="flex items-start gap-2">
-                                <span className="mt-1.5 h-1 w-1 shrink-0 bg-teal" />
-                                <span className="footnote">{a}</span>
-                              </li>
-                            ))}
-                          </ul>
-                          {pathResult && pathResult.stages.length > 0 && (
-                            <Link
-                              href={`/topic/${slugOf(m.topicId)}`}
-                              className="inline-flex items-center gap-1.5 border-b border-teal/50 pb-0.5 font-mono text-[14px] uppercase tracking-wider text-teal transition-colors hover:border-teal"
-                            >
-                              View learning path →
-                            </Link>
-                          )}
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
+                           </div>
+                         )}
+                      </div>
+                    );
+                  })}
+               </div>
             </section>
           </div>
 
-          {/* ---------- Rail ---------- */}
-          <div className="space-y-10">
-            <section className="border border-ink/12 bg-card">
-              <div className="border-b border-ink/10 px-5 py-4">
-                <Marginalia className="[&::before]:hidden">Why classification matters</Marginalia>
-              </div>
-              <div className="divide-y divide-ink/8 px-5">
-                {[
-                  {
-                    cls: "Conceptual",
-                    note: "The model of the idea is wrong. Cognify inserts worked examples and diagrams before any new test.",
-                  },
-                  {
-                    cls: "Careless",
-                    note: "Method right, execution wrong. Cognify adds deliberate check-steps to timed practice.",
-                  },
-                  {
-                    cls: "Procedural",
-                    note: "A step drops mid-method. Checklist-based solved examples are inserted.",
-                  },
-                  {
-                    cls: "Recall",
-                    note: "Knowledge stored, retrieval weak. The spaced-revision interval is tightened.",
-                  },
-                  {
-                    cls: "Interpretation",
-                    note: "Only works in familiar wording. Reworded variants are added to each revision.",
-                  },
-                ].map((r) => (
-                  <div key={r.cls} className="py-3.5">
-                    <div className="font-mono text-[12px] uppercase tracking-[0.12em] text-ink/60">{r.cls}</div>
-                    <p className="mt-1 text-[12.5px] leading-relaxed text-ink/80">{r.note}</p>
-                  </div>
-                ))}
-              </div>
-            </section>
-
-            <section className="border border-ink/12 bg-card p-5">
-              <Marginalia className="[&::before]:hidden">How sure is this</Marginalia>
-              <p className="mt-2 text-[13.5px] text-ink/60">
-                A few readings are only partly certain — they influence what's suggested next, but never override your own sessions.
-              </p>
-              <div className="mt-4 space-y-3">
-                {analytics.slice(0, 3).map((m) => (
-                  <div key={m.category}>
-                    <div className="flex items-baseline justify-between">
-                      <span className="font-mono text-[12px] uppercase tracking-wider text-ink/60">
-                        {m.label} cluster
-                      </span>
-                      <span className="font-mono text-[12px] text-teal-dark">~{70 + Math.round(m.percentage / 4)}% certain</span>
-                    </div>
-                    <MasteryBar value={70 + m.percentage / 4} className="mt-1.5" />
-                  </div>
-                ))}
-              </div>
-            </section>
-
-            <section>
-              <Marginalia>Looking closer at this week</Marginalia>
-              <div className="mt-4 grid grid-cols-2 gap-px border border-ink/12 bg-ink/10">
-                <div className="bg-card p-4">
-                  <div className="font-display text-3xl font-bold text-amber-dark">
-                    {mistakes.filter((m) => m.confidence === "low").length}
-                  </div>
-                  <div className="mt-1 font-mono text-[9px] uppercase tracking-wider text-muted-foreground">
-                    made with low confidence
-                  </div>
+          {/* Sidebar */}
+          <div className="space-y-8">
+             <div className="card-rounded p-6 bg-navy text-white shadow-xl shadow-navy/20">
+                <h3 className="text-sm font-bold mb-4">Why we classify errors</h3>
+                <div className="space-y-6">
+                   {[
+                     { label: "Conceptual", desc: "We'll show you more diagrams and analogies." },
+                     { label: "Careless", desc: "We'll add verification steps to your practice." },
+                     { label: "Recall", desc: "We'll tighten your revision schedule." },
+                   ].map((item) => (
+                     <div key={item.label}>
+                        <div className="text-[10px] font-bold text-teal uppercase tracking-widest mb-1">{item.label}</div>
+                        <p className="text-xs text-slate-300 leading-relaxed">{item.desc}</p>
+                     </div>
+                   ))}
                 </div>
-                <div className="bg-card p-4">
-                  <div className="font-display text-3xl font-bold text-teal-dark">
-                    {mistakes.filter((m) => m.confidence === "high").length}
-                  </div>
-                  <div className="mt-1 font-mono text-[9px] uppercase tracking-wider text-muted-foreground">
-                    overconfident errors
-                  </div>
+             </div>
+
+             <div className="card-rounded p-6 bg-white border border-slate-100 shadow-soft">
+                <h3 className="text-sm font-bold text-navy mb-4">Confidence Check</h3>
+                <p className="text-xs text-slate-light leading-relaxed mb-6">
+                   Errors made with high confidence often signal a "hidden" misunderstanding.
+                </p>
+                <div className="space-y-4">
+                   <div className="flex items-center justify-between">
+                      <span className="text-[10px] font-bold text-slate-light uppercase">High Confidence Errors</span>
+                      <span className="text-xs font-bold text-navy">{mistakes.filter(m => m.confidence === 'high').length}</span>
+                   </div>
+                   <div className="flex items-center justify-between">
+                      <span className="text-[10px] font-bold text-slate-light uppercase">Low Confidence Errors</span>
+                      <span className="text-xs font-bold text-navy">{mistakes.filter(m => m.confidence === 'low').length}</span>
+                   </div>
                 </div>
-              </div>
-              <Link
-                href="/confidence"
-                className="mt-4 inline-flex items-center gap-1.5 border-b border-teal/50 pb-0.5 font-mono text-[14px] uppercase tracking-wider text-teal transition-colors hover:border-teal"
-              >
-                Check your confidence habits →
-              </Link>
-            </section>
+                <Link href="/confidence">
+                   <Button variant="outline" className="w-full mt-6 rounded-xl border-slate-200 text-[10px] font-bold uppercase tracking-widest">
+                      Calibrate Confidence
+                   </Button>
+                </Link>
+             </div>
           </div>
         </div>
       </div>

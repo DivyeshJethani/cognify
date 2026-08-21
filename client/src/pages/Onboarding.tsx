@@ -23,12 +23,12 @@ const goalOptions = [
   {
     id: "boards",
     title: "Board exam readiness",
-    desc: "Target the syllabus, revision cycles and past-paper patterns.",
+    desc: "Focus on your syllabus and practice with past papers to be fully prepared.",
   },
   {
     id: "conceptual",
     title: "Conceptual clarity",
-    desc: "Fix shaky fundamentals and stop repeating the same mistakes.",
+    desc: "Strengthen your basics and build a solid understanding of every concept.",
   },
   {
     id: "confidence",
@@ -223,7 +223,7 @@ export default function Onboarding() {
                 })}
               </div>
               <p className="mt-4 footnote">
-                Every subject carries a full Board → Class → Subject → Chapter → Topic → learning-objective map.
+                We've mapped out the entire curriculum for these subjects to guide you step-by-step.
               </p>
             </div>
           )}
@@ -233,9 +233,7 @@ export default function Onboarding() {
             <div>
               <div className="marginalia">Setup — step 4 of 4</div>
               <h1 className="mt-3 font-display text-3xl font-bold text-ink">What are you working towards?</h1>
-              <p className="mt-2 text-[14px] text-dark-text/70">
-                Pick any number of directions — your learning path is built from them.
-              </p>
+              <p className="mt-2 text-[14px] text-dark-text/70">Choose what you want to achieve — we'll tailor your experience to match.</p>
               <div className="mt-8 grid gap-3 sm:grid-cols-2">
                 {goalOptions.map((g) => {
                   const active = selectedGoals.includes(g.id);

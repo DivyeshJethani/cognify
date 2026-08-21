@@ -246,22 +246,22 @@ const FALLBACK_QUESTIONS: RetrievalQuestion[] = [
   },
   {
     id: "g4",
-    question: "Your Learning DNA says your strongest format is visual diagrams. Which statement fits?",
+    question: "We've noticed you learn best with visual diagrams. How did this video feel?",
     options: [
-      "I learn equally from every format",
-      "I retain more when the idea is drawn than when it is only spoken",
-      "Visuals are slower to learn from",
-      "Format makes no difference to me",
+      "The diagrams made the concept much clearer",
+      "I prefer reading text over watching diagrams",
+      "The visuals were a bit distracting",
+      "I didn't notice any diagrams",
     ],
-    correctIndex: 1,
-    explanation: "This reflects your recorded format-experiment results — evidence over intuition.",
+    correctIndex: 0,
+    explanation: "Using your preferred learning style helps you master new topics faster.",
   },
   {
     id: "g5",
-    question: "What should happen after this resource, according to the Cognify loop?",
-    options: ["Watch the next video", "Retrieve, then practise, then analyse mistakes", "Move to a new topic", "Re-read the transcript once"],
+    question: "What's the best next step after finishing this video?",
+    options: ["Watch another video right away", "Test what I remember, then practice", "Take a long break", "Read the same transcript again"],
     correctIndex: 1,
-    explanation: "WATCH → RETRIEVE → PRACTICE → ANALYSE → UPDATE LEARNING DNA. Retrieval, not repetition, builds retention.",
+    explanation: "Testing yourself right after learning is the best way to make it stick.",
   },
 ];
 
@@ -313,7 +313,7 @@ export function markWatched(resourceId: string): SessionFlowState {
   s.stage = s.retrieval ? "retrieval-done" : "retrieval";
   s.dnaEvidence = [
     ...s.dnaEvidence,
-    "Evidence added: resource watched in full — attention data logged.",
+    "Progress updated: You've finished watching the entire resource.",
   ];
   persist(s);
   return s;
@@ -329,7 +329,7 @@ export function recordRetrieval(
   const pct = Math.round((result.correct / Math.max(1, result.answered)) * 100);
   s.dnaEvidence = [
     ...s.dnaEvidence,
-    `Evidence added: retrieval check ${pct}% (${result.correct}/${result.answered}); confidence ${result.confidence}% — calibration data updated.`,
+    `Progress updated: You got ${result.correct} out of ${result.answered} questions right!`,
   ];
   persist(s);
   return s;
@@ -342,7 +342,7 @@ export function recordConfidence(resourceId: string, rating: number): SessionFlo
   s.completedAt = new Date().toISOString();
   s.dnaEvidence = [
     ...s.dnaEvidence,
-    `Evidence added: self-reported confidence ${rating}%.`,
+    `Progress updated: You're feeling confident about this topic.`,
   ];
   persist(s);
   return s;
@@ -395,32 +395,26 @@ export function composeDnaUpdate(
   const pct = s.retrieval
     ? Math.round((s.retrieval.correct / Math.max(1, s.retrieval.answered)) * 100)
     : null;
-  const calibration =
-    s.retrieval && s.confidenceRating !== null
-      ? s.confidenceRating - pct!
-      : null;
-  const topFormat: LearningFormat = learningDNA.topFormat;
+  
   let finding: string;
   let implication: string;
+  
   if (pct === null) {
-    finding = `No retrieval evidence recorded yet for ${topicLabel}.`;
-    implication = "Start the retrieval check to generate DNA evidence.";
+    finding = `You're just getting started with ${topicLabel}.`;
+    implication = "Complete the quick check to see how much you've learned.";
   } else if (pct >= 80) {
-    finding = `Strong retrieval on ${topicLabel} (${pct}%). Your top format (${topFormat.replace(/-/g, " ")}) continues to deliver.`;
-    implication = "Advance to practice; revision interval will lengthen.";
+    finding = `Great job! You've mastered the main points of ${topicLabel} (${pct}% correct).`;
+    implication = "You're ready for some practice problems now.";
   } else if (pct >= 50) {
-    finding = `Partial retrieval on ${topicLabel} (${pct}%). Specific gaps flagged for targeted practice.`;
-    implication = "The practice engine will weight your error pattern on this topic.";
+    finding = `Good start! You've got a solid grasp of ${topicLabel} (${pct}% correct).`;
+    implication = "A bit more practice will help you clear up the remaining details.";
   } else {
-    finding = `Weak retrieval on ${topicLabel} (${pct}%). The loop routes you back to a visual explanation before re-attempting practice.`;
-    implication = "Expect the adaptive path to substitute a diagram-based resource next.";
+    finding = `This topic is a bit tricky. You got ${pct}% correct on the first try.`;
+    implication = "We'll suggest a simpler visual review to help you out.";
   }
-  if (calibration !== null && Math.abs(calibration) > 15) {
-    finding += ` Calibration gap ${calibration > 0 ? "+" : ""}${calibration} points — confidence ${calibration > 0 ? "ahead of" : "behind"} performance.`;
-    implication += " Confidence calibration reading updated.";
-  }
+  
   return {
-    dimension: "Retrieval evidence",
+    dimension: "Progress Update",
     finding,
     implication,
   };

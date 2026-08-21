@@ -46,22 +46,22 @@ export const RAIL_DEFINITIONS = [
   {
     id: "recommended",
     title: "Recommended for you",
-    reason: "Ranked against your Learning DNA — format, difficulty and mistake profile",
+    reason: "Personalized based on your learning style and current progress",
   },
   {
     id: "struggled",
     title: "Struggled with this topic",
-    reason: "Topics whose attempt history shows unresolved weak spots",
+    reason: "Topics that might need a little more focus to master",
   },
   {
     id: "revision",
     title: "Quick revision",
-    reason: "Short resources that revisit already-seen ideas before they decay",
+    reason: "Quick refreshers to keep your knowledge sharp",
   },
   {
     id: "conceptual",
     title: "Conceptual repair",
-    reason: "Targets your conceptual-error dimension (46% of your mistakes)",
+    reason: "Focus on the core concepts that make everything else easier",
   },
   {
     id: "continue",
@@ -95,7 +95,7 @@ export function buildRails(): Rail[] {
         title: r.title,
         context: `${r.sourceLabel} · ${Math.round(p.fraction * 100)}% watched`,
         relevance: Math.round(70 + p.fraction * 25),
-        why: `You stopped at ${formatProgress(p.fraction)} on ${timeAgo(p.updatedAt)} — evidence says finishing a started pass beats opening a fresh one.`,
+        why: `You were doing great! Pick up right where you left off at ${formatProgress(p.fraction)}.`,
       };
     })
     .filter((x): x is NonNullable<typeof x> => x !== null);
@@ -111,7 +111,7 @@ export function buildRails(): Rail[] {
         title: t.topicTitle,
         context: `${t.subjectName} · ${t.chapterTitle}`,
         relevance: 90 - t.masteryPercent,
-        why: `Your file shows ${t.masteryPercent}% on this topic with conceptual gaps — attempt history marks it unresolved.`,
+        why: `You've made a good start on this topic. Let's get that mastery score even higher!`,
       })
     );
 
@@ -125,7 +125,7 @@ export function buildRails(): Rail[] {
         title: r.title,
         context: `${r.sourceLabel} · ${r.durationMinutes} min`,
         relevance: r.relevance,
-        why: `A short ${r.resourceType === "quick-revision" ? "verbal recap" : "written recap"} — spaced retention works best right as recall begins to soften.`,
+        why: `A quick way to refresh your memory on this topic before moving on.`,
       })
     );
 
@@ -144,7 +144,7 @@ export function buildRails(): Rail[] {
         title: r.title,
         context: `${r.sourceLabel} · ${r.difficulty}`,
         relevance: r.relevance,
-        why: `Your mistake profile attributes 46% of errors to conceptual gaps — explanations at this level rebuild the idea rather than rehearse it.`,
+        why: `This explanation focuses on the 'why' to help you build a stronger foundation.`,
       })
     );
 
@@ -169,17 +169,17 @@ export function buildRails(): Rail[] {
         title: r.title,
         context: `${r.sourceLabel} · ${r.difficulty}`,
         relevance: r.relevance,
-        why: `Stretch-level material — this is what separates band scores in the board exam.`,
+        why: `A bit of a challenge to help you reach the top of your class!`,
       })
     );
 
   return [
-    { id: "recommended", title: "Recommended for you", reason: "Ranked against your Learning DNA — format, difficulty and mistake profile", items: recommended },
-    { id: "struggled", title: "Struggled with this topic", reason: "Topics whose attempt history shows unresolved weak spots", items: struggled },
-    { id: "revision", title: "Quick revision", reason: "Short resources that revisit already-seen ideas before they decay", items: revision },
-    { id: "conceptual", title: "Conceptual repair", reason: "Targets your conceptual-error dimension (46% of your mistakes)", items: conceptual },
-    { id: "continue", title: "Continue learning", reason: "Resources you started but did not finish", items: continuedItems },
-    { id: "before-test", title: "Before your next assessment", reason: "The highest-yield topics given the exam schedule", items: beforeTest },
+    { id: "recommended", title: "Recommended for you", reason: "Personalized based on your learning style and current progress", items: recommended },
+    { id: "struggled", title: "Struggled with this topic", reason: "Topics that might need a little more focus to master", items: struggled },
+    { id: "revision", title: "Quick revision", reason: "Quick refreshers to keep your knowledge sharp", items: revision },
+    { id: "conceptual", title: "Conceptual repair", reason: "Focus on the core concepts that make everything else easier", items: conceptual },
+    { id: "continue", title: "Continue learning", reason: "Pick up where you left off", items: continuedItems },
+    { id: "before-test", title: "Before your next assessment", reason: "Get ready for your upcoming tests", items: beforeTest },
   ];
 }
 
@@ -208,7 +208,7 @@ export function anotherExplanation(topicId: string, currentResourceId?: string):
       title: r.title,
       context: `${r.sourceLabel} · ${r.resourceType}`,
       relevance: r.relevance,
-      why: `The same idea in a ${r.resourceType.replace("-", " ")} — if the first pass did not stick, the second format usually finds the missing hinge.`,
+      why: `A different way to look at the same topic. Sometimes a new perspective makes it click!`,
     })
   );
 }

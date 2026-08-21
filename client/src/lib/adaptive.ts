@@ -63,12 +63,12 @@ export function todayAdaptivePath(): AdaptiveRecommendation[] {
   const candidates: Candidate[] = [
     {
       topicId: "t-1-relationship-between-zeros-c",
-      reason: "weak conceptual mastery",
+      reason: "Needs a conceptual refresh",
       whyChoseThis:
-        "Three sessions of conceptual error signals on this topic (mastery 27%). Your Learning DNA records that you learn this kind of topic best through diagrams rather than verbal explanation — so the engine is switching the format, not just the topic.",
+        "You've been finding this topic a bit tricky lately. Since you learn well with visuals, we've prepared a diagram-based review to help you master it.",
       format: "visual explanation",
       formatDetail:
-        "Diagram-based explanation followed by 4 worked examples. Your DNA shows a +23% recall gain with visual formats on polynomial topics.",
+        "Diagram-based explanation followed by 4 worked examples. Visual formats have helped you master similar math topics faster.",
       priority: "high",
       dnaLink: "Teaching format",
       evidenceStrength: 86,
@@ -76,9 +76,9 @@ export function todayAdaptivePath(): AdaptiveRecommendation[] {
     },
     {
       topicId: "t-1-types-of-reactions",
-      reason: "conceptual error cluster",
+      reason: "Review core principles",
       whyChoseThis:
-        "Mistake analysis shows 46% of your recent errors are conceptual, and this topic sits at the center of that cluster (mastery 41%, revision was due 2 days ago). Concept repair precedes more testing — another test now would only rehearse the wrong model.",
+        "A quick refresh of the basics will help you feel much more confident before your next practice session.",
       format: "worked example + diagram",
       formatDetail:
         "Side-by-side comparison of all four reaction types with one balancing chain each, then a 5-question retrieval check.",
@@ -89,9 +89,9 @@ export function todayAdaptivePath(): AdaptiveRecommendation[] {
     },
     {
       topicId: "t-0-the-first-world-war-non-coop",
-      reason: "revision due — retention decaying",
+      reason: "Time for a quick review",
       whyChoseThis:
-        "You last studied this 6 days ago; your retention model predicts 58% recall by tonight (your recall typically falls after ~7 days). A 10-minute retrieval practice now costs little and resets the interval. Pattern confirmed after 4 sessions.",
+        "It's been a few days since you last looked at this. A quick 10-minute refresh will keep it fresh in your mind.",
       format: "retrieval practice",
       formatDetail:
         "Timed 10-minute recall round (no notes), then an application round using source-based questions.",
@@ -102,9 +102,9 @@ export function todayAdaptivePath(): AdaptiveRecommendation[] {
     },
     {
       topicId: "t-1-completing-the-square",
-      reason: "mastery stalled below 20%",
+      reason: "Let's clear the hurdles",
       whyChoseThis:
-        "Mastery has remained below 20% across three sessions. The engine is sequencing you back to its prerequisites (factorisation at 66%) before re-attempt — the same approach raised your graphing-method score from 41% to 73% earlier this month.",
+        "This topic can be tough. We'll start with the basics to make sure you have a solid foundation to build on.",
       format: "step-by-step repair",
       formatDetail:
         "Prerequisite check (factorisation, 5 min) then a guided completion-of-the-square walkthrough with a sign-error caution.",
@@ -115,9 +115,9 @@ export function todayAdaptivePath(): AdaptiveRecommendation[] {
     },
     {
       topicId: "t-1-lhasa-ki-or",
-      reason: "weekly target gap — neglected subject",
+      reason: "Keep your streak alive",
       whyChoseThis:
-        "You have completed no Hindi session this week while your weekly target is 200 minutes. Your streak risk page flags this; a short session keeps the streak and the subject balanced.",
+        "You haven't studied Hindi yet this week! A short session now will keep your daily streak going and help you reach your weekly goal.",
       format: "quick revision",
       formatDetail:
         "15-minute reading-plus-recall revision of ल्हासा की ओर, with a vocabulary recall card set.",
@@ -174,20 +174,19 @@ export function learningPathFor(
     {
       stage: "confidence",
       label: "Confidence check",
-      detail:
-        "Cognify compares what you feel you know against what you can retrieve — confidence is calibrated, not assumed.",
+      detail: "We check how well you actually remember the topic compared to how confident you feel, helping you focus where it matters most.",
       status: "next",
     },
     {
       stage: "mastery",
       label: "Mastery",
-      detail: "Evidence is written back to your Learning DNA; the mastery record is updated.",
+      detail: "Your progress is saved and your learning path is updated.",
       status: "next",
     },
     {
       stage: "revision",
       label: "Revision",
-      detail: `A spaced review is scheduled based on your personal decay curve (yours averages ~7 days).`,
+      detail: `We've scheduled a review for you in about a week to make sure this stays fresh in your memory.`,
       status: "next",
     },
   ];
@@ -210,13 +209,13 @@ function stateLabel(s: string): string {
 function weaknessFor(topicId: string): string {
   const map: Record<string, string> = {
     "t-1-relationship-between-zeros-c":
-      "Recurring sign errors when substituting zeros; α + β = −b/a is retained but α·β = c/a collapses under substitution.",
+      "You're doing great with the formulas, but sometimes small sign errors during substitution can be tricky. Let's focus on that.",
     "t-1-types-of-reactions":
       "Combustion vs oxidation is misclassified when the same reaction shows both patterns.",
-    "t-0-the-first-world-war-non-coop": "Timeline items blur under pressure — recall, not understanding, is the gap.",
+    "t-0-the-first-world-war-non-coop": "You understand the events well, but remembering the exact order can be tough. Let's practice the timeline.",
     "t-1-completing-the-square":
-      "The half-coefficient step is skipped; every attempt fails at the same algebraic move.",
-    "t-1-lhasa-ki-or": "Comprehension is fine; vocabulary recall is the measured gap.",
+      "One specific step in the process is causing a bit of trouble. We'll walk through it together.",
+    "t-1-lhasa-ki-or": "You understand the story perfectly! Let's just spend a few minutes on the new vocabulary words.",
   };
   return map[topicId] ?? "Performance plateau detected below expected trajectory.";
 }
@@ -297,8 +296,8 @@ export function weakTopicSummaries(): WeakTopicSummary[] {
 }
 
 function actionReason(state: string, mastery: number): string {
-  if (state === "weak") return `weak conceptual mastery (${mastery}%)`;
-  return `developing but below proficiency (${mastery}%)`;
+  if (state === "weak") return `Needs a bit more focus (${mastery}% understanding)`;
+  return `Making progress (${mastery}% understanding)`;
 }
 
 function defaultRecommendation(state: string): string {

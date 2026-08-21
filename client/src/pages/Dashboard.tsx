@@ -116,7 +116,6 @@ export default function Dashboard() {
   return (
     <AppShell>
       <PageHeader
-        overline={`Learning Command Center — ${ctx.boardName} · ${ctx.className}`}
         title={`Good ${greeting()}, ${profile.name.split(" ")[0]}.`}
         subtitle={
           subjectFocus
@@ -312,7 +311,7 @@ export default function Dashboard() {
                             {w.chapterTitle}
                           </span>
                           <span className="font-mono text-[10.5px] uppercase tracking-wider text-teal opacity-0 transition-opacity group-hover:opacity-100">
-                            View dossier →
+                            Open topic →
                           </span>
                         </div>
                       <div className="mt-1 font-serif text-[15px] font-bold leading-snug text-ink">
@@ -354,14 +353,14 @@ export default function Dashboard() {
                           </span>
                           <RevisionChip dueInDays={r.topic.revisionDueInDays} status={r.topic.revisionStatus} />
                           <span className="font-mono text-[10.5px] uppercase tracking-wider text-teal opacity-0 transition-opacity group-hover:opacity-100">
-                            View dossier →
+                            Open topic →
                           </span>
                         </div>
                       <div className="mt-1 font-serif text-[15px] font-bold leading-snug text-ink">
                         {r.topic.title}
                       </div>
                       <div className="mt-1.5 font-mono text-[14px] text-muted-foreground">
-                        Retention risk rising · spaced scheduler flag
+                        Time for a quick refresh
                       </div>
                       </Link>
                     </li>
@@ -436,7 +435,7 @@ export default function Dashboard() {
             <section className="border border-ink/12 bg-card">
               <div className="border-b border-ink/10 px-5 py-4">
                 <div className="flex items-center justify-between">
-                  <Marginalia className="[&::before]:hidden">How you learn — three quick facts</Marginalia>
+                  <Marginalia className="[&::before]:hidden">Your learning style</Marginalia>
                   <Link href="/profile" className="font-display text-xs uppercase tracking-[0.08em] text-teal hover:underline">
                     Full analysis →
                   </Link>
@@ -480,10 +479,9 @@ export default function Dashboard() {
 
             {/* Mistake profile mini-chart */}
             <section className="border border-ink/12 bg-card p-5">
-              <div className="marginalia [&::before]:hidden">Mistake profile</div>
+              <div className="marginalia [&::before]:hidden">Learning focus</div>
               <p className="mt-2 footnote">
-                {dna.mistakeProfile.conceptual}% conceptual — the dominant pattern. Proofs
-                and algebra carry most of it.
+                We're focusing on building your understanding of core concepts in Proofs and Algebra.
               </p>
               <div className="mt-4 h-36">
                 <ResponsiveContainer width="100%" height="100%">

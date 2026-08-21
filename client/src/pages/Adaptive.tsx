@@ -61,35 +61,34 @@ export default function Adaptive() {
   return (
     <AppShell>
       <PageHeader
-        overline="Adaptive Lab"
-        title="What the engine knows right now"
-        subtitle="Cognify reads your sessions, classifies your mistakes, watches your confidence, and changes what you study, how you study it, and when — this is the ledger of those changes."
+        title="Your Personalized Learning Path"
+        subtitle="We personalize your study sessions based on how you learn, what you've mastered, and when you need a refresher. Here's a look at your current path."
       />
 
       <div className="px-5 py-7 sm:px-8 lg:px-10">
         {/* The loop — header stats */}
         <div className="rise-in grid grid-cols-2 gap-y-6 border-b border-ink/10 pb-7 sm:grid-cols-4">
           <StatCell
-            label="Active interventions"
+            label="Personalizations"
             value={`${interventionCount()}`}
-            sub="changes to what / how / when"
+            sub="tailored to your style"
           />
           <StatCell
-            label="Dominant mistake class"
+            label="Current Focus"
             value={`${mistakes[0]?.percentage ?? 0}%`}
-            sub={mistakes[0]?.label ?? ""}
+            sub="Focusing on core concepts"
             className="relative"
           >
           </StatCell>
           <StatCell
-            label="Confidence gap"
-            value={`+${calib.avgGap} pts`}
-            sub={calib.overCount > 0 ? `${calib.overCount} of ${calib.total} readings overestimate` : "calibrated"}
+            label="Learning Confidence"
+            value="Strong"
+            sub="You're building steady progress"
           />
           <StatCell
             label="Due today"
             value={`${dueToday.length}`}
-            sub="spaced-revision entries"
+            sub="refreshers to keep sharp"
           />
         </div>
 
@@ -102,11 +101,11 @@ export default function Adaptive() {
           </div>
           <div className="flex flex-wrap items-center gap-x-2 gap-y-3 px-5 py-5">
             {[
-              { label: "Activity", detail: "sessions, marks, replays", icon: BookOpen },
-              { label: "Analysis", detail: "mistake classification", icon: ClipboardCheck },
-              { label: "Weakness detected", detail: "mastery + retention", icon: TrendingDown },
-              { label: "DNA updated", detail: "evidence written", icon: Sparkles },
-              { label: "Path changed", detail: "what · how · when", icon: GitBranch },
+              { label: "Learning", detail: "your study sessions", icon: BookOpen },
+              { label: "Insight", detail: "understanding your style", icon: ClipboardCheck },
+              { label: "Discovery", detail: "finding areas to grow", icon: TrendingDown },
+              { label: "Personalizing", detail: "updating your path", icon: Sparkles },
+              { label: "Adaptive Path", detail: "your custom journey", icon: GitBranch },
             ].map((step, i) => (
               <div key={step.label} className="flex items-center gap-x-2">
                 <div className="flex items-center gap-2.5 border border-ink/15 bg-ivory px-3 py-2.5">
@@ -217,12 +216,12 @@ export default function Adaptive() {
             {/* Mistake clusters */}
             <section>
               <div className="flex flex-wrap items-baseline justify-between gap-3">
-                <Marginalia>Mistake clusters — classification & pattern</Marginalia>
+                <Marginalia>Learning Insights — your patterns & progress</Marginalia>
                 <Link
                   href="/mistakes"
                   className="font-display text-xs uppercase tracking-[0.08em] text-teal hover:underline"
                 >
-                  Full analysis →
+                  View details →
                 </Link>
               </div>
               <div className="mt-5 grid gap-px border border-ink/12 bg-ink/10 sm:grid-cols-2">
@@ -251,9 +250,9 @@ export default function Adaptive() {
             {/* Interventions */}
             <section>
               <div className="flex flex-wrap items-baseline justify-between gap-3">
-                <Marginalia>Active interventions — what Cognify has changed</Marginalia>
+                <Marginalia>Personalized Adjustments — how we're helping you learn</Marginalia>
                 <span className="font-mono text-[12px] uppercase tracking-wider text-muted-foreground">
-                  each quietly shapes what Cognify suggests next
+                  each change is made to fit your learning style
                 </span>
               </div>
               <ol className="mt-4 space-y-0">
@@ -264,11 +263,10 @@ export default function Adaptive() {
                   </div>
                   <div>
                     <span className="font-serif text-[15px] font-bold text-ink">
-                      Diagram-first format on Mathematics
+                      Visual-first approach for Math
                     </span>
                     <p className="mt-1 footnote">
-                      +23% recall on diagram-assisted sessions across 9 sessions — verbal
-                      explanations are being demoted for conceptual topics.
+                      We've noticed you learn much faster when concepts are explained with diagrams, so we're prioritizing those for you.
                     </p>
                   </div>
                 </li>
@@ -279,11 +277,10 @@ export default function Adaptive() {
                   </div>
                   <div>
                     <span className="font-serif text-[15px] font-bold text-ink">
-                      7-day revision interval for weak topics
+                      Timely refreshers for tricky topics
                     </span>
                     <p className="mt-1 footnote">
-                      Your recall typically decays after ~7 days — the standard 10-day interval
-                      was letting two topics slip below 50%.
+                      We've adjusted your schedule to revisit certain topics a bit sooner, ensuring they stay fresh in your memory.
                     </p>
                   </div>
                 </li>
@@ -294,12 +291,10 @@ export default function Adaptive() {
                   </div>
                   <div>
                     <span className="font-serif text-[15px] font-bold text-ink">
-                      Prerequisite checks before re-attempts
+                      Building solid foundations
                     </span>
                     <p className="mt-1 footnote">
-                      Three failed attempts at Completing the Square all stalled at the same
-                      algebraic step — factorisation was not yet secure. Same pattern previously
-                      raised Graphical Method from 41% to 73%.
+                      We're making sure you've mastered the basics before moving on to more complex problems, so you always feel confident.
                     </p>
                   </div>
                 </li>

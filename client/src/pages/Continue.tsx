@@ -93,7 +93,6 @@ export default function Continue() {
   return (
     <AppShell key={version}>
       <PageHeader
-        overline="Continue Learning"
         title="Work in progress"
         subtitle={`${entries.length} started passes awaiting completion — each entry resumes where you stopped, and completing one is logged as a finished session.`}
       />

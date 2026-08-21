@@ -417,8 +417,8 @@ export default function Player() {
               <div className="marginalia amber [&::before]:hidden">Next activity</div>
               <p className="mt-2 text-[14px] leading-relaxed text-dark-text/80">
                 {progress >= 100
-                  ? "A timed practice set is now queued — application problems convert viewing into marks."
-                  : "Timed practice set follows when this video completes; mastery evidence updates your topic file immediately."}
+                  ? "Great job! Now, try some practice problems to see how well you've learned this."
+                  : "Practice problems will be available once you finish this video."}
               </p>
             </div>
           </div>
@@ -426,15 +426,15 @@ export default function Player() {
           {/* Event ledger */}
           <div className="mt-6">
             <div className="flex items-center justify-between">
-              <Marginalia className="[&::before]:hidden">Observation log — this session</Marginalia>
+              <Marginalia className="[&::before]:hidden">Session Activity</Marginalia>
               <span className="font-mono text-[12px] text-muted-foreground">
-                Sent to analytics when backend connects
+                Tracking your learning journey
               </span>
             </div>
             <Hairline className="mt-3" />
             <div className="mt-2 max-h-40 overflow-y-auto divide-y divide-ink/6 border border-ink/10 bg-card">
               {events.length === 0 ? (
-                <p className="footnote p-4">Cognify is watching. Your first interaction will appear here.</p>
+                <p className="footnote p-4">Start watching to see your activity log here.</p>
               ) : (
                 [...events]
                   .reverse()
@@ -445,7 +445,7 @@ export default function Player() {
                         {formatTime(e.atSec)}
                       </span>
                       <span className="font-mono text-[12px] uppercase tracking-wider text-ink/70">
-                        {e.type}
+                        {e.type === 'PLAY' ? 'Started' : e.type === 'PAUSE' ? 'Paused' : e.type === 'COMPLETE' ? 'Finished' : e.type}
                       </span>
                       <span className="text-[12px] text-dark-text/70">{eventLabel(e)}</span>
                     </div>
@@ -532,8 +532,7 @@ export default function Player() {
               {tab === "notes" && (
                 <div className="p-4">
                   <p className="footnote">
-                    Notes are timestamped automatically — revision starts exactly where
-                    understanding slipped.
+                    Notes are saved with timestamps so you can easily jump back to the right moment.
                   </p>
                   <div className="mt-3">
                     <textarea
@@ -585,8 +584,7 @@ export default function Player() {
                 <div className="p-4">
                   {confusingMarks.length === 0 ? (
                     <p className="footnote">
-                      No confusing marks yet. During playback, press “Mark confusing” — the
-                      segment is added here and logged to your analytics file.
+                    No confusing points marked yet. Click "Mark confusing" during the video to save points you want to review.
                     </p>
                   ) : (
                     <div className="space-y-3">
@@ -616,8 +614,7 @@ export default function Player() {
                         );
                       })}
                       <p className="footnote">
-                        Each mark feeds your mistake-profile analysis. Revisiting your own
-                        confusion points is the highest-yield revision step Cognify schedules.
+                        Reviewing these points later is a great way to make sure you've fully understood the topic.
                       </p>
                     </div>
                   )}

@@ -224,6 +224,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         completeOnboarding,
         setGoal,
         clearAll,
+        enterDemo,
       }}
     >
       {children}

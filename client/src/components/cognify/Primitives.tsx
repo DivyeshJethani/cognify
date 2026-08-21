@@ -73,13 +73,13 @@ export function stateColor(state: TopicState): string {
 export function stateLabel(state: TopicState): string {
   switch (state) {
     case "mastered":
-      return "Mastered";
+      return "Excellent";
     case "proficient":
-      return "Proficient";
+      return "Strong";
     case "developing":
-      return "Developing";
+      return "Improving";
     case "weak":
-      return "Weak";
+      return "Needs focus";
     case "learning":
       return "In progress";
     case "new":
@@ -135,7 +135,7 @@ const actionMeta: Record<string, { label: string; color: string }> = {
   learn: { label: "Learn", color: "#132b3b" },
   practice: { label: "Practice", color: "#2b9c8c" },
   revise: { label: "Revise", color: "#d9912f" },
-  "teach-back": { label: "Teach back", color: "#3d8f6b" },
+  "teach-back": { label: "Teach Back", color: "#3d8f6b" },
   stretch: { label: "Stretch", color: "#132b3b" },
 };
 

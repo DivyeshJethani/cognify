@@ -150,7 +150,6 @@ export default function Library() {
   return (
     <AppShell>
       <PageHeader
-        overline="Resource Discovery"
         title="The catalogue"
         subtitle={`${resources.length} resources across your subjects — picked for what you are working on right now.`}
         actions={
@@ -364,7 +363,7 @@ export default function Library() {
                               onClick={() => setExpandedWhy(null)}
                               className="mt-1 font-display text-xs uppercase tracking-[0.08em] text-ink/55 hover:text-teal"
                             >
-                              Hide evidence ←
+                              Hide details ←
                             </button>
                           </div>
                         ) : (
@@ -377,7 +376,7 @@ export default function Library() {
                               onClick={() => setExpandedWhy(r.id)}
                               className="ml-2 border-b border-teal/50 pb-0.5 font-display text-xs uppercase tracking-[0.08em] text-teal transition-colors hover:border-teal"
                             >
-                              See evidence →
+                              Learn more →
                             </button>
                           </p>
                         )}
@@ -392,7 +391,7 @@ export default function Library() {
                       </button>
                       <button
                         onClick={() => {
-                          toast("Saving to your shelf — evidence logged");
+                          toast("Saved to your shelf");
                           import("@/lib/savedResources").then((m) => m.addSaved(r));
                         }}
                         className="h-9 whitespace-nowrap border border-ink/25 bg-card px-3 font-mono text-[12px] uppercase tracking-[0.12em] text-ink/70 transition-all duration-150 hover:border-teal hover:text-teal active:scale-[0.97]"
@@ -412,19 +411,14 @@ export default function Library() {
                 No resources match these filters
               </div>
               <p className="footnote max-w-md">
-                Cognify ranks what exists rather than inventing material — broaden a filter
-                to widen the shelf.
+              Try adjusting your filters to see more resources.
               </p>
             </div>
           )}
 
           <p className="footnote mt-6 max-w-2xl border-l-2 border-teal/40 pl-4">
-            The shelf is drawn from NCERT official material, CBSE-aligned public sources,
-            free education websites and COGNIFY's own engine. "Recommended for me" weights
-            your Learning DNA top format ({`"${learningDNA.topFormat}"`}); "Highest
-            evidence" rewards recommendations grounded in recorded mistakes. A future
-            resource-discovery API replaces this index with live results; provenance
-            labels stay the same.
+            Our library is curated from NCERT, CBSE, and other trusted educational sources. 
+            Recommendations are tailored to your learning style and recent progress to help you study more effectively.
           </p>
         </section>
 
@@ -474,10 +468,9 @@ export default function Library() {
                 </p>
               </li>
               <li>
-                <div className="font-mono text-[9px] uppercase tracking-[0.08em] text-teal">2 · Cognify is watching</div>
+                <div className="font-mono text-[9px] uppercase tracking-[0.08em] text-teal">2 · Learn at your pace</div>
                 <p className="mt-1 text-[12.5px] leading-relaxed text-dark-text/75">
-                  During the session the player logs position, rewinds, speed changes and
-                  drop-offs. These become the next DNA update.
+                  We follow your progress as you learn, adjusting your path based on what you find easy or challenging.
                 </p>
               </li>
               <li>

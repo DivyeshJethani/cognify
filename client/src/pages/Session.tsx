@@ -93,8 +93,8 @@ export default function Session() {
   const handleMarkWatched = () => {
     logEvent({ type: "COMPLETE", atSec: 0, sessionId: "watch-loop", resourceId, payload: { source: "learning-page" } });
     setFlow(markWatched(resourceId));
-    toast.success("Resource marked as watched — attention data logged", {
-      description: "The retrieval check is now unlocked. Recall beats recognition.",
+    toast.success("Progress updated!", {
+      description: "You've finished the video. Now, let's see what you remember!",
     });
   };
 
@@ -109,22 +109,22 @@ export default function Session() {
     setFlow(recordRetrieval(resourceId, { answered, correct, confidence }));
     setRetrievalOpen(false);
     setConfidenceOpen(true);
-    toast.success(`Retrieval: ${correct}/${answered} correct`, {
+    toast.success(`You got ${correct}/${answered} correct!`, {
       description:
         correct === answered
-          ? "Perfect recall — the DNA update is strong."
+          ? "Excellent! You've got a great handle on this."
           : correct >= questions.length / 2
-            ? "Partial recall — practice will target the gaps."
-            : "Low recall is data, not failure — the loop routes you back to a visual explanation.",
+            ? "Good start! A little more practice will help you master it."
+            : "This is a tough one. We'll try a different way to explain it next time.",
     });
   };
 
   const submitConfidence = (rating: number) => {
     setFlow(recordConfidence(resourceId, rating));
     setConfidenceOpen(false);
-    toast.success("Learning DNA updated", {
+    toast.success("Progress saved!", {
       description:
-        "Retrieval evidence, calibration reading and topic signals have been written to your Learning DNA. Check the Adaptive Lab for the new path.",
+        "We've updated your learning path based on today's session. Check your dashboard for what's next.",
     });
   };
 
@@ -142,7 +142,6 @@ export default function Session() {
     return (
       <AppShell>
         <PageHeader
-          overline="Video Learning"
           title="Session not found"
           subtitle="Open this route from Resource Discovery with a valid resource."
         />
@@ -153,7 +152,6 @@ export default function Session() {
   return (
     <AppShell>
       <PageHeader
-        overline="Video Learning — briefing & loop"
         title={resource.title}
         subtitle={`${resource.subjectLabel ?? resolved.subject.name} · ${resource.chapterTitle ?? resolved.chapter.title} · ${resource.sourceLabel}`}
         actions={
@@ -213,12 +211,12 @@ export default function Session() {
               <div className="mt-2 font-mono text-[12px] text-muted-foreground">{resource.difficulty} difficulty</div>
             </div>
             <div className="bg-card p-5">
-              <div className="font-mono text-[9px] uppercase tracking-[0.08em] text-muted-foreground">Loop stage</div>
+              <div className="font-mono text-[9px] uppercase tracking-[0.08em] text-muted-foreground">Status</div>
               <div className="mt-1 font-mono text-[14px] font-medium uppercase tracking-[0.1em] text-teal">
-                {flow.stage}
+                {flow.stage === 'complete' ? 'Completed' : 'In Progress'}
               </div>
               <div className="mt-2 font-mono text-[12px] text-muted-foreground">
-                Analytics: ON
+                Progress tracked
               </div>
             </div>
           </div>
@@ -247,7 +245,7 @@ export default function Session() {
             <div className="mt-6 border border-teal/40 bg-teal/5 p-6">
               <div className="flex items-center gap-2">
                 <Dna className="h-4 w-4 text-teal" />
-                <Marginalia className="[&::before]:hidden">Learning DNA update — written from this session</Marginalia>
+                <Marginalia className="[&::before]:hidden">Progress Update</Marginalia>
               </div>
               <p className="mt-3 font-serif text-[15px] leading-relaxed text-ink">
                 {dnaUpdate.finding}
@@ -260,7 +258,7 @@ export default function Session() {
                   href="/adaptive"
                   className="border border-ink bg-ink px-4 py-2 font-mono text-[10.5px] uppercase tracking-[0.12em] text-ivory transition-colors hover:bg-teal hover:border-teal"
                 >
-                  See the updated adaptive path →
+                  See what's next →
                 </Link>
               </div>
             </div>
@@ -274,9 +272,9 @@ export default function Session() {
               {!flow.retrieval && (
                 <li className="flex items-start justify-between gap-4 border border-dashed border-ink/25 bg-card p-4">
                   <div>
-                    <div className="font-serif text-[14px] font-bold text-ink">Quick retrieval check</div>
+                    <div className="font-serif text-[14px] font-bold text-ink">Quick check</div>
                     <p className="mt-1 text-[12.5px] leading-relaxed text-dark-text/70">
-                      Five questions — recall before the memory cools. Unlocks the DNA update.
+                      Five questions to see how much you remember.
                     </p>
                   </div>
                   <button
@@ -290,9 +288,9 @@ export default function Session() {
               {flow.retrieval && !flow.confidenceRating && (
                 <li className="flex items-start justify-between gap-4 border border-dashed border-ink/25 bg-card p-4">
                   <div>
-                    <div className="font-serif text-[14px] font-bold text-ink">Rate your confidence</div>
+                    <div className="font-serif text-[14px] font-bold text-ink">How do you feel?</div>
                     <p className="mt-1 text-[12.5px] leading-relaxed text-dark-text/70">
-                      One number. Cognify compares it against your recall score to calibrate self-assessment.
+                      Tell us how confident you feel about this topic so we can adjust your next session.
                     </p>
                   </div>
                   <button
@@ -305,9 +303,9 @@ export default function Session() {
               )}
               <li className="flex items-start justify-between gap-4 border border-dashed border-ink/25 bg-card p-4">
                 <div>
-                  <div className="font-serif text-[14px] font-bold text-ink">Targeted practice</div>
+                  <div className="font-serif text-[14px] font-bold text-ink">Practice problems</div>
                   <p className="mt-1 text-[12.5px] leading-relaxed text-dark-text/70">
-                    Problems weighted toward your recorded error pattern on this topic.
+                    Exercises focused on the parts you found most interesting today.
                   </p>
                 </div>
                 <button
@@ -320,7 +318,7 @@ export default function Session() {
               {weakTopicSuggestion && (
                 <li className="flex items-start justify-between gap-4 border border-dashed border-amber/40 bg-amber/5 p-4">
                   <div>
-                    <div className="font-serif text-[14px] font-bold text-ink">Flagged by your DNA</div>
+                    <div className="font-serif text-[14px] font-bold text-ink">Recommended for you</div>
                     <p className="mt-1 text-[12.5px] leading-relaxed text-dark-text/70">{weakTopicSuggestion}</p>
                   </div>
                   <button

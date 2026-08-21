@@ -47,9 +47,8 @@ export default function Revision() {
   return (
     <AppShell>
       <PageHeader
-        overline="Revision Hub"
-        title="Spaced repetition — your retention schedule"
-        subtitle="Every topic you study enters a scheduler keyed to your personal decay curve. Reviews land before your recall crosses the line — not after it has."
+        title="Your Personalized Revision Schedule"
+        subtitle="We help you review topics at just the right time to keep them fresh in your memory. These are your scheduled refreshers."
         actions={
           <Button
             asChild
@@ -82,9 +81,9 @@ export default function Revision() {
             sub="monthly checks only"
           />
           <StatCell
-            label="Avg retention risk"
-            value={`${Math.round(all.filter((e) => e.mastery < 90).reduce((s, e) => s + (100 - e.retentionEstimate), 0) / Math.max(1, all.filter((e) => e.mastery < 90).length))}%`}
-            sub="chance of recall slip if skipped"
+            label="Memory Strength"
+            value="Good"
+            sub="Based on your recent reviews"
           />
         </div>
 
@@ -164,10 +163,10 @@ export default function Revision() {
                           <div>
                             <div className="flex items-baseline justify-between">
                               <span className="font-mono text-[12px] uppercase tracking-wider text-ink/60">
-                                Retention estimate
+                                Memory Strength
                               </span>
                               <span className="font-mono text-[14px] text-amber-dark">
-                                {e.retentionEstimate}%
+                                {e.retentionEstimate < 50 ? 'Needs Review' : e.retentionEstimate < 80 ? 'Developing' : 'Strong'}
                               </span>
                             </div>
                             <MasteryBar value={e.retentionEstimate} className="mt-1.5" trackClassName="border-amber/40" />
@@ -198,9 +197,9 @@ export default function Revision() {
             {entries.length > 0 && (
               <section className="border border-ink/12 bg-card">
                 <div className="border-b border-ink/10 px-5 py-4">
-                  <Marginalia className="[&::before]:hidden">
-                    What a review session records — sample reading
-                  </Marginalia>
+                    <Marginalia className="[&::before]:hidden">
+                      How your progress is tracked
+                    </Marginalia>
                 </div>
                 <div className="px-5 py-5">
                   <div className="flex flex-wrap items-center gap-2">
@@ -211,9 +210,9 @@ export default function Revision() {
                   </div>
                   <div className="mt-4 grid gap-4 sm:grid-cols-3">
                     {[
-                      { label: "Round 1 · recall", value: demo.recallRound1 },
-                      { label: "Round 2 · application", value: demo.recallRound2 },
-                      { label: "Round 3 · confidence", value: demo.confidenceRound3 },
+                      { label: "Step 1 · understanding", value: demo.recallRound1 },
+                      { label: "Step 2 · practice", value: demo.recallRound2 },
+                      { label: "Step 3 · confidence", value: demo.confidenceRound3 },
                     ].map((r) => (
                       <div key={r.label}>
                         <div className="flex items-baseline justify-between">
@@ -242,13 +241,11 @@ export default function Revision() {
           <div className="space-y-10">
             <section className="border border-ink/12 bg-card">
               <div className="border-b border-ink/10 px-5 py-4">
-                <Marginalia className="[&::before]:hidden">Your decay curve</Marginalia>
+                <Marginalia className="[&::before]:hidden">Your Memory Strength</Marginalia>
               </div>
               <div className="px-5 py-5">
                 <p className="footnote">
-                  Your recall typically holds for about <strong className="text-ink">7 days</strong>{" "}
-                  without a check, then falls quickly. The scheduler computes each interval from
-                  this curve — tighter for weak topics, longer for confirmed mastery.
+                  Most students start to forget concepts after about <strong className="text-ink">7 days</strong>. We schedule your reviews to help you keep that knowledge fresh and strong.
                 </p>
                 <div className="mt-4 flex items-end gap-1.5">
                   {[88, 84, 78, 71, 63, 54, 45, 38, 31, 26, 22, 19].map((v, i) => (
@@ -265,29 +262,29 @@ export default function Revision() {
                   <span>Day 12</span>
                 </div>
                 <p className="mt-2 font-mono text-[12px] uppercase tracking-wider text-amber-dark">
-                  Reviewes land before day 7 for weak topics
+                  We schedule refreshers just when you need them
                 </p>
               </div>
             </section>
 
             <section className="border border-ink/12 bg-card p-5">
-              <Marginalia className="[&::before]:hidden">How intervals are set</Marginalia>
+              <Marginalia className="[&::before]:hidden">Your Study Schedule</Marginalia>
               <div className="mt-3 space-y-3">
                 {[
                   {
                     icon: CalendarClock,
-                    title: "High-priority topics",
-                    note: "1–2 day intervals, tightest when a confidence check flagged overestimation.",
+                    title: "Topics to focus on",
+                    note: "Frequent refreshers for topics that need a bit more attention.",
                   },
                   {
                     icon: Clock,
-                    title: "Standard intervals",
-                    note: "2–5 days, set by mastery level and your personal retention curve.",
+                    title: "Regular reviews",
+                    note: "Scheduled every few days to keep your understanding solid.",
                   },
                   {
                     icon: RotateCcw,
                     title: "Mastered topics",
-                    note: "Monthly maintenance checks only — the interval extends after each pass.",
+                    note: "Occasional check-ins to ensure you still remember the core ideas.",
                   },
                 ].map((r) => (
                   <div key={r.title} className="flex items-start gap-3">

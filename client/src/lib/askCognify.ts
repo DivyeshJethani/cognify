@@ -69,9 +69,9 @@ export const ASK_ACTIONS: AskAction[] = [
   },
   {
     id: "connect-dna",
-    label: "My DNA says…",
+    label: "How I learn",
     sublabel: "Relate it to my profile",
-    prompt: "Connect this segment to my Learning DNA profile.",
+    prompt: "How does this fit my learning style?",
   },
   {
     id: "summarise",
@@ -101,7 +101,7 @@ export interface AskContext {
 export function quickPicks(ctx: AskContext): string[] {
   return [
     `Why did you recommend this resource?`,
-    `What is my Learning DNA telling me here?`,
+`How does this fit my learning style?`,
     `Am I spending the right amount of time on this?`,
     `What should I do after this video?`,
     ctx.confusingCount > 0
@@ -121,14 +121,11 @@ export function answer(ctx: AskContext, question: string): string {
   const progress = ctx.totalSec > 0 ? Math.round((ctx.elapsedSec / ctx.totalSec) * 100) : 0;
 
   if (q.includes("why") && (q.includes("recommend") || q.includes("choose"))) {
-    return `${r.whyRecommended} Evidence strength: ${r.relevance}/100. It was surfaced from NCERT official material, CBSE-aligned public sources and COGNIFY's own engine — ranked against your Learning DNA, not pulled randomly.`;
+    return `${r.whyRecommended} This resource was selected from trusted sources like NCERT and tailored specifically for your current learning path.`;
   }
 
   if (q.includes("dna") || q.includes("learning style") || q.includes("format")) {
-    const dnaNote = r.dnaDimension
-      ? ` This resource specifically serves your “${r.dnaDimension}” dimension.`
-      : "";
-    return `Your DNA profile: top format is visual-diagram, attention ceiling is about ${discoveryMeta.attentionNote.split("—")[0].replace("Attention analysis shows your focus dips midway through long passages", "22 minutes on text-heavy material")}, and ${discoveryMeta.confidenceNote}. The resource format here is ${r.format}${dnaNote}. When you pause, rewind or mark confusing sections, that data refines this profile further.`;
+    return `We've noticed you learn best with visual diagrams and worked examples. This resource uses a ${r.format} format because it matches your strongest learning style. As you interact with the video, we'll keep refining your personal learning path.`;
   }
 
   if (q.includes("time") || q.includes("long") || q.includes("how long")) {
@@ -137,7 +134,7 @@ export function answer(ctx: AskContext, question: string): string {
   }
 
   if (q.includes("after") || q.includes("next") || q.includes("then")) {
-    return `After this session, evidence of mastery updates your topic file and the spaced scheduler reschedules revision. Expect a timed practice set next — application problems are what convert viewing into marks. Your dashboard will reflect the updated mastery once the session closes.`;
+    return `After this session, your progress will be saved and we'll schedule a quick revision for later. You'll likely see a short practice set next to help lock in what you've learned.`;
   }
 
   if (q.includes("confus") || q.includes("mark") || q.includes("replay")) {
@@ -146,19 +143,19 @@ export function answer(ctx: AskContext, question: string): string {
     const marks = ctx.confusingMarks ?? [];
     if (marks.length > 0) {
       const worst = marks.reduce((a, b) => (b.sec > a.sec ? b : a));
-      return `You have marked ${ctx.confusingCount} confusing segment${ctx.confusingCount > 1 ? "s" : ""}. The latest mark sits at ${formatTime(worst.sec)} — “${worst.note}”. Open the “Replay” tab to review them; revisiting your own confusion points is the highest-yield revision step Cognify schedules, and each mark feeds your mistake-profile analysis.`;
+      return `You have marked ${ctx.confusingCount} confusing segment${ctx.confusingCount > 1 ? "s" : ""}. The latest mark sits at ${formatTime(worst.sec)} — “${worst.note}”. Open the “Replay” tab to review them; revisiting these points is a great way to strengthen your understanding.`;
     }
     return `You have marked ${ctx.confusingCount} confusing segment${ctx.confusingCount > 1 ? "s" : ""}. Open the “Replay” tab to review them — revisiting your own confusion points is the highest-yield revision step Cognify schedules, and each mark feeds your mistake-profile analysis.`;
   }
 
   if (q.includes("watch") || q.includes("look for") || q.includes("focus") || q.includes("tip")) {
-    return `Focus on the step transitions, not the conclusions — your mistake profile shows procedural and careless errors outweigh conceptual gaps. When the narration derives a formula or proves a claim, slow to 0.75x and mark anything you would have to re-read. Those marks become your revision list.`;
+    return `Focus on the step-by-step process. If a part feels fast, try slowing it down to 0.75x and mark it so you can review it later. These marks will help us customize your next practice session.`;
   }
 
   if (q.includes("explain current") || q.includes("segment i am at") || q.includes("right now")) {
     const seg = nearestSegment(ctx);
     return seg
-      ? `Right now: “${seg.text.slice(0, 200)}${seg.text.length > 200 ? "…" : ""}” The takeaway to carry into your notes: this is the step your mistake profile says is fragile — treat it as a retrieval target, not background.`
+      ? `Right now: “${seg.text.slice(0, 200)}${seg.text.length > 200 ? "…" : ""}” This is a key step to include in your notes to help you remember it later.`
       : `You are at ${formatTime(ctx.elapsedSec)} of ${formatTime(ctx.totalSec)} (${progress}% through). The segment here is still indexing — ask me again in a moment, or tell me what felt unclear.`;
   }
 
@@ -174,17 +171,17 @@ export function answer(ctx: AskContext, question: string): string {
   }
 
   if (q.includes("example") || q.includes("worked") || q.includes("concrete")) {
-    return `A worked example for this segment: ${exampleFor(ctx)}. Note the sign discipline and the verification step — those are the two places your attempt history shows slips. Reproduce it once without looking; that reproduction is the evidence your mastery file wants.`;
+    return `A worked example for this segment: ${exampleFor(ctx)}. Try writing this down once without looking to see if you've got the process down!`;
   }
 
   if (q.includes("quiz") || q.includes("question") && q.includes("test") || q.includes("check my grasp") || q.includes("test whether")) {
-    return `Here is your check: answer this before touching anything else — “${quizFor(ctx)}” Write your answer, then compare with the worked solution in this resource's transcript around this timestamp. If your answer missed the verification step, that is your known procedural error speaking, not the concept.`;
+    return `Here is a quick check: “${quizFor(ctx)}” Try answering this, then check the transcript to see if you got it right.`;
   }
 
   if (q.includes("my dna") || q.includes("profile") || q.includes("connect")) {
     const seg = nearestSegment(ctx);
     const segSnippet = seg ? `\u201C${seg.text.slice(0, 110)}\u2026\u201D` : "\u2026\u201D (segment still indexing)";
-    return `Your DNA applied at this moment: the segment says ${segSnippet} — and your profile reads: visual-diagram format strongest, 22-minute attention ceiling, conceptual errors 46%, confidence overshoot ~35 points. Practical consequence: keep this pass under a quarter hour, re-watch diagram-first if the idea resists, and write one retrieval sentence in your notes before moving on.`;
+    return `This segment (${segSnippet}) matches your visual learning style perfectly. Try to keep your focus on the diagrams, and write one quick summary sentence in your notes before moving to the next part.`;
   }
 
   if (q.includes("summarise") || q.includes("covered so far") || q.includes("summary")) {
@@ -195,7 +192,7 @@ export function answer(ctx: AskContext, question: string): string {
   }
 
   if (q.includes("speed") || q.includes("fast") || q.includes("slow")) {
-    return `You are at ${ctx.speed}x. For new content like this, 1x preserves comprehension; once a section feels familiar, 1.25–1.5x is safe. Avoid 2x on proof-heavy segments — your retention data shows comprehension drop-offs above 1.5x on abstract material.`;
+    return `You are at ${ctx.speed}x. For new topics, 1x is usually best. If it feels familiar, 1.25x is a good way to stay focused without missing details.`;
   }
 
   if (q.includes("note") || q.includes("write")) {
@@ -203,14 +200,14 @@ export function answer(ctx: AskContext, question: string): string {
   }
 
   if (q.includes("difficult") || q.includes("hard") || q.includes("stuck")) {
-    return `${r.difficulty === "stretch" || r.difficulty === "advanced" ? "This is tagged " + r.difficulty + " — struggle here is expected, not a failure signal." : "This is within your zone, so a stall is likely a single missing step, not a missing concept."} Try: mark the segment, drop to 0.75x for that section, and if it persists, ask me about the specific concept. Struggle data is exactly what your resilience profile is built from.`;
+    return `${r.difficulty === "stretch" || r.difficulty === "advanced" ? "This is a challenging topic, so it's okay if it takes a bit more effort!" : "You've got this! If a part feels tricky, try slowing it down to 0.75x or marking it to review later."} We'll use your progress here to keep your learning path balanced.`;
   }
 
   if (q.includes("hello") || q.includes("hi") || q.includes("hey")) {
     return `Observing your session. You are ${progress}% through “${r.title}” on ${r.topicTitle}. Ask me about the recommendation, your DNA, timing, confusing marks or what to do next.`;
   }
 
-  return `I stay grounded in this session: the resource's recommendation reason (${r.relevance}/100 relevance, ${r.format} format, ${r.difficulty} difficulty) and your Learning DNA. Ask me why this was recommended, how your DNA applies here, how to pace the remaining ${formatRemaining(ctx, Math.round(ctx.totalSec / 60))}, or what to do with your confusing marks.`;
+  return `I'm here to help you with this session! Ask me why this was recommended, how it fits your learning style, or how to manage your time for the rest of the video.`;
 }
 
 function formatRemaining(ctx: AskContext, budgetMinutes: number): string {

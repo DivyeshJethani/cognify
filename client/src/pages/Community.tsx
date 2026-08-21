@@ -1,21 +1,23 @@
 /**
- * COGNIFY — Study Groups (Day 10 rework)
- *
- * Three things a study group actually does: chat about topics, ask and
- * answer doubts, and teach each other. Everything is scoped to the
- * student's board and class. Live group chat persists to localStorage
- * (cognify.community.v1) alongside the seeded discussion threads.
- *
- * Style: Scholar's Atelier — ivory ground, ink text, teal accents.
+ * COGNIFY — Study Groups (Day 12 Redesign)
+ * High-fidelity chat + peer-learning.
  */
 import AppShell, { PageHeader } from "@/components/cognify/AppShell";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { findPeer, myGroup } from "@/lib/studyGroups";
 import { getStudyContext, onContextChange } from "@/lib/studyContext";
 import { cn } from "@/lib/utils";
-import { HelpCircle, Lightbulb, Send, Users } from "lucide-react";
+import { 
+  HelpCircle, 
+  Send, 
+  Users, 
+  MessageCircle, 
+  Search, 
+  MoreVertical,
+  ThumbsUp,
+  Award
+} from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 
@@ -59,28 +61,23 @@ export default function Community() {
   const teachOffers = group.canTeach.filter((r) => r.kind === "can-teach");
   const [matched, setMatched] = useState<Record<string, boolean>>({});
 
-  /* ---- group chat ---- */
   const [chat, setChat] = useState<ChatMessage[]>(
-    () => loadChat() ?? group.discussions.map((d) => ({ ...d, mine: false }))
+    () => loadChat().length > 0 ? loadChat() : group.discussions.map((d) => ({ ...d, mine: false }))
   );
   useEffect(() => {
     localStorage.setItem(CHAT_KEY, JSON.stringify(chat));
   }, [chat]);
 
   const [draft, setDraft] = useState("");
-  const [doubtDraft, setDoubtDraft] = useState("");
-
   const [doubtOpen, setDoubtOpen] = useState<Record<string, boolean>>({});
-  const [doubtReplies, setDoubtReplies] = useState<Record<string, string>>({});
 
   const members = useMemo(
     () => [
-      { name: "You", initials: "YO", tag: "This is you" },
-      { name: "Ishita R.", initials: "IR", tag: "Science" },
-      { name: "Arjun V.", initials: "AV", tag: "Mathematics" },
-      { name: "Meera S.", initials: "MS", tag: "Social Science" },
-      { name: "Rohan K.", initials: "RK", tag: "Mathematics" },
-      { name: "Ritika P.", initials: "RP", tag: "Science" },
+      { name: "You", initials: "YO", tag: "This is you", img: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=100&h=100&fit=crop" },
+      { name: "Ishita R.", initials: "IR", tag: "Science", img: "https://i.pravatar.cc/100?img=11" },
+      { name: "Arjun V.", initials: "AV", tag: "Mathematics", img: "https://i.pravatar.cc/100?img=12" },
+      { name: "Meera S.", initials: "MS", tag: "Social Science", img: "https://i.pravatar.cc/100?img=13" },
+      { name: "Rohan K.", initials: "RK", tag: "Mathematics", img: "https://i.pravatar.cc/100?img=14" },
     ],
     []
   );
@@ -99,247 +96,230 @@ export default function Community() {
     const peers = findPeer(request.topicTitle);
     const found = peers.length > 0;
     setMatched((m) => ({ ...m, [request.id]: found }));
-    toast.success(found ? "A classmate can help" : "Nobody has cleared this yet", {
+    toast.success(found ? "A classmate can help" : "Keep working on it", {
       description: found
-        ? `${peers[0].name} has cleared this topic — a short teach session fits your week.`
-        : "Keep working on it — when you do, you'll be the one others ask.",
+        ? `${peers[0].name} has mastered this topic — they might be able to help you out.`
+        : "No one has cleared this topic yet. You could be the first to master it!",
     });
-  }
-
-  function answerDoubt(id: string) {
-    const reply = doubtReplies[id]?.trim();
-    if (!reply) return;
-    setDoubtReplies((d) => ({ ...d, [id]: "" }));
-    setDoubtOpen((d) => ({ ...d, [id]: true }));
-    toast.success("Your answer is in the group", { description: "Classmates can see it and build on it." });
   }
 
   return (
     <AppShell>
-      <PageHeader
-        overline="Study Groups"
-        title={`${ctx.boardName} · ${ctx.className}`}
-        subtitle="Chat about topics, ask doubts, and teach classmates. One concept at a time."
-      />
-
-      <div className="mx-auto max-w-3xl px-5 py-8 sm:px-8">
-        {/* Group chat */}
-        <section className="rise-in border border-ink/12 bg-card">
-          <div className="flex items-center justify-between border-b border-ink/10 px-5 py-3.5">
-            <span className="font-display text-[13px] font-bold uppercase tracking-[0.06em] text-ink/60">
-              Group chat
-            </span>
-            <span className="flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-wider text-ink/40">
-              <Users className="h-3 w-3" /> {group.memberCount} members
-            </span>
-          </div>
-
-          <div className="flex max-h-[380px] flex-col gap-4 overflow-y-auto px-5 py-5">
-            {chat.map((m) => (
-              <div key={m.id} className={cn("flex gap-3", m.mine && "flex-row-reverse")}>
-                <span
-                  className={cn(
-                    "flex h-8 w-8 shrink-0 items-center justify-center border font-mono text-[11px]",
-                    m.mine ? "border-teal bg-teal/10 text-teal" : "border-teal text-teal"
-                  )}
-                >
-                  {m.initials}
-                </span>
-                <div className={cn("min-w-0 max-w-[75%]", m.mine && "text-right")}>
-                  <div className="flex flex-wrap items-baseline gap-2" style={m.mine ? { justifyContent: "flex-end" } : undefined}>
-                    <span className="font-display text-[13px] font-bold text-ink">{m.author}</span>
-                    <span className="font-mono text-[10px] uppercase tracking-wider text-ink/35">{m.when}</span>
-                  </div>
-                  <p className="mt-0.5 rounded-sm border border-ink/8 bg-ivory/60 px-3 py-1.5 text-[13.5px] leading-relaxed text-ink/80">
-                    {m.message}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="border-t border-ink/10 px-5 py-4">
+      <div className="py-6 animate-fade-in">
+        <PageHeader
+          title="Math Warriors"
+          subtitle={`${ctx.boardName} · Class ${ctx.className}`}
+          actions={
             <div className="flex items-center gap-2">
-              <Input
-                value={draft}
-                onChange={(e) => setDraft(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && sendChat()}
-                placeholder="Share a study tip, ask a doubt…"
-                className="border-ink/20 bg-ivory text-[14px]"
-              />
-              <Button onClick={sendChat} className="h-10 w-10 shrink-0 bg-teal text-white hover:bg-teal-dark" aria-label="Send">
-                <Send className="h-4 w-4" />
-              </Button>
+               <div className="flex -space-x-2 mr-2">
+                  {members.map(m => (
+                    <div key={m.name} className="h-8 w-8 rounded-full border-2 border-white overflow-hidden shadow-sm">
+                       <img src={m.img} alt={m.name} className="h-full w-full object-cover" />
+                    </div>
+                  ))}
+               </div>
+               <Button variant="outline" size="sm" className="rounded-xl border-slate-200 bg-white text-xs h-9">
+                  <Users className="mr-2 h-4 w-4" /> {group.memberCount} Members
+               </Button>
             </div>
-          </div>
-        </section>
+          }
+        />
 
-        {/* Doubts */}
-        <section className="rise-in mt-10" style={{ animationDelay: "60ms" }}>
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <div>
-              <p className="font-display text-[17px] font-bold text-ink">Doubts in your class</p>
-              <p className="mt-1 text-[13.5px] text-ink/60">Ask one, answer one. Someone nearby has usually already cleared it.</p>
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_320px]">
+          {/* Main Chat & Doubts Area */}
+          <div className="space-y-8">
+            {/* Chat Container */}
+            <div className="card-rounded flex flex-col h-[600px] overflow-hidden bg-white shadow-soft border border-slate-100">
+               {/* Chat Header */}
+               <div className="flex items-center justify-between border-b border-slate-100 px-6 py-4 bg-slate-50/50">
+                  <div className="flex items-center gap-3">
+                     <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-purple/10 text-purple">
+                        <MessageCircle className="h-5 w-5" />
+                     </div>
+                     <div>
+                        <h3 className="text-sm font-bold text-navy">Group Discussion</h3>
+                        <p className="text-[10px] text-slate-light">Active now · 3 new messages</p>
+                     </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                     <button className="h-8 w-8 rounded-lg flex items-center justify-center text-slate-light hover:bg-slate-100 transition-colors">
+                        <Search className="h-4 w-4" />
+                     </button>
+                     <button className="h-8 w-8 rounded-lg flex items-center justify-center text-slate-light hover:bg-slate-100 transition-colors">
+                        <MoreVertical className="h-4 w-4" />
+                     </button>
+                  </div>
+               </div>
+
+               {/* Messages Area */}
+               <div className="flex-1 overflow-y-auto p-6 space-y-6">
+                  {chat.map((m) => {
+                    const member = members.find(mem => mem.name === m.author) || members[0];
+                    return (
+                      <div key={m.id} className={cn("flex gap-4 max-w-[85%]", m.mine && "ml-auto flex-row-reverse")}>
+                        <div className="h-8 w-8 shrink-0 rounded-full overflow-hidden shadow-sm mt-1">
+                           <img src={member.img} alt={m.author} className="h-full w-full object-cover" />
+                        </div>
+                        <div className={cn("flex flex-col", m.mine && "items-end")}>
+                           <div className="flex items-baseline gap-2 mb-1">
+                              <span className="text-xs font-bold text-navy">{m.author}</span>
+                              <span className="text-[9px] font-bold text-slate-light uppercase">{m.when}</span>
+                           </div>
+                           <div className={cn(
+                             "rounded-2xl px-4 py-3 text-[14px] leading-relaxed shadow-sm",
+                             m.mine 
+                               ? "bg-teal text-white rounded-tr-none" 
+                               : "bg-slate-50 text-navy border border-slate-100 rounded-tl-none"
+                           )}>
+                              {m.message}
+                           </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+               </div>
+
+               {/* Chat Input */}
+               <div className="p-4 border-t border-slate-100 bg-white">
+                  <div className="flex items-center gap-2">
+                     <Input
+                       value={draft}
+                       onChange={(e) => setDraft(e.target.value)}
+                       onKeyDown={(e) => e.key === "Enter" && sendChat()}
+                       placeholder="Type your message..."
+                       className="flex-1 rounded-xl border-slate-200 bg-slate-50 focus:bg-white text-sm h-11"
+                     />
+                     <Button 
+                       onClick={sendChat} 
+                       className="h-11 w-11 rounded-xl bg-teal text-white shadow-lg shadow-teal/20 hover:bg-teal/90 shrink-0"
+                     >
+                        <Send className="h-4 w-4" />
+                     </Button>
+                  </div>
+               </div>
             </div>
-          </div>
 
-          <div className="mt-3 flex items-center gap-2">
-            <Input
-              value={doubtDraft}
-              onChange={(e) => setDoubtDraft(e.target.value)}
-              placeholder="Your doubt — e.g. why does the discriminant decide the shape of the graph?"
-              className="border-ink/20 bg-ivory text-[14px]"
-            />
-            <Button
-              onClick={() => {
-                if (!doubtDraft.trim()) return;
-                const req = group.needHelp[0];
-                setChat((c) => [
-                  ...c,
-                  {
-                    id: `q-${Date.now().toString(36)}`,
-                    author: "You",
-                    initials: "YO",
-                    message: `Doubt: ${doubtDraft.trim()}`,
-                    when: "now",
-                    topicTitle: req?.topicTitle,
-                    mine: true,
-                  },
-                ]);
-                setDoubtDraft("");
-                toast.success("Your doubt is in the group");
-              }}
-              className="h-10 shrink-0 bg-ink text-ivory hover:bg-ink/90"
-            >
-              <HelpCircle className="mr-1.5 h-4 w-4" /> Ask doubt
-            </Button>
-          </div>
-
-          <div className="mt-5 divide-y divide-ink/10 border-y border-ink/10">
-            {requests.map((r) => (
-              <div key={r.id} className="rise-in py-5">
-                <div className="flex flex-wrap items-center gap-2">
-                  <HelpCircle className="h-4 w-4 text-amber" />
-                  <span className="font-mono text-[11px] uppercase tracking-wider text-ink/45">
-                    {SUBJECT_NAMES[r.subjectCode] ?? r.subjectCode}
-                  </span>
-                  <span className="font-mono text-[11px] uppercase tracking-wider text-ink/35">
-                    {r.author} · {r.when}
-                  </span>
-                </div>
-                <p className="mt-1.5 font-display text-[16px] font-bold leading-snug text-ink">{r.topicTitle}</p>
-                <p className="mt-1 text-[13.5px] leading-relaxed text-ink/65">{r.detail}</p>
-                {doubtOpen[r.id] ? (
-                  <p className="mt-3 rounded-sm border border-green/40 bg-green/5 px-3 py-2 text-[13px] leading-relaxed text-ink/75">
-                    ✓ Answered in chat — classmates are discussing it now.
-                  </p>
-                ) : matched[r.id] === undefined ? (
-                  <div className="mt-3 flex flex-wrap items-center gap-3">
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      className="h-8 border-ink/25 bg-transparent px-3 text-[12.5px] uppercase tracking-wider text-ink/80 hover:bg-ink/5"
-                      onClick={() => handleFindPeer(r)}
-                    >
-                      <Users className="mr-1.5 h-3.5 w-3.5" /> Find who cleared this
-                    </Button>
-                    <button
-                      onClick={() => setDoubtOpen((d) => ({ ...d, [r.id]: false }))}
-                      className={cn(
-                        "font-mono text-[12px] uppercase tracking-wider transition-colors",
-                        doubtReplies[r.id] ? "text-teal" : "text-ink/50 hover:text-ink"
-                      )}
-                    >
-                      I know this — answer it
-                    </button>
+            {/* Doubts Section */}
+            <section>
+               <div className="mb-6 flex items-center justify-between">
+                  <h2 className="text-lg font-bold text-navy">Class Doubts</h2>
+                  <div className="flex items-center gap-2">
+                     <span className="text-xs text-slate-light">Ask one, answer one</span>
+                     <Button variant="outline" size="sm" className="h-8 rounded-lg border-slate-200 text-[10px] font-bold uppercase tracking-wider">
+                        Ask Doubt
+                     </Button>
                   </div>
-                ) : null}
-                {doubtOpen[r.id] === false && (
-                  <div className="mt-3 flex items-start gap-2">
-                    <Textarea
-                      value={doubtReplies[r.id] ?? ""}
-                      onChange={(e) => setDoubtReplies((d) => ({ ...d, [r.id]: e.target.value }))}
-                      placeholder="Your answer, in plain words…"
-                      className="min-h-[60px] border-ink/20 bg-ivory text-[13.5px]"
-                    />
-                    <Button size="sm" onClick={() => answerDoubt(r.id)} className="h-9 shrink-0 bg-teal text-white hover:bg-teal-dark">
-                      <Send className="h-3.5 w-3.5" />
-                    </Button>
-                  </div>
-                )}
-                {matched[r.id] === true && !doubtOpen[r.id] && (
-                  <p className="mt-2.5 font-mono text-[12.5px] text-teal-dark">
-                    ✓ A teach session with a classmate fits into your week.
-                  </p>
-                )}
-              </div>
-            ))}
-            {requests.length === 0 && <p className="py-6 text-[13.5px] text-ink/55">Nothing open right now.</p>}
+               </div>
+
+               <div className="space-y-4">
+                  {requests.map((r) => (
+                    <div key={r.id} className="card-rounded p-5 card-hover group bg-white border border-slate-100 shadow-soft">
+                       <div className="flex items-start gap-4">
+                          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-orange/10 text-orange">
+                             <HelpCircle className="h-5 w-5" />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                             <div className="flex items-center gap-2 mb-1">
+                                <span className="text-[10px] font-bold text-orange uppercase tracking-wider">
+                                   {SUBJECT_NAMES[r.subjectCode] || r.subjectCode}
+                                </span>
+                                <span className="text-[10px] text-slate-light">• {r.author} • {r.when}</span>
+                             </div>
+                             <h3 className="text-base font-bold text-navy leading-tight">{r.topicTitle}</h3>
+                             <p className="mt-2 text-sm text-slate-light leading-relaxed">{r.detail}</p>
+                             
+                             <div className="mt-4 flex items-center gap-3">
+                                {doubtOpen[r.id] ? (
+                                  <div className="flex items-center gap-2 text-xs font-bold text-teal">
+                                     <ThumbsUp className="h-3.5 w-3.5" /> Answered in chat
+                                  </div>
+                                ) : (
+                                  <>
+                                    <Button 
+                                      variant="outline" 
+                                      size="sm" 
+                                      className="h-8 rounded-lg border-slate-200 text-[10px] font-bold uppercase tracking-wider hover:bg-teal hover:text-white hover:border-teal"
+                                      onClick={() => {
+                                        setDoubtOpen(prev => ({ ...prev, [r.id]: true }));
+                                        toast.success("Answer sent!");
+                                      }}
+                                    >
+                                       Answer it
+                                    </Button>
+                                    <button 
+                                      onClick={() => handleFindPeer(r)}
+                                      className="text-[10px] font-bold text-teal hover:underline"
+                                    >
+                                       Find who knows this
+                                    </button>
+                                  </>
+                                )}
+                             </div>
+                          </div>
+                       </div>
+                    </div>
+                  ))}
+               </div>
+            </section>
           </div>
-        </section>
 
-        {/* Peer teaching */}
-        <section className="rise-in mt-10" style={{ animationDelay: "120ms" }}>
-          <p className="font-display text-[17px] font-bold text-ink">Peer teaching</p>
-          <p className="mt-1 text-[13.5px] text-ink/60">Offer to teach a topic you've cleared — it builds your mastery faster than any recap.</p>
-
-          <div className="mt-4 grid gap-px border border-ink/12 bg-ink/10 sm:grid-cols-2">
-            {teachOffers.map((c) => (
-              <div key={c.id} className="bg-card p-4">
-                <span className="font-mono text-[10px] uppercase tracking-wider text-ink/45">
-                  {SUBJECT_NAMES[c.subjectCode] ?? c.subjectCode}
-                </span>
-                <div className="mt-1 font-display text-[15px] font-bold leading-snug text-ink">{c.topicTitle}</div>
-                <div className="mt-2 flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-wider text-teal">
-                  <Lightbulb className="h-3 w-3" /> You can teach this
+          {/* Right Sidebar */}
+          <div className="space-y-8">
+             {/* Peer Teaching Card */}
+             <div className="card-rounded p-6 bg-purple/5 border border-purple/10">
+                <div className="mb-4 flex items-center gap-3">
+                   <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-purple text-white shadow-lg shadow-purple/20">
+                      <Award className="h-5 w-5" />
+                   </div>
+                   <h2 className="text-base font-bold text-navy">Peer Teaching</h2>
                 </div>
-                <div className="mt-3">
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    className="h-8 border-ink/25 bg-transparent px-3 text-[12px] uppercase tracking-wider text-ink/80 hover:border-teal hover:text-teal"
-                    onClick={() =>
-                      toast.success("Offer sent to the group", {
-                        description: `Classmates asking about “${c.topicTitle}” will see you can help.`,
-                      })
-                    }
-                  >
-                    Offer to teach
-                  </Button>
+                <p className="text-xs text-slate-light leading-relaxed mb-6">
+                   Help a classmate with a topic you know well. It's a great way to reinforce your own understanding.
+                </p>
+                
+                <div className="space-y-4">
+                   {teachOffers.map((c) => (
+                     <div key={c.id} className="rounded-2xl bg-white p-4 shadow-sm border border-purple/5">
+                        <div className="text-[9px] font-bold text-purple uppercase tracking-wider mb-1">
+                           {SUBJECT_NAMES[c.subjectCode] || c.subjectCode}
+                        </div>
+                        <h3 className="text-[13px] font-bold text-navy leading-tight mb-3">{c.topicTitle}</h3>
+                        <Button 
+                          className="w-full h-8 rounded-lg bg-purple text-white text-[10px] font-bold uppercase tracking-wider hover:bg-purple/90"
+                          onClick={() => toast.success("Offer sent!")}
+                        >
+                           Offer to teach
+                        </Button>
+                     </div>
+                   ))}
                 </div>
-              </div>
-            ))}
-            {teachOffers.length === 0 && (
-              <p className="bg-card p-5 text-[13.5px] text-ink/55">Nothing listed yet — clear a concept to offer it.</p>
-            )}
-          </div>
-        </section>
+             </div>
 
-        {/* Members */}
-        <section className="rise-in mt-10" style={{ animationDelay: "180ms" }}>
-          <p className="font-display text-[17px] font-bold text-ink">Who's in this group</p>
-          <div className="mt-4 flex flex-wrap gap-2">
-            {members.map((m) => (
-              <span
-                key={m.name}
-                className={cn(
-                  "flex items-center gap-2 border px-3 py-1.5",
-                  m.name === "You" ? "border-teal/50 bg-teal/5" : "border-ink/12 bg-card"
-                )}
-              >
-                <span className="flex h-6 w-6 items-center justify-center border border-teal/60 font-mono text-[10px] text-teal">
-                  {m.initials}
-                </span>
-                <span className="font-display text-[13px] font-bold text-ink">{m.name}</span>
-                <span className="font-mono text-[10px] uppercase tracking-wider text-ink/40">{m.tag}</span>
-              </span>
-            ))}
+             {/* Activity Sidebar */}
+             <div className="card-rounded p-6 bg-white border border-slate-100 shadow-soft">
+                <h2 className="text-base font-bold text-navy mb-4">Recent Activity</h2>
+                <div className="space-y-6">
+                   {[
+                     { user: "Ishita R.", action: "answered a doubt in", topic: "Cell Structure", time: "10m ago" },
+                     { user: "Arjun V.", action: "cleared a new topic:", topic: "Probability", time: "25m ago" },
+                     { user: "Meera S.", action: "started a teach session", topic: "World War I", time: "1h ago" },
+                   ].map((act, i) => (
+                     <div key={i} className="flex gap-3">
+                        <div className="h-8 w-8 shrink-0 rounded-full bg-slate-100 overflow-hidden">
+                           <img src={`https://i.pravatar.cc/100?img=${i+20}`} alt={act.user} className="h-full w-full object-cover" />
+                        </div>
+                        <div className="min-w-0">
+                           <p className="text-xs text-navy leading-tight">
+                              <span className="font-bold">{act.user}</span> {act.action} <span className="font-bold">{act.topic}</span>
+                           </p>
+                           <p className="text-[10px] text-slate-light mt-1">{act.time}</p>
+                        </div>
+                     </div>
+                   ))}
+                </div>
+             </div>
           </div>
-        </section>
-
-        <p className="mt-10 text-center text-[12px] text-ink/45">
-          Discussions stay on-topic. One concept at a time — that's how studying together actually helps.
-        </p>
+        </div>
       </div>
     </AppShell>
   );

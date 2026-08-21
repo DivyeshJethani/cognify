@@ -52,7 +52,6 @@ export default function Confidence() {
   return (
     <AppShell>
       <PageHeader
-        overline="Confidence Calibration"
         title="What you believe vs what you can do"
         subtitle="After significant sessions, Cognify asks how confident you feel — then compares that against measured performance. Sustained gaps change how the engine treats your self-report."
         actions={

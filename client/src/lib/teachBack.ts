@@ -84,28 +84,28 @@ export function analyseTeachBack(
       clarity: 74,
       missingIdea: "Relationship between the discriminant and the graph",
       verdict:
-        "Your explanation is strong — the algebra is correct and the three cases are distinct. One idea is missing: how D manifests visually on the parabola.",
+        "Your explanation is strong — the algebra is correct and the three cases are distinct. Almost there! Just one small detail about how the discriminant looks on a graph to finish this topic.",
     },
     "t-0-standard-form-factorisation": {
       coverage: 76,
       clarity: 81,
       missingIdea: "Why rational roots are required for clean factorisation",
       verdict:
-        "Clear account of the method and the zero-product property. The limitation (when factorisation fails) needs revisiting.",
+        "Clear account of the method and the zero-product property. You've mastered the method! Revisit the part about when factorisation fails to finish this topic.",
     },
     "t-1-types-of-reactions": {
       coverage: 68,
       clarity: 70,
       missingIdea: "Combustion as a subset of oxidation",
       verdict:
-        "The methane example is well explained, but the hierarchy between the two terms is still blurred — this matches your classification mistake cluster.",
+        "Great job on the methane example! Just a quick look at how combustion and oxidation relate will clear up the final detail.",
     },
     "t-0-the-first-world-war-non-coop": {
       coverage: 85,
       clarity: 78,
       missingIdea: "The Khilafat–nationalist alignment mechanism",
       verdict:
-        "A strong narrative of economic strain and the Rowlatt Act. The Khilafat linkage needs one more pass before mastery is confirmed.",
+        "A strong narrative of economic strain and the Rowlatt Act. You've got the main points down! A quick review of the Khilafat linkage will make your understanding complete.",
     },
   };
   const base = analyses[topicId] ?? {

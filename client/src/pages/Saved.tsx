@@ -57,9 +57,8 @@ export default function Saved() {
   return (
     <AppShell key={version}>
       <PageHeader
-        overline="My Saved Resources"
         title="The shelf"
-        subtitle={`${entries.length} resources saved for later — saved items carry your note and remain rankable against your Learning DNA.`}
+        subtitle={`${entries.length} resources saved for later — each item includes your personal notes to help you study.`}
       />
 
       <div className="px-5 py-7 sm:px-8 lg:px-10">
@@ -132,9 +131,7 @@ export default function Saved() {
             <Bookmark className="h-6 w-6 text-ink/30" />
             <div className="font-serif text-lg font-bold text-ink">Your shelf is empty</div>
             <p className="footnote max-w-md">
-              Nothing has been saved yet — every resource in the catalogue has a Save action.
-              The shelf is ranked as evidence grows: started, completed and recalled items
-              rise to the top.
+              Your shelf is currently empty. You can save any resource from the library to view it here later.
             </p>
             <div className="mt-3 flex flex-wrap justify-center gap-2">
               <button
@@ -163,10 +160,9 @@ export default function Saved() {
             </p>
           </div>
           <div className="border border-ink/10 bg-card p-5">
-            <Marginalia>Notes at save time</Marginalia>
+            <Marginalia>Your Study Notes</Marginalia>
             <p className="mt-3 text-[14px] leading-relaxed text-dark-text/75">
-              A note attached when saving is preserved here — evidence of what you thought
-              the resource would help with. Attachments like this later train the reasoner.
+              Any notes you make when saving a resource are kept here, so you can remember why you wanted to review it.
             </p>
           </div>
           <div className="border border-ink bg-ink p-5 text-ivory">

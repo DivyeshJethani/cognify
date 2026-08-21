@@ -38,9 +38,9 @@ export default function Login() {
         <div className="flex items-center px-6 py-12 sm:px-12 lg:px-20">
           <div className="w-full max-w-sm">
             <div className="marginalia">Entry — sign in</div>
-            <h1 className="mt-4 font-display text-3xl font-bold text-ink">Return to the laboratory.</h1>
+            <h1 className="mt-4 font-display text-3xl font-bold text-ink">Welcome back.</h1>
             <p className="mt-3 text-[14px] leading-relaxed text-dark-text/75">
-              Your Learning DNA picks up exactly where you left it.
+              Pick up exactly where you left off.
             </p>
             <form onSubmit={onSubmit} className="mt-8 space-y-5">
               <div className="space-y-2">
@@ -106,15 +106,14 @@ export default function Login() {
                 Field notes, entry 001
               </h2>
               <p className="mt-3 max-w-sm text-[14px] leading-relaxed text-white/60">
-                Today's observations will be added to your Learning DNA the moment
-                you sign in.
+                We'll sync your progress and update your study plan the moment you sign in.
               </p>
             </div>
             <div className="space-y-4">
               {[
-                ["Focus window", "18:00 — 20:00, peak recall"],
-                ["Active experiments", "Visual diagrams vs worked examples"],
-                ["Backlog", "4 topics due for spaced revision"],
+	                ["Peak focus", "Evening sessions"],
+	                ["Learning style", "Visual & practical"],
+	                ["Today's goal", "4 topics to refresh"],
               ].map(([k, v]) => (
                 <div key={k} className="flex items-baseline justify-between border-b border-white/10 pb-3">
                   <span className="font-display text-xs uppercase tracking-[0.08em] text-white/40">{k}</span>

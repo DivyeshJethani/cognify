@@ -30,7 +30,7 @@ const DEFAULT_SESSIONS: TimetableSession[] = [
     activityLabel: "Concept repair",
     durationMinutes: 25,
     priority: "high",
-    reason: "Weak conceptual mastery (27%) — the adaptive path's first intervention. Diagram format selected from your Learning DNA.",
+    reason: "You've been struggling with this concept recently. A quick diagram-based review will help clear things up.",
     status: "scheduled",
   },
   {
@@ -47,7 +47,7 @@ const DEFAULT_SESSIONS: TimetableSession[] = [
     activityLabel: "Retrieval practice",
     durationMinutes: 10,
     priority: "high",
-    reason: "Retention estimate crosses your 7-day decay line today.",
+    reason: "It's been a week since you last studied this. Let's refresh your memory.",
     status: "scheduled",
   },
   {
@@ -64,7 +64,7 @@ const DEFAULT_SESSIONS: TimetableSession[] = [
     activityLabel: "Timed practice",
     durationMinutes: 15,
     priority: "medium",
-    reason: "Conceptual error cluster (46% of recent mistakes) — classification check with reworded variants.",
+    reason: "You've made a few mistakes here lately. Let's try some new types of questions to master it.",
     status: "scheduled",
   },
   {
@@ -81,7 +81,7 @@ const DEFAULT_SESSIONS: TimetableSession[] = [
     activityLabel: "Quick revision",
     durationMinutes: 10,
     priority: "low",
-    reason: "No Hindi session in 5 days — balance nudge to protect the weekly target and streak.",
+    reason: "Time to check in on your Hindi progress to stay on track for your weekly goal.",
     status: "scheduled",
   },
   // THIS WEEK
@@ -99,7 +99,7 @@ const DEFAULT_SESSIONS: TimetableSession[] = [
     activityLabel: "Concept repair",
     durationMinutes: 15,
     priority: "high",
-    reason: "Your mastery has remained below 20% for three sessions — prerequisite repair then guided walkthrough.",
+    reason: "This topic is tricky! Let's break it down into smaller, easier steps today.",
     status: "scheduled",
   },
   {
@@ -116,7 +116,7 @@ const DEFAULT_SESSIONS: TimetableSession[] = [
     activityLabel: "Concept repair",
     durationMinutes: 20,
     priority: "medium",
-    reason: "Weak topic (33%) — digestion pathway walkthrough with a labeling diagram.",
+    reason: "Let's use a labeling activity to help you remember the digestion pathway better.",
     status: "scheduled",
   },
   {
@@ -133,7 +133,7 @@ const DEFAULT_SESSIONS: TimetableSession[] = [
     activityLabel: "Timed practice",
     durationMinutes: 20,
     priority: "high",
-    reason: "Interval lapsed 2 days ago — proof-construction practice with a worked scaffold.",
+    reason: "You're slightly behind on this topic. Let's catch up with a guided practice session.",
     status: "scheduled",
   },
   {
@@ -150,7 +150,7 @@ const DEFAULT_SESSIONS: TimetableSession[] = [
     activityLabel: "Concept repair",
     durationMinutes: 20,
     priority: "high",
-    reason: "Weak topic (22%) — comparative timeline walkthrough before retrieval.",
+    reason: "A quick timeline review will make these historical events much easier to remember.",
     status: "scheduled",
   },
   {
@@ -167,7 +167,7 @@ const DEFAULT_SESSIONS: TimetableSession[] = [
     activityLabel: "Teach-back challenge",
     durationMinutes: 25,
     priority: "medium",
-    reason: "New topic — the engine starts with teach-back to establish a baseline rather than a lecture.",
+    reason: "Try explaining this new topic in your own words to see how much you already know.",
     status: "scheduled",
   },
   // UPCOMING
@@ -185,7 +185,7 @@ const DEFAULT_SESSIONS: TimetableSession[] = [
     activityLabel: "Revision",
     durationMinutes: 15,
     priority: "medium",
-    reason: "Interpretation-error cluster — reworded variants after the standard interval.",
+    reason: "Let's practice these questions with different wording to build your confidence.",
     status: "scheduled",
   },
   {
@@ -202,7 +202,7 @@ const DEFAULT_SESSIONS: TimetableSession[] = [
     activityLabel: "Timed practice",
     durationMinutes: 25,
     priority: "medium",
-    reason: "Careless-error pattern under time pressure — timed set with a sign-check protocol.",
+    reason: "You've been rushing these lately. Let's practice a few with extra focus on checking your work.",
     status: "scheduled",
   },
   {
@@ -219,7 +219,7 @@ const DEFAULT_SESSIONS: TimetableSession[] = [
     activityLabel: "Revision",
     durationMinutes: 15,
     priority: "low",
-    reason: "Standard interval; theme-note consolidation before the unit review.",
+    reason: "A quick review of your notes will get you ready for the upcoming unit test.",
     status: "scheduled",
   },
 ];

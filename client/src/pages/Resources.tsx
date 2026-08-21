@@ -79,14 +79,12 @@ export default function Resources() {
     <AppShell>
       {!resolved ? (
         <PageHeader
-          overline="Resource Explorer"
           title="Topic not found"
           subtitle="Select a topic from the Curriculum Explorer to discover its resources."
         />
       ) : (
         <>
           <PageHeader
-            overline="Resource Explorer"
             title={`${resolved.topic.title}`}
             subtitle={`${resolved.subject.name} · Chapter ${String(resolved.chapter.index).padStart(2, "0")} — ${resolved.chapter.title} · ${discovery?.resources.length ?? 0} resources surfaced for this topic`}
             actions={

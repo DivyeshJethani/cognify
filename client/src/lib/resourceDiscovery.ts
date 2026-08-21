@@ -31,8 +31,8 @@ import { findTopicByIdOrAlias } from "./curriculum";
 const DNA = {
   topFormat: "visual-diagram" as const,
   mistakeProfile: { conceptual: 46, careless: 31, procedural: 23 },
-  attention: "22 min focus ceiling on text-heavy material",
-  confidenceCalibration: "overestimates weak topics by ~35 points",
+  attention: "Focus is strongest in short, visual sessions",
+  confidenceCalibration: "You're building confidence on new topics",
 };
 
 export interface RawResource {
@@ -104,9 +104,9 @@ function describe(r: RawResource): string {
   const t = r.title.toLowerCase();
   if (r.format === "lecture") return "A guided walkthrough of the topic — play it, pause it, ask questions as they come.";
   if (r.format === "explanation") return "One idea explained on its own terms, with the misconceptions around it named.";
-  if (r.format === "revision") return "A spaced-retention review of exactly what your record says you need to rehearse.";
+  if (r.format === "revision") return "A personalized review of exactly what you need to refresh today.";
   if (r.format === "example") return "Worked problems in board style — follow the solution structure, not just the answer.";
-  if (r.format === "practice") return "A timed attempt at problems matched to your error pattern; evidence updates your topic file.";
+  if (r.format === "practice") return "A timed practice session focused on the types of questions you've seen recently.";
   if (r.format === "diagram") return "A visual treatment — diagrams, maps or interactive visuals for the objectives that are picture-shaped.";
   return "A short, focused treatment of the topic in its own format.";
 }
@@ -194,7 +194,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "lecture",
       difficulty: "core",
       relevance: 92,
-      whyRecommended: "This drills the exact step where your mistakes tend to happen.",
+      whyRecommended: "This walkthrough focuses on the parts you've found tricky lately.",
       dnaDimension: "Step-by-step sequencing",
     },
     {
@@ -218,7 +218,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "diagram",
       difficulty: "foundational",
       relevance: 79,
-      whyRecommended: "A quick visual primer — pictures-first explanations work best for you.",
+      whyRecommended: "A quick visual primer to help you understand the concept through diagrams.",
       dnaDimension: "Teaching format",
     },
     {
@@ -230,7 +230,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "practice",
       difficulty: "core",
       relevance: 94,
-      whyRecommended: "Practice is what you need most here — and this drill adapts to your mistakes.",
+      whyRecommended: "A great way to practice the steps and build your confidence.",
       dnaDimension: "Mistake pattern",
     },
     {
@@ -242,7 +242,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "lecture",
       difficulty: "advanced",
       relevance: 66,
-      whyRecommended: "A deep dive — split it into two sittings for the best results.",
+      whyRecommended: "A detailed explanation for when you want to fully master the topic.",
       dnaDimension: "Attention",
     },
   ],
@@ -256,7 +256,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "revision",
       difficulty: "core",
       relevance: 97,
-      whyRecommended: "This is your weakest spot right now — and this session targets it directly.",
+      whyRecommended: "This session focuses on the parts that will help you master the topic fastest.",
       dnaDimension: "Mistake pattern",
     },
     {
@@ -268,7 +268,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "explanation",
       difficulty: "foundational",
       relevance: 84,
-      whyRecommended: "A story-based explanation of WHY it works — before you tackle the formal proof.",
+      whyRecommended: "A simple explanation to help you understand the 'why' behind the math.",
       dnaDimension: "Mistake pattern",
     },
     {
@@ -292,7 +292,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "diagram",
       difficulty: "advanced",
       relevance: 77,
-      whyRecommended: "A visual proof — the geometry makes the idea feel obvious.",
+      whyRecommended: "A visual way to understand the proof through geometry.",
       dnaDimension: "Teaching format",
     },
   ],
@@ -318,7 +318,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "practice",
       difficulty: "core",
       relevance: 89,
-      whyRecommended: "Practice is the fastest path to proficiency here — problems adapt to your errors.",
+      whyRecommended: "Practice makes perfect! This set helps you get faster at solving these.",
       dnaDimension: "Mastery gap",
     },
     {
@@ -1772,8 +1772,8 @@ export function topicIndexes(): TopicIndexMeta[] {
               subjectName: subject.name,
               chapterTitle: chapter.title,
               topicTitle: topic.title,
-              masteryPercent: Math.round((topic.mastery ?? 0) * 100),
-              masteryLabel: masteryLabelFor((topic.mastery ?? 0) * 100),
+              masteryPercent: Math.round(topic.mastery ?? 0),
+              masteryLabel: masteryLabelFor(topic.mastery ?? 0),
             });
           }
         }

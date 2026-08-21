@@ -23,10 +23,10 @@ function Hero() {
       <div className="container grid items-center gap-12 py-16 lg:grid-cols-[1.15fr_1fr] lg:py-24">
         <div className="rise-in">
           <Marginalia>Section 01 — The premise</Marginalia>
-          <h1 className="mt-5 text-4xl font-bold leading-[1.08] text-ink sm:text-5xl lg:text-[3.6rem]">
+          <h1 className="mt-5 font-display text-4xl font-bold leading-[1.08] text-ink sm:text-5xl lg:text-[3.6rem]">
             Your mind has a pattern.
             <br />
-            <span className="text-teal">We found it.</span>
+            <span className="text-teal italic">We found it.</span>
           </h1>
           <p className="mt-6 max-w-lg text-[15px] leading-relaxed text-dark-text/80">
             Every student learns differently — and most platforms ignore it. COGNIFY
@@ -114,8 +114,8 @@ function HowItWorks() {
         <div className="grid gap-10 lg:grid-cols-[1fr_1.5fr]">
           <div>
             <Marginalia>Section 02 — The method</Marginalia>
-            <h2 className="mt-4 text-3xl font-bold text-ink sm:text-4xl">
-              Not a quiz bank.<br />A laboratory.
+            <h2 className="mt-4 font-display text-3xl font-bold text-ink sm:text-4xl">
+              Not a quiz bank.<br /><span className="italic">A laboratory.</span>
             </h2>
             <p className="mt-4 max-w-sm text-[14px] leading-relaxed text-dark-text/75">
               Generic platforms hand every student the same lessons. COGNIFY treats
@@ -162,8 +162,8 @@ function DnaSection() {
         </div>
         <div className="order-1 lg:order-2">
           <Marginalia className="[&::before]:bg-teal !text-white/50">Section 03 — Learning DNA</Marginalia>
-          <h2 className="mt-4 text-3xl font-bold sm:text-4xl">
-            A profile that reads like a case study, not a scorecard.
+          <h2 className="mt-4 font-display text-3xl font-bold text-ink sm:text-4xl">
+            A profile that reads like a case study, <span className="italic">not a scorecard.</span>
           </h2>
           <p className="mt-4 max-w-lg text-[14px] leading-relaxed text-white/70">
             Your Learning DNA records six dimensions of how you learn. Each comes

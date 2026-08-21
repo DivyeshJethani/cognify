@@ -23,7 +23,7 @@ export default function ComingSoon({
   const { auth } = useApp();
   return (
     <AppShell>
-      <PageHeader overline={overline} title={title} subtitle={blurb} />
+      <PageHeader title={title} subtitle={blurb} />
       <div className="px-5 py-10 sm:px-8 lg:px-10">
         <div className="mx-auto max-w-xl">
           <Marginalia amber>Stage note</Marginalia>

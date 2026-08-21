@@ -1,13 +1,9 @@
 /**
- * COGNIFY — Student profile / Learning DNA analysis (preview page)
- * Day 6 restructure: the dossier answers four questions a student would
- * actually ask about themselves — How do I learn best / Where am I weak /
- * How confident am I / What should Cognify change. Every claim carries its
- * evidence strength.
+ * COGNIFY — Student Profile (Day 12 Redesign)
+ * High-fidelity student profile and learning insights.
  */
-import { Button } from "@/components/ui/button";
 import AppShell, { PageHeader } from "@/components/cognify/AppShell";
-import { Hairline, Marginalia, MasteryBar } from "@/components/cognify/Primitives";
+import { MasteryBar } from "@/components/cognify/Primitives";
 import { useApp } from "@/contexts/AppContext";
 import {
   Bar,
@@ -18,11 +14,20 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { Activity } from "lucide-react";
-import { toast } from "sonner";
-import { JourneyLink } from "@/components/cognify/JourneyLinks";
+import { 
+  Activity, 
+  Award, 
+  Target, 
+  Zap, 
+  Clock, 
+  Flame,
+  Brain,
+  ChevronRight,
+  ShieldCheck
+} from "lucide-react";
 import { calibrationSummary, confidenceReadings } from "@/lib/confidence";
 import { featuredIntervention, activeInterventions } from "@/lib/interventions";
+import { cn } from "@/lib/utils";
 
 const formatLabels: Record<string, string> = {
   "visual-diagram": "Visual diagrams",
@@ -33,80 +38,95 @@ const formatLabels: Record<string, string> = {
 };
 
 export default function Profile() {
-  const { profile, dna, goalsList, credits } = useApp();
+  const { profile, dna, credits } = useApp();
 
   return (
     <AppShell>
-      <PageHeader
-        overline="Student Profile"
-        title={`How you learn, in plain words — ${profile.name}`}
-        subtitle="Everything here is kept simple on purpose. What matters isn't the data — it's what you do with it next."
-      />
+      <div className="py-6 animate-fade-in">
+        <PageHeader
+          title="Your Profile"
+          subtitle="A summary of your learning journey and growth"
+        />
 
-      <div className="px-5 py-7 sm:px-8 lg:px-10">
-        {/* Dossier header */}
-        <div className="rise-in grid gap-6 border-b border-ink/10 pb-7 lg:grid-cols-[1.4fr_1fr]">
-          <div className="flex items-start gap-5">
-            <div className="flex h-16 w-16 shrink-0 items-center justify-center border border-ink/20 bg-card font-display text-[20px] font-bold text-teal">
-              {profile.name.split(" ").map((n) => n[0]).join("").slice(0, 2)}
-            </div>
-            <div>
-              <h2 className="font-serif text-2xl font-bold text-ink">{profile.name}</h2>
-              <div className="mt-1 font-mono text-[14px] uppercase tracking-[0.12em] text-muted-foreground">
-                {profile.board} · {profile.className} · File opened {formatDate(profile.createdAt)}
-              </div>
-              <p className="mt-3 max-w-xl text-[13.5px] leading-relaxed text-dark-text/75">
-                Stated goal: <em className="font-serif">{profile.learningGoal}</em>
-              </p>
-            </div>
-          </div>
-          <div className="grid grid-cols-2 gap-px border border-ink/10 bg-ink/10 lg:col-span-1 sm:grid-cols-3">
-            {[
-              ["Board · Class", `${profile.board} · ${profile.className}`],
-              ["Stated goal", profile.learningGoal],
-              ["Learning picture", `${dna.profileStrength}% complete`],
-              ["Streak", `${profile.streakDays} days`],
-              ["Credits", `${credits.balance}`],
-              ["Weekly target", `${Math.round(profile.weeklyTargetMinutes / 60)}h`],
-            ].map(([k, v]) => (
-              <div key={k} className="bg-card p-3.5">
-                <div className="font-mono text-[8.5px] uppercase tracking-[0.08em] text-muted-foreground">{k}</div>
-                <div className="mt-1 font-serif text-[13.5px] font-bold leading-snug text-ink">{v}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="mt-9 grid gap-12 lg:grid-cols-[1.6fr_1fr]">
-          {/* Left: dimensions dossier */}
-          <div className="min-w-0 space-y-9">
-            <section>
-              <Marginalia amber>Q1 · How do I learn best?</Marginalia>
-              <div className="mt-5 divide-y divide-ink/10 border-y border-ink/10">
-                {dna.insights.map((ins) => (
-                  <div key={ins.id} className="grid gap-4 py-6 sm:grid-cols-[3rem_1fr]">
-                    <span className="font-serif text-xl italic text-teal">A</span>
-                    <div>
-                      <div className="flex flex-wrap items-center gap-3">
-                        <span className="font-mono text-[12px] font-medium uppercase tracking-[0.12em] text-ink/60">
-                          {ins.dimension}
-                        </span>
-                        <span className="border border-teal/40 px-2 py-0.5 font-mono text-[9px] uppercase tracking-wider text-teal-dark">
-                          evidence {ins.confidence}%
-                        </span>
-                      </div>
-                      <p className="mt-2 font-serif text-lg font-bold leading-snug text-ink">{ins.finding}</p>
-                      <p className="mt-2 footnote">{ins.implication}</p>
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_320px]">
+          {/* Main Content */}
+          <div className="space-y-8">
+            {/* Profile Hero Card */}
+            <div className="card-rounded p-8 bg-navy text-white shadow-xl shadow-navy/20 relative overflow-hidden">
+               {/* Background Decoration */}
+               <div className="absolute top-0 right-0 -mt-20 -mr-20 h-64 w-64 rounded-full bg-teal/10 blur-3xl" />
+               <div className="absolute bottom-0 left-0 -mb-20 -ml-20 h-64 w-64 rounded-full bg-purple/10 blur-3xl" />
+               
+               <div className="relative flex flex-col md:flex-row items-center gap-8">
+                  <div className="flex h-24 w-24 shrink-0 items-center justify-center rounded-3xl bg-white/10 border border-white/20 text-3xl font-bold text-teal backdrop-blur-md">
+                    {profile.name.split(" ").map((n) => n[0]).join("").slice(0, 2)}
+                  </div>
+                  <div className="text-center md:text-left flex-1">
+                    <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 mb-2">
+                       <h2 className="text-3xl font-bold">{profile.name}</h2>
+                       <span className="rounded-full bg-teal/20 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-teal border border-teal/30">
+                          Class {profile.className}
+                       </span>
+                    </div>
+                    <p className="text-white/60 text-sm max-w-xl mb-6">
+                       Goal: <span className="text-white italic">"{profile.learningGoal}"</span>
+                    </p>
+                    
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 pt-6 border-t border-white/10">
+                       <div>
+                          <div className="text-xl font-bold">{profile.streakDays}</div>
+                          <div className="text-[10px] font-bold text-white/40 uppercase tracking-widest">Day Streak</div>
+                       </div>
+                       <div>
+                          <div className="text-xl font-bold">{credits.balance}</div>
+                          <div className="text-[10px] font-bold text-white/40 uppercase tracking-widest">Credits</div>
+                       </div>
+                       <div>
+                          <div className="text-xl font-bold">{Math.round(profile.weeklyTargetMinutes / 60)}h</div>
+                          <div className="text-[10px] font-bold text-white/40 uppercase tracking-widest">Weekly Goal</div>
+                       </div>
+                       <div>
+                          <div className="text-xl font-bold text-teal">{dna.profileStrength}%</div>
+                          <div className="text-[10px] font-bold text-white/40 uppercase tracking-widest">Complete</div>
+                       </div>
                     </div>
                   </div>
-                ))}
-              </div>
-              <div className="mt-5 border border-ink/12 bg-card p-5">
-                <div className="marginalia [&::before]:hidden">Format experiments — what actually worked</div>
-                <p className="mt-2 footnote">
-                  COGNIFY rotates formats and measures retention and performance gain per format.
-                </p>
-                <div className="mt-4 h-40">
+               </div>
+            </div>
+
+            {/* Insights Section */}
+            <section>
+               <h2 className="text-lg font-bold text-navy mb-6 flex items-center gap-2">
+                  <Brain className="h-5 w-5 text-teal" />
+                  Learning Insights
+               </h2>
+               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {dna.insights.map((ins, i) => (
+                    <div key={ins.id} className="card-rounded p-6 card-hover">
+                       <div className="flex items-center gap-3 mb-4">
+                          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-teal/10 text-teal">
+                             {i === 0 ? <Zap className="h-5 w-5" /> : <Target className="h-5 w-5" />}
+                          </div>
+                          <div>
+                             <h4 className="text-[10px] font-bold text-slate-light uppercase tracking-widest">{ins.dimension}</h4>
+                             <div className="text-xs font-bold text-teal">Understanding: {ins.confidence}%</div>
+                          </div>
+                       </div>
+                       <h3 className="text-base font-bold text-navy mb-2 leading-tight">{ins.finding}</h3>
+                       <p className="text-xs text-slate-light leading-relaxed">{ins.implication}</p>
+                    </div>
+                  ))}
+               </div>
+            </section>
+
+            {/* Formats Section */}
+            <section className="card-rounded p-8 bg-white shadow-soft border border-slate-100">
+               <div className="mb-8">
+                  <h2 className="text-lg font-bold text-navy mb-2">How you learn best</h2>
+                  <p className="text-sm text-slate-light">We track which ways of learning work best for you.</p>
+               </div>
+               
+               <div className="h-64">
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart
                       data={dna.formatExperimentResults.map((f) => ({
@@ -114,197 +134,159 @@ export default function Profile() {
                         success: f.success,
                       }))}
                       layout="vertical"
-                      margin={{ top: 0, right: 8, bottom: 0, left: 0 }}
+                      margin={{ top: 0, right: 30, bottom: 0, left: 20 }}
                     >
-                      <CartesianGrid strokeDasharray="2 4" horizontal={false} stroke="rgba(16,42,67,0.1)" />
-                      <XAxis type="number" domain={[0, 100]} tick={{ fontSize: 10, fontFamily: "IBM Plex Mono" }} axisLine={false} tickLine={false} />
-                      <YAxis type="category" dataKey="name" width={108} tick={{ fontSize: 10, fontFamily: "Public Sans" }} axisLine={false} tickLine={false} />
-                      <Tooltip
-                        cursor={{ fill: "rgba(16,42,67,0.04)" }}
-                        contentStyle={{ background: "#F7F5EF", border: "1px solid rgba(16,42,67,0.15)", borderRadius: 2, fontSize: 12 }}
-                        formatter={(v) => [`${v}% success`, ""]}
+                      <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#f1f5f9" />
+                      <XAxis type="number" domain={[0, 100]} hide />
+                      <YAxis 
+                        type="category" 
+                        dataKey="name" 
+                        width={120} 
+                        tick={{ fontSize: 10, fontWeight: 700, fill: "#64748b" }} 
+                        axisLine={false} 
+                        tickLine={false} 
                       />
-                      <Bar dataKey="success" fill="#2b9c8c" radius={[0, 2, 2, 0]} barSize={12} />
+                      <Tooltip
+                        cursor={{ fill: "rgba(148, 163, 184, 0.1)" }}
+                        contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1)' }}
+                        formatter={(v) => [`${v}% success`, "Success Rate"]}
+                      />
+                      <Bar dataKey="success" fill="#2DD4BF" radius={[0, 8, 8, 0]} barSize={20} />
                     </BarChart>
                   </ResponsiveContainer>
-                </div>
-                <div className="mt-3 border-t border-ink/10 pt-3">
-                  <span className="font-mono text-[12px] uppercase tracking-[0.12em] text-muted-foreground">Best-performing format</span>
-                  <span className="ml-2 font-mono text-[14px] font-medium text-teal-dark">
-                    {formatLabels[dna.topFormat]} — {dna.formatExperimentResults[0]?.success}% success
-                  </span>
-                </div>
-              </div>
-            </section>
-
-            <section>
-              <Marginalia>Where are your gaps?</Marginalia>
-              <p className="mt-3 max-w-xl text-[13.5px] leading-relaxed text-ink/65">
-                Most of your mistakes come from concepts that haven't clicked yet — not carelessness. That's good news: those are exactly the ones you can fix with one focused sitting.
-              </p>
-              <div className="mt-5 flex gap-2">
-                {[
-                  ["Conceptual", dna.mistakeProfile.conceptual, "#2b9c8c"],
-                  ["Careless", dna.mistakeProfile.careless, "#d9912f"],
-                  ["Procedural", dna.mistakeProfile.procedural, "#132b3b"],
-                ].map(([label, value, color]) => (
-                  <div key={label as string} className="flex-1 border border-ink/10 bg-card p-4">
-                    <div className="h-1.5 w-full bg-ivory-deep">
-                      <div className="h-full" style={{ width: `${value}%`, background: color as string }} />
-                    </div>
-                    <div className="mt-3 font-display text-[20px] font-bold text-ink">{value}%</div>
-                    <div className="mt-0.5 font-mono text-[12px] uppercase tracking-wider text-muted-foreground">
-                      {label}
-                    </div>
+               </div>
+               
+               <div className="mt-8 flex items-center justify-between p-4 rounded-2xl bg-slate-50 border border-slate-100">
+                  <div className="flex items-center gap-3">
+                     <Award className="h-5 w-5 text-amber-500" />
+                     <span className="text-sm font-bold text-navy">Top Performing Format:</span>
+                     <span className="text-sm font-bold text-teal">{formatLabels[dna.topFormat]}</span>
                   </div>
-                ))}
-              </div>
-              <JourneyLink href="/mistakes" className="mt-4">
-                See the mistakes you've made recently
-              </JourneyLink>
+                  <div className="text-sm font-bold text-navy">{dna.formatExperimentResults[0]?.success}% Success</div>
+               </div>
             </section>
 
+            {/* Gaps Section */}
             <section>
-              <Marginalia>Are you reading yourself right?</Marginalia>
-              <p className="mt-3 max-w-xl text-[13.5px] leading-relaxed text-ink/65">
-                Sometimes you feel ready and aren't — sometimes you're ready and don't believe it. Here are a few recent moments, with what actually happened.
-              </p>
-              <ul className="mt-5 divide-y divide-ink/10 border-y border-ink/10">
-                {confidenceReadings().slice(0, 3).map((r) => (
-                  <li key={r.topicId} className="grid gap-3 py-4 sm:grid-cols-[1fr_auto]">
-                    <div>
-                      <div className="font-serif text-[14.5px] font-bold text-ink">{r.topicTitle}</div>
-                      <p className="mt-0.5 footnote">{r.observation}</p>
+               <h2 className="text-lg font-bold text-navy mb-6">Your Progress Gaps</h2>
+               <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                  {[
+                    { label: "Conceptual", value: dna.mistakeProfile.conceptual, color: "bg-teal", icon: Brain },
+                    { label: "Careless", value: dna.mistakeProfile.careless, color: "bg-orange", icon: Zap },
+                    { label: "Procedural", value: dna.mistakeProfile.procedural, color: "bg-navy", icon: Clock },
+                  ].map((gap) => (
+                    <div key={gap.label} className="card-rounded p-6 card-hover">
+                       <div className={cn("mb-4 flex h-10 w-10 items-center justify-center rounded-xl text-white shadow-lg", gap.color)}>
+                          <gap.icon className="h-5 w-5" />
+                       </div>
+                       <div className="text-2xl font-bold text-navy mb-1">{gap.value}%</div>
+                       <div className="text-[10px] font-bold text-slate-light uppercase tracking-widest">{gap.label}</div>
+                       <div className="mt-4 h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
+                          <div className={cn("h-full rounded-full", gap.color)} style={{ width: `${gap.value}%` }} />
+                       </div>
                     </div>
-                    <div className="flex flex-col items-end">
-                      <span className="font-mono text-[9px] uppercase tracking-[0.12em] text-muted-foreground">felt {r.selfReported} · made {r.actualPerformance}</span>
-                      <span
-                        className="mt-1 border px-1.5 py-0.5 font-mono text-[9px] uppercase tracking-wider"
-                        style={{
-                          borderColor: r.verdict === "overestimating" ? "#d9912f" : r.verdict === "underestimating" ? "#4c83b5" : "#2b9c8c",
-                          color: r.verdict === "overestimating" ? "#9c5a0c" : r.verdict === "underestimating" ? "#2c6e5e" : "#2b9c8c",
-                        }}
-                      >
-                        {r.verdict}
-                      </span>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-              <JourneyLink href="/confidence" className="mt-4">
-                Check your confidence habits
-              </JourneyLink>
+                  ))}
+               </div>
             </section>
+          </div>
 
-            <section>
-              <Marginalia amber>What should change in how you study?</Marginalia>
-              <div className="mt-5 divide-y divide-ink/10 border-y border-ink/10">
-                {activeInterventions().map((iv) => (
-                  <div key={iv.id} className="grid gap-4 py-6 sm:grid-cols-[3rem_1fr]">
-                    <span className="font-serif text-xl italic text-amber">!</span>
-                    <div>
-                      <div className="flex flex-wrap items-center gap-3">
-                        <span className="font-mono text-[12px] font-medium uppercase tracking-[0.12em] text-ink/60">
-                          {iv.label}
-                        </span>
-                        <span className="border border-amber/50 bg-amber/5 px-2 py-0.5 font-mono text-[9px] uppercase tracking-wider text-amber-dark">
-                          evidence {iv.evidenceStrength}%
-                        </span>
-                        <span className="border border-teal/40 px-2 py-0.5 font-mono text-[9px] uppercase tracking-wider text-teal-dark">
-                          {iv.sessionsObserved} sessions
-                        </span>
+          {/* Right Sidebar */}
+          <div className="space-y-8">
+             {/* Stats Card */}
+             <div className="card-rounded p-6 bg-white shadow-soft border border-slate-100">
+                <h3 className="text-sm font-bold text-navy mb-6">Study Habits</h3>
+                <div className="space-y-6">
+                   <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                         <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-teal/10 text-teal">
+                            <Clock className="h-4 w-4" />
+                         </div>
+                         <span className="text-xs font-bold text-slate-light">Peak Focus</span>
                       </div>
-                      <p className="mt-2 font-serif text-[15.5px] font-bold leading-snug text-ink">{iv.action}</p>
-                      <p className="mt-2 footnote">{iv.observation}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <div className="mt-5 border border-ink bg-ink p-5 text-ivory">
-                <div className="font-mono text-[9px] uppercase tracking-[0.08em] text-teal">Featured change in effect</div>
-                <p className="mt-2 font-serif text-[15px] leading-relaxed">{featuredIntervention().observation}</p>
-                <p className="mt-2 font-mono text-[14px] leading-relaxed text-white/70">{featuredIntervention().action}</p>
-                <JourneyLink href="/adaptive" className="mt-3 text-white/60 hover:text-teal">
-                  See the full decision ledger
-                </JourneyLink>
-              </div>
-            </section>
+                      <span className="text-xs font-bold text-navy">{dna.peakFocusHour}</span>
+                   </div>
+                   <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                         <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-orange/10 text-orange">
+                            <Zap className="h-4 w-4" />
+                         </div>
+                         <span className="text-xs font-bold text-slate-light">Avg Session</span>
+                      </div>
+                      <span className="text-xs font-bold text-navy">{dna.avgSessionMinutes}m</span>
+                   </div>
+                   <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                         <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-purple/10 text-purple">
+                            <Flame className="h-4 w-4" />
+                         </div>
+                         <span className="text-xs font-bold text-slate-light">Streak</span>
+                      </div>
+                      <span className="text-xs font-bold text-navy">{profile.streakDays} Days</span>
+                   </div>
+                </div>
+                
+                <div className="mt-8 pt-6 border-t border-slate-100">
+                   <div className="flex items-center justify-between mb-2">
+                      <span className="text-[10px] font-bold text-slate-light uppercase tracking-widest">Learning Profile Strength</span>
+                      <span className="text-[10px] font-bold text-teal">{dna.profileStrength}%</span>
+                   </div>
+                   <MasteryBar value={dna.profileStrength} className="h-1.5" />
+                   <p className="mt-4 text-[10px] text-slate-light leading-relaxed italic">
+                      "Every session sharpens this picture. Keep learning to unlock deeper insights."
+                   </p>
+                </div>
+             </div>
+
+             {/* Recent Achievements */}
+             <div className="card-rounded p-6">
+                <h3 className="text-sm font-bold text-navy mb-6">Recent Achievements</h3>
+                <div className="space-y-4">
+                   {[
+                     { title: "Quick Learner", desc: "Finished 3 topics in one day", icon: Zap, color: "text-orange" },
+                     { title: "Deep Focus", desc: "Studied for over 2 hours", icon: Clock, color: "text-purple" },
+                     { title: "Mastery", desc: "Reached 90% in Science", icon: Award, color: "text-teal" },
+                   ].map((ach, i) => (
+                     <div key={i} className="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 transition-colors cursor-default group">
+                        <div className={cn("flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-slate-100 group-hover:bg-white group-hover:shadow-sm transition-all", ach.color)}>
+                           <ach.icon className="h-5 w-5" />
+                        </div>
+                        <div className="min-w-0">
+                           <div className="text-xs font-bold text-navy">{ach.title}</div>
+                           <div className="text-[10px] text-slate-light">{ach.desc}</div>
+                        </div>
+                     </div>
+                   ))}
+                </div>
+                <button className="mt-6 w-full text-[10px] font-bold text-teal uppercase tracking-widest hover:underline">
+                   View All Badges
+                </button>
+             </div>
+             
+             {/* Security/Privacy Card */}
+             <div className="card-rounded p-6 bg-slate-50 border border-slate-100">
+                <div className="flex items-center gap-3 mb-3">
+                   <ShieldCheck className="h-4 w-4 text-navy" />
+                   <h3 className="text-xs font-bold text-navy">Data Privacy</h3>
+                </div>
+                <p className="text-[10px] text-slate-light leading-relaxed">
+                   Your learning data is private to you. We use it only to personalize your experience.
+                </p>
+             </div>
           </div>
-
-          {/* Right rail */}
-          <div className="space-y-9">
-            <section className="border border-ink/12 bg-card p-5">
-              <div className="marginalia [&::before]:hidden">Rhythm — when you study best</div>
-              <dl className="mt-3 space-y-3">
-                <div className="flex items-baseline justify-between border-b border-ink/8 pb-2">
-                  <dt className="font-mono text-[12px] uppercase tracking-[0.12em] text-muted-foreground">Peak focus hour</dt>
-                  <dd className="font-mono text-[12px] font-medium text-ink">{dna.peakFocusHour}</dd>
-                </div>
-                <div className="flex items-baseline justify-between border-b border-ink/8 pb-2">
-                  <dt className="font-mono text-[12px] uppercase tracking-[0.12em] text-muted-foreground">Avg session</dt>
-                  <dd className="font-mono text-[12px] font-medium text-ink">{dna.avgSessionMinutes} min</dd>
-                </div>
-                <div className="flex items-baseline justify-between border-b border-ink/8 pb-2">
-                  <dt className="font-mono text-[12px] uppercase tracking-[0.12em] text-muted-foreground">Weekly target</dt>
-                  <dd className="font-mono text-[12px] font-medium text-ink">{Math.round(profile.weeklyTargetMinutes / 60)}h 00m</dd>
-                </div>
-                <div className="flex items-baseline justify-between">
-                  <dt className="font-mono text-[12px] uppercase tracking-[0.12em] text-muted-foreground">Learning picture</dt>
-                  <dd className="font-mono text-[12px] font-medium text-teal-dark">{dna.profileStrength}%</dd>
-                </div>
-              </dl>
-              <MasteryBar value={dna.profileStrength} className="mt-3" />
-              <p className="mt-3 footnote">
-                Every study session makes this picture a little sharper — the rest is still being written.
-              </p>
-            </section>
-
-            <section>
-              <div className="flex items-center gap-2">
-                <Activity className="h-3.5 w-3.5 text-teal" />
-                <Marginalia className="[&::before]:hidden">Goals on file</Marginalia>
-              </div>
-              <ul className="mt-3 space-y-3">
-                {goalsList.map((g) => (
-                  <li key={g.id}>
-                    <div className="flex items-baseline justify-between gap-2">
-                      <span className="font-serif text-[14px] font-bold text-ink">{g.title}</span>
-                      <span className="font-mono text-[14px] text-teal-dark">{g.progress}%</span>
-                    </div>
-                    <MasteryBar value={g.progress} className="mt-1.5" />
-                  </li>
-                ))}
-              </ul>
-            </section>
-
-            <section className="border border-ink bg-ink p-5 text-ivory">
-              <div className="font-mono text-[9px] uppercase tracking-[0.08em] text-teal">This updates as you learn</div>
-              <p className="mt-2 font-serif text-[14.5px] leading-relaxed">
-                Every session quietly rewrites this picture. The clearest way to sharpen it? Teach a topic you just learned.
-              </p>
-              <JourneyLink href="/teach" className="mt-3 text-white/60 hover:text-teal">
-                Teach a topic now
-              </JourneyLink>
-            </section>
-          </div>
-        </div>
-
-        <Hairline className="my-8" />
-        <div className="flex flex-wrap items-center justify-between gap-4 pb-4">
-          <p className="text-[12px] text-ink/45 max-w-xl">
-            The details are kept behind these pages on purpose. You'll never need to look —
-            we'll tell you what to do next when it matters.
-          </p>
         </div>
       </div>
     </AppShell>
   );
 }
 
-function formatDate(iso: string) {
-  return new Date(iso + "T00:00:00").toLocaleDateString("en-GB", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  });
+function formatDate(dateStr: string) {
+  try {
+    return new Intl.DateTimeFormat("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    }).format(new Date(dateStr));
+  } catch {
+    return dateStr;
+  }
 }

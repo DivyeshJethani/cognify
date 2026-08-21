@@ -128,9 +128,8 @@ export default function Practice() {
     return (
       <AppShell>
         <PageHeader
-          overline="Practice"
           title="Show what you know."
-          subtitle="Short, focused quizzes built from your curriculum. Every attempt quietly strengthens Cognify's recommendations."
+          subtitle="Short, focused quizzes built from your curriculum. Each quiz helps us personalize your learning journey."
         />
         <div className="mx-auto max-w-3xl px-5 py-8 sm:px-8">
           <div className="rise-in grid gap-4 sm:grid-cols-3">
@@ -207,7 +206,7 @@ export default function Practice() {
     const picks = pickTopicPracticeIds();
     return (
       <AppShell>
-        <PageHeader overline="Practice — Topic Practice" title="Pick a topic to drill." />
+        <PageHeader title="Pick a topic to drill." />
         <div className="mx-auto max-w-2xl px-5 py-6 sm:px-8">
           <div className="rise-in grid gap-2">
             {picks.map((p) => (
@@ -234,14 +233,14 @@ export default function Practice() {
   if (!attempt) {
     return (
       <AppShell>
-        <PageHeader overline="Practice" title="Starting your quiz…" />
+        <PageHeader title="Starting your quiz…" />
       </AppShell>
     );
   }
   if (!current) {
     return (
       <AppShell>
-        <PageHeader overline="Practice" title="No questions available." />
+        <PageHeader title="No questions available." />
       </AppShell>
     );
   }
@@ -361,8 +360,8 @@ export default function Practice() {
               </Link>
             </Button>
           </div>
-          <p className="mt-6 font-mono text-[11.5px] uppercase tracking-wider text-ink/40">
-            Attempt recorded — Cognify uses it to shape what you see next.
+            <p className="mt-6 font-mono text-[11.5px] uppercase tracking-wider text-ink/40">
+            Quiz complete! We've updated your learning path based on your results.
           </p>
         </div>
       </div>
