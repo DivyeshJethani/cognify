@@ -101,6 +101,7 @@ function Router() {
       <GuardedRoute path={"/onboarding"} component={Onboarding} requireOnboarding={false} />
       <GuardedRoute path={"/today"} component={Today} />
       <GuardedRoute path={"/practice"} component={Practice} />
+      <GuardedRoute path={"/curriculum"} component={Curriculum} />
       <GuardedRoute path={"/dashboard"} component={Dashboard} />
       <GuardedRoute path={"/subject/:subjectId"} component={SubjectPage} />
       <GuardedRoute path={"/profile"} component={Profile} />

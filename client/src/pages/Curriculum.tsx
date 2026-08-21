@@ -484,12 +484,12 @@ function TopicDetail({
             <MasteryBar value={topic.mastery} className="mt-3" />
             <p className="mt-3 footnote">
               {topic.state === "mastered"
-                ? "This topic has crossed the mastery threshold. The spaced scheduler will still surface it for retention checks."
+                ? "You have this one down. Cognify will still check in from time to time to keep it fresh."
                 : topic.state === "weak"
-                  ? "Weak-topic detection has flagged this topic. Mastery is below threshold and error patterns are recurring."
+                  ? "Still working on this one — a walkthrough plus a few questions will move it forward."
                   : topic.state === "new"
-                    ? "No learning data yet. Begin the first session to open your file on this topic."
-                    : `Topic state: ${topic.state.toLowerCase()}. ${topic.mastery >= 45 ? "Developing steadily." : "Below proficiency — targeted work is recommended."}`}
+                    ? "Never opened before — the first session starts your file on it."
+                    : `Coming along — ${topic.mastery >= 45 ? "developing steadily." : "a little more work will help."}`}
             </p>
           </section>
 
@@ -510,7 +510,7 @@ function TopicDetail({
           {topic.recommendedAction && topic.actionReason && (
             <section className="border border-amber/40 bg-amber/5 p-4">
               <div className="font-mono text-[12px] font-bold uppercase tracking-[0.08em] text-amber-dark">
-                Why Cognify recommends: {topic.recommendedAction}
+                {topic.recommendedAction === "revise" ? "Worth a quick revision" : topic.recommendedAction === "practice" ? "Practice helps here" : "Start here"}
               </div>
               <p className="mt-2 text-[14px] leading-relaxed text-dark-text/80">{topic.actionReason}</p>
             </section>

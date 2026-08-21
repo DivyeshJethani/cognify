@@ -58,13 +58,19 @@ export default function GoalsPage() {
     <AppShell>
       <PageHeader
         overline="Stretch Goals"
-        title="Goals picked from what you're actually working on"
-        subtitle="These aren't checkboxes you wrote yourself — each one comes from the topics you're currently tackling and what you have coming up. Make progress and it quietly disappears."
+        title="Stretch Goals"
+        subtitle="A quiet rewards layer — coming soon."
       />
 
-      <div className="px-5 py-7 sm:px-8 lg:px-10">
-        {/* Stats ledger */}
-        <div className="rise-in grid grid-cols-2 gap-y-6 border-b border-ink/10 pb-7 sm:grid-cols-3">
+      <div className="mx-auto max-w-xl px-5 py-10 sm:px-8 lg:px-10">
+        <div className="rise-in border border-ink/12 bg-card p-8 text-center">
+          <Award className="mx-auto h-8 w-8 text-ink/35" />
+          <h2 className="mt-4 font-display text-xl font-bold text-ink">Stretch Goals</h2>
+          <p className="mt-2 text-[15px] leading-relaxed text-ink/65">
+            Coming soon — goals will appear here as you make progress across the three areas that matter: Curriculum, Teach Cognify, and Study Groups.
+          </p>
+        </div>
+        <div className="rise-in mt-6 grid grid-cols-2 gap-y-6 border-b border-ink/10 pb-7 sm:grid-cols-3" style={{ display: "none" }}>
           <StatCell
             label="Active goals"
             value={`${goals.length}`}

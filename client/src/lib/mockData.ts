@@ -108,7 +108,7 @@ const MATH = {
         revisionDueInDays: 6,
         action: "practice",
         reason:
-          "You solved 7 of 10 algorithm questions correctly, but repeated an error with remainders. A short drill consolidates this before new content stacks on top.",
+          "A short drill will lock this in.",
         minutes: 20,
         resources: [
           { type: "practice", label: "HCF algorithm drill", durationMinutes: 15 },
@@ -126,7 +126,7 @@ const MATH = {
         revisionDueInDays: -2,
         action: "revise",
         reason:
-          "Mistake analysis shows your proofs break at the 'assume rational' step — a conceptual pattern, not carelessness. Revision is overdue by 2 days.",
+          "Revision is a little overdue — one quick walkthrough covers it.",
         minutes: 25,
         resources: [
           { type: "revision", label: "Contradiction proof walkthrough", durationMinutes: 20 },
@@ -180,7 +180,7 @@ const MATH = {
         revisionDueInDays: 1,
         action: "revise",
         reason:
-          "This is your weakest tracked topic (27%). Confidence calibration shows you overestimate here — targeted revision before Friday's test is advised.",
+          "This one still needs work — worth revisiting this week.",
         minutes: 30,
         resources: [
           { type: "revision", label: "Zero-coefficient relationship revision", durationMinutes: 20 },
@@ -197,7 +197,7 @@ const MATH = {
         revisionDueInDays: null,
         action: "learn",
         reason:
-          "Prerequisite 'Zeros of a Polynomial' is now proficient. This is the natural next topic in the sequence, scheduled for tomorrow.",
+          "The natural next topic after Zeros of a Polynomial.",
         minutes: 35,
         resources: [
           { type: "lesson", label: "Polynomial long division", durationMinutes: 25 },
@@ -234,7 +234,7 @@ const MATH = {
         revisionDueInDays: 5,
         action: "practice",
         reason:
-          "Your elimination steps are correct but sign errors appear in 3 of your last 8 attempts — a careless-error pattern best fixed with timed practice.",
+          "A few sign slips showed up last time — timed practice fixes that.",
         minutes: 20,
         resources: [
           { type: "practice", label: "Timed elimination drill", durationMinutes: 15 },
@@ -285,7 +285,7 @@ const MATH = {
         revisionDueInDays: 3,
         action: "revise",
         reason:
-          "Struggle analysis: you attempted this twice and paused for 4+ minutes each time. A guided re-attempt with worked examples is recommended.",
+          "This one stalled last time — a guided re-attempt will carry it.",
         minutes: 30,
         resources: [
           { type: "revision", label: "Guided completing-the-square", durationMinutes: 25 },
@@ -347,8 +347,7 @@ const SCIENCE = {
         lastStudied: "2026-08-14",
         revisionDueInDays: 2,
         action: "practice",
-        reason:
-          "You confuse displacement with double displacement in 4 of your last 10 classifications. A classification drill targets exactly this gap.",
+        reason: "A quick classification drill closes this gap.",
         minutes: 20,
         resources: [
           { type: "practice", label: "Reaction classification drill", durationMinutes: 15 },
@@ -365,8 +364,7 @@ const SCIENCE = {
         lastStudied: null,
         revisionDueInDays: null,
         action: "learn",
-        reason:
-          "Next topic in your curriculum sequence. Your peak focus hour (18:00–20:00) makes this evening a good slot for new content.",
+        reason: "The natural next topic in your sequence.",
         minutes: 30,
         resources: [
           { type: "lesson", label: "Redox fundamentals", durationMinutes: 20 },
@@ -402,8 +400,7 @@ const SCIENCE = {
         lastStudied: "2026-08-13",
         revisionDueInDays: 4,
         action: "practice",
-        reason:
-          "Mastery is plateauing at ~52%. Practice with pH-logarithm conversions typically breaks this plateau.",
+        reason: "Steady progress — one practice set keeps it moving.",
         minutes: 20,
         resources: [
           { type: "practice", label: "pH calculation set", durationMinutes: 15 },
@@ -438,8 +435,7 @@ const SCIENCE = {
         lastStudied: "2026-08-15",
         revisionDueInDays: 1,
         action: "revise",
-        reason:
-          "Attention analysis shows your focus dips midway through long passages. This topic is due for revision and pairs well with diagram-based resources, your strongest format.",
+        reason: "Due for revision — a diagram-based walkthrough fits well.",
         minutes: 25,
         resources: [
           { type: "revision", label: "Alimentary canal diagram revision", durationMinutes: 20 },
@@ -501,8 +497,7 @@ const SOCIAL = {
         lastStudied: "2026-08-14",
         revisionDueInDays: -1,
         action: "revise",
-        reason:
-          "Your notes on this topic are flagged 'incomplete' by the revision scheduler, and the unit test performance here was 58%. Revision overdue.",
+        reason: "Revision is a little overdue; one pass refreshes it.",
         minutes: 30,
         resources: [
           { type: "revision", label: "Comparison-table revision", durationMinutes: 25 },
@@ -538,8 +533,7 @@ const SOCIAL = {
         lastStudied: "2026-08-15",
         revisionDueInDays: 6,
         action: "practice",
-        reason:
-          "You recall facts well but struggle to 'assess' and 'evaluate' in answers. A short-answer practice set targets this exam skill.",
+        reason: "Short-answer practice sharpens this exam skill.",
         minutes: 20,
         resources: [
           { type: "practice", label: "Long-answer writing set", durationMinutes: 20 },
@@ -555,8 +549,7 @@ const SOCIAL = {
         lastStudied: null,
         revisionDueInDays: null,
         action: "learn",
-        reason:
-          "Next topic in sequence, scheduled after the current revision backlog clears. Estimated 3 sessions to reach proficiency.",
+        reason: "Next topic in sequence — ready when the backlog clears.",
         minutes: 30,
         resources: [
           { type: "lesson", label: "Salt March notes", durationMinutes: 22 },
@@ -600,8 +593,7 @@ const ENGLISH = {
         lastStudied: "2026-08-15",
         revisionDueInDays: 2,
         action: "practice",
-        reason:
-          "Your extracts show strong comprehension but answers lose marks on structure. A focused answer-format practice is recommended.",
+        reason: "Comprehension is strong; answer-structure practice adds the marks.",
         minutes: 20,
         resources: [
           { type: "practice", label: "Answer-structure drills", durationMinutes: 15 },
@@ -660,8 +652,7 @@ const HINDI = {
         lastStudied: "2026-08-14",
         revisionDueInDays: 3,
         action: "revise",
-        reason:
-          "Revision due: this chapter's recall rate dropped below threshold in the last spaced-retention check.",
+        reason: "Revision is due for this chapter.",
         minutes: 20,
         resources: [
           { type: "revision", label: "सारांश पुनरावलोकन", durationMinutes: 18 },
@@ -857,8 +848,7 @@ export const todaysPath: TodayPathItem[] = [
     subject: "MATH",
     action: "revise",
     minutes: 30,
-    reason:
-      "Your weakest tracked topic (27% mastery) and overdue for revision. A Friday test on Chapter 2 makes this the highest-impact 30 minutes available today.",
+    reason: "Your weakest tracked topic — worth the thirty minutes today.",
     urgency: "high",
   },
   {
@@ -867,8 +857,7 @@ export const todaysPath: TodayPathItem[] = [
     subject: "MATH",
     action: "practice",
     minutes: 20,
-    reason:
-      "Mastery plateaued at 55% with a recurring careless-error pattern. A timed drill directly addresses the observed sign-error habit.",
+    reason: "A few sign slips showed up last time — timed practice fixes that.",
     urgency: "normal",
   },
   {
@@ -877,8 +866,7 @@ export const todaysPath: TodayPathItem[] = [
     subject: "SCI",
     action: "revise",
     minutes: 25,
-    reason:
-      "Due for spaced revision (1 day). Retention probability drops below 60% if this session is skipped beyond today.",
+    reason: "Spaced revision is due — best done today.",
     urgency: "normal",
   },
 ];
