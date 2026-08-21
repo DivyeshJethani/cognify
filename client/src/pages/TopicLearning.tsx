@@ -13,7 +13,7 @@ import {
 } from "@/components/cognify/Primitives";
 import { anotherExplanation, buildRails } from "@/lib/recommendations";
 import { discoverResources } from "@/lib/resourceDiscovery";
-import { findTopicByIdOrAlias } from "@/lib/curriculum";
+import { findTopicByIdOrAlias, topicAlias } from "@/lib/curriculum";
 import { buildTopicSequence, type StageKey } from "@/lib/topicSequence";
 import type { LearningResource } from "@/lib/types";
 import { BookOpen, ChevronDown, Clock, FlaskConical, Lightbulb, ListChecks, SearchX, Sparkles, Video } from "lucide-react";
@@ -115,6 +115,7 @@ export default function TopicLearning() {
   const dnaRail = rails.find((r) => r.id === "recommended")?.items ?? [];
 
   const firstRecommended = resources[0];
+  const topicSlug = topicAlias(topicId) ?? topicId;
   const dnaItems = dnaRail.filter((d) => d.resource?.topicId === topicId).slice(0, 2);
 
   return (
@@ -136,6 +137,43 @@ export default function TopicLearning() {
       <div className="flex flex-col gap-8 px-5 py-7 sm:px-8 lg:flex-row lg:px-10">
         {/* Main ledger */}
         <section className="min-w-0 flex-1">
+          {/* Five doors: what do you want to do with this topic */}
+          {firstRecommended && (
+            <div className="rise-in grid grid-cols-2 gap-2.5 sm:grid-cols-4">
+              <button
+                onClick={() => navigate(`/session/${firstRecommended.id}?topic=${topicId}`)}
+                className="flex flex-col items-start gap-1 border border-teal/40 bg-teal/[0.04] px-4 py-3.5 text-left transition-colors hover:border-teal"
+              >
+                <Video className="h-4 w-4 text-teal" />
+                <span className="font-display text-[14px] font-bold text-ink">Watch</span>
+                <span className="font-mono text-[10px] uppercase tracking-wider text-ink/45">Start the lecture</span>
+              </button>
+              <button
+                onClick={() => navigate(`/session/${firstRecommended.id}?topic=${topicId}`)}
+                className="flex flex-col items-start gap-1 border border-ink/12 bg-card px-4 py-3.5 text-left transition-colors hover:border-teal"
+              >
+                <BookOpen className="h-4 w-4 text-teal" />
+                <span className="font-display text-[14px] font-bold text-ink">Read</span>
+                <span className="font-mono text-[10px] uppercase tracking-wider text-ink/45">Notes & transcript</span>
+              </button>
+              <button
+                onClick={() => navigate(`/practice?topic=${topicSlug}`)}
+                className="flex flex-col items-start gap-1 border border-ink/12 bg-card px-4 py-3.5 text-left transition-colors hover:border-teal"
+              >
+                <FlaskConical className="h-4 w-4 text-teal" />
+                <span className="font-display text-[14px] font-bold text-ink">Quick test</span>
+                <span className="font-mono text-[10px] uppercase tracking-wider text-ink/45">5 questions</span>
+              </button>
+              <button
+                onClick={() => navigate(`/teach?topic=${topicSlug}`)}
+                className="flex flex-col items-start gap-1 border border-ink/12 bg-card px-4 py-3.5 text-left transition-colors hover:border-teal"
+              >
+                <Lightbulb className="h-4 w-4 text-teal" />
+                <span className="font-display text-[14px] font-bold text-ink">Teach it</span>
+                <span className="font-mono text-[10px] uppercase tracking-wider text-ink/45">Explain it back</span>
+              </button>
+            </div>
+          )}
           {/* Dossier summary */}
           <div className="border border-ink/10 bg-card p-5">
             <div className="flex flex-wrap items-start justify-between gap-4">
@@ -296,9 +334,9 @@ export default function TopicLearning() {
           {/* Recommended first pass */}
           {resources.length > 0 && (
             <div className="mt-7">
-              <div className="marginalia">Start here — three resources, in order</div>
+              <div className="marginalia">Resources — three picks, in order</div>
               <p className="mt-1 max-w-2xl text-[12.5px] leading-relaxed text-ink/60">
-                Three picks, ordered by fit. If the first doesn't click, the second explains the same idea differently.
+                If the first doesn't click, the second explains the same idea differently.
               </p>
               <ul className="mt-3 divide-y divide-ink/8 border-y border-ink/10">
                 {resources.slice(0, 3).map((r, i) => (

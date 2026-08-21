@@ -9,12 +9,12 @@ import AppShell, { PageHeader } from "@/components/cognify/AppShell";
 import { getStudyContext, onContextChange } from "@/lib/studyContext";
 import { useApp } from "@/contexts/AppContext";
 import { todaySequence } from "@/lib/journeyData";
-import { continuationItems } from "@/lib/journeyData";
 import { topicAlias } from "@/lib/curriculum";
+import { myGroup } from "@/lib/studyGroups";
 import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { Link } from "wouter";
-import { BookOpen, Lightbulb, PenLine } from "lucide-react";
+import { BookOpen, Lightbulb, PenLine, PlayCircle, Users } from "lucide-react";
 
 const SUBJECT_ID_TO_NAME: Record<string, string> = {
   math: "Mathematics",
@@ -70,6 +70,12 @@ export default function Today() {
   const items = todaySequence()
     .items.filter((it) => (subjectFocus ? it.subjectCode === subjectFocus : true))
     .slice(0, 3);
+
+  const group = myGroup();
+  const latestDoubt = group.needHelp.find((r) => r.status === "open");
+  const groupLine = latestDoubt
+    ? `${latestDoubt.author} needs help with “${latestDoubt.topicTitle}” — someone in ${group.className} could teach it.`
+    : `There are ${group.memberCount} students in your ${group.className} ${group.board} group — ask a doubt or help a classmate.`;
 
   return (
     <AppShell>
@@ -159,16 +165,52 @@ export default function Today() {
           </div>
         )}
 
+        {/* Continue Learning — pick up where you left off */}
+        <section className="rise-in mt-8 border border-ink/12 bg-card p-6" style={{ animationDelay: "60ms" }}>
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <div className="flex items-center gap-2.5">
+              <PlayCircle className="h-4 w-4 text-teal" />
+              <span className="font-display text-sm font-bold uppercase tracking-[0.08em] text-ink">Continue learning</span>
+            </div>
+            <span className="font-mono text-xs text-ink/40">Resume at any time</span>
+          </div>
+          <p className="mt-2 max-w-lg text-[15px] leading-relaxed text-ink/70">
+            You were in the middle of a learning session — open it again and pick up exactly where you stopped.
+          </p>
+          <div className="mt-4 flex flex-wrap items-center gap-3">
+            <Link
+              href="/continue"
+              className="inline-flex items-center gap-2 border border-ink/20 bg-transparent px-5 py-2.5 font-display text-[14px] font-bold text-ink transition-transform duration-150 hover:border-teal hover:text-teal active:scale-[0.97]"
+            >
+              <PlayCircle className="h-4 w-4" /> Open session
+            </Link>
+          </div>
+        </section>
+
+        {/* Study group activity — one line of class life */}
+        <section className="rise-in mt-6 border border-ink/12 bg-card p-6" style={{ animationDelay: "120ms" }}>
+          <div className="flex items-center gap-2.5">
+            <Users className="h-4 w-4 text-teal" />
+            <span className="font-display text-sm font-bold uppercase tracking-[0.08em] text-ink">In your study group</span>
+          </div>
+          <p className="mt-2 text-[15px] leading-relaxed text-ink/70">{groupLine}</p>
+          <div className="mt-4 flex flex-wrap items-center gap-3">
+            <Link
+              href="/community"
+              className="inline-flex items-center gap-2 border border-ink/20 bg-transparent px-5 py-2.5 font-display text-[14px] font-bold text-ink transition-transform duration-150 hover:border-teal hover:text-teal active:scale-[0.97]"
+            >
+              <Users className="h-4 w-4" /> Join the group
+            </Link>
+          </div>
+        </section>
+
         {/* Quiet links to the other two core features */}
         <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
+          <Link href="/practice" className="group flex items-center gap-2 font-display text-[15px] font-bold text-ink/60 transition-colors hover:text-teal">
+            <PenLine className="h-4 w-4" /> Practice
+          </Link>
           <Link href="/teach" className="group flex items-center gap-2 font-display text-[15px] font-bold text-ink/60 transition-colors hover:text-teal">
             <Lightbulb className="h-4 w-4" /> Teach Cognify
-          </Link>
-          <Link href="/community" className="group flex items-center gap-2 font-display text-[15px] font-bold text-ink/60 transition-colors hover:text-teal">
-            Study groups
-          </Link>
-          <Link href="/continue" className="font-mono text-[12px] uppercase tracking-wider text-ink/40 transition-colors hover:text-teal">
-            Continue learning →
           </Link>
         </div>
       </div>

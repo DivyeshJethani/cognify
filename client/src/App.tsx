@@ -12,6 +12,7 @@ import Signup from "./pages/Signup";
 import Onboarding from "./pages/Onboarding";
 import Dashboard from "./pages/Dashboard";
 import Today from "./pages/Today";
+import Practice from "./pages/Practice";
 import Curriculum from "./pages/Curriculum";
 import Profile from "./pages/Profile";
 import ComingSoon from "./pages/ComingSoon";
@@ -31,6 +32,7 @@ import GoalsPage from "./pages/Goals";
 import Teach from "./pages/Teach";
 import Community from "./pages/Community";
 import SubjectPage from "./pages/SubjectPage";
+import DemoEntry from "./pages/DemoEntry";
 
 /**
  * Auth/onboarding guard as a real component — hooks are called unconditionally
@@ -70,7 +72,9 @@ function GuardInner({
 
   useEffect(() => {
     if (requireAuth && auth.kind === "logged-out") {
-      navigate("/login");
+      // Day 10: the product stays explorable — unauthenticated visitors
+      // are sent to the public landing page, not a login wall.
+      navigate("/");
       return;
     }
     if (
@@ -91,12 +95,13 @@ function Router() {
   return (
     <Switch>
       <Route path={"/"} component={Home} />
+      <GuardedRoute path={"/demo"} component={DemoEntry} requireOnboarding={false} />
       <Route path={"/login"} component={Login} />
       <Route path={"/signup"} component={Signup} />
       <GuardedRoute path={"/onboarding"} component={Onboarding} requireOnboarding={false} />
       <GuardedRoute path={"/today"} component={Today} />
+      <GuardedRoute path={"/practice"} component={Practice} />
       <GuardedRoute path={"/dashboard"} component={Dashboard} />
-      <GuardedRoute path={"/curriculum"} component={Curriculum} />
       <GuardedRoute path={"/subject/:subjectId"} component={SubjectPage} />
       <GuardedRoute path={"/profile"} component={Profile} />
       <GuardedRoute path={"/adaptive"} component={Adaptive} />

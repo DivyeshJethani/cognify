@@ -58,6 +58,7 @@ const CANONICAL_TOPIC_SLUGS: Record<string, string> = {
   "t-4-civil-disobedience-collective-belonging": "t-1-civil-disobedience-sense-of-",
   "t-0-french-revolution-idea-of-nation": "t-0-the-french-revolution-the-id",
   "t-2-oxidation-reduction-corrosion": "t-2-oxidation-reduction-corrosio",
+  "t-6-quadratic-formula-applications": "t-2-nature-of-roots-discriminant",
 };
 
 /** Accepts either a runtime topic id or a stable alias slug */

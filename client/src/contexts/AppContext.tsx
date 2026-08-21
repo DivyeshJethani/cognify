@@ -16,9 +16,20 @@ import {
   todaysPath,
   weakTopics,
 } from "@/lib/mockData";
+import { classSubjects } from "@/lib/studyContext";
 import type { CreditsBalance, Goal, LearningDNA, StudentProfile, TodayPathItem } from "@/lib/types";
 
 const STORAGE_KEY = "cognify.state.v1";
+
+/** Seeded demo account — a judge/exploiter enters the product with one click,
+ *  preconfigured as a CBSE Class 10 student with all subjects selected. */
+export const DEMO_ACCOUNT = {
+  name: "Aarav Mehta",
+  email: "demo@demo.cognify.app",
+  boardId: "cbse",
+  classId: "cbse-10",
+  subjectIds: [] as string[], // filled lazily from classSubjects
+};
 
 interface OnboardingSelection {
   boardId: string | null;
@@ -48,6 +59,7 @@ interface AppState {
   completeOnboarding: () => void;
   setGoal: (id: string, progress: number) => void;
   clearAll: () => void;
+  enterDemo: () => void;
 }
 
 const defaultOnboarding: OnboardingSelection = {
@@ -74,6 +86,7 @@ const emptyState: AppState = {
   completeOnboarding: () => {},
   setGoal: () => {},
   clearAll: () => {},
+  enterDemo: () => {},
 };
 
 const AppContext = createContext<AppState>(emptyState);
@@ -165,6 +178,40 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const clearAll = useCallback(() => {
     localStorage.removeItem(STORAGE_KEY);
     setState(emptyState);
+  }, []);
+
+  const enterDemo = useCallback(() => {
+    const subjectIds = classSubjects(DEMO_ACCOUNT.boardId, DEMO_ACCOUNT.classId).map((s) => s.id);
+    const profile: StudentProfile = {
+      ...defaultProfile,
+      name: DEMO_ACCOUNT.name,
+      board: "CBSE",
+      className: "Class 10",
+      subjectIds,
+      learningGoal: "Board exam preparation",
+    };
+    setState((s) => ({
+      ...s,
+      profile,
+      onboarding: {
+        boardId: DEMO_ACCOUNT.boardId,
+        classId: DEMO_ACCOUNT.classId,
+        subjectIds,
+        learningGoal: profile.learningGoal,
+      },
+      auth: {
+        kind: "logged-in",
+        email: DEMO_ACCOUNT.email,
+        name: DEMO_ACCOUNT.name,
+        onboarded: true,
+      },
+    }));
+    localStorage.setItem("cognify.profile-context.v1", JSON.stringify({
+      boardId: DEMO_ACCOUNT.boardId,
+      classId: DEMO_ACCOUNT.classId,
+      subjectFocus: null,
+    }));
+    window.dispatchEvent(new CustomEvent("cognify:context-change"));
   }, []);
 
   return (

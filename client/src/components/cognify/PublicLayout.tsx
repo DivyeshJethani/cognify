@@ -31,9 +31,9 @@ export function PublicNav() {
         <div className="flex min-w-0 items-center gap-2 sm:gap-3">
           {auth.kind === "logged-in" ? (
             <Button asChild size="sm" className="h-9 shrink-0 bg-ink text-ivory hover:bg-ink/90">
-              <Link href="/dashboard">
-                <span className="hidden sm:inline">Open command center</span>
-                <span className="sm:hidden">Dashboard</span>
+              <Link href="/today">
+                <span className="hidden sm:inline">Open Today</span>
+                <span className="sm:hidden">Today</span>
                 <ArrowRight className="ml-1 h-3.5 w-3.5 shrink-0" />
               </Link>
             </Button>
@@ -41,6 +41,13 @@ export function PublicNav() {
             <>
               <Button asChild size="sm" variant="outline" className="h-9 shrink-0 border-ink/25 bg-transparent text-ink hover:bg-ink/5">
                 <Link href="/login">Sign in</Link>
+              </Button>
+              <Button asChild size="sm" className="h-9 shrink-0 bg-teal text-white hover:bg-teal-dark">
+                <Link href="/demo">
+                  <span className="hidden sm:inline">Try demo</span>
+                  <span className="sm:hidden">Demo</span>
+                  <ArrowRight className="ml-1 h-3.5 w-3.5 shrink-0" />
+                </Link>
               </Button>
               <Button asChild size="sm" className="h-9 shrink-0 bg-teal text-white hover:bg-teal-dark">
                 <Link href="/signup">
@@ -84,6 +91,7 @@ export function PublicFooter() {
             <div>
               <div className="font-mono text-[12px] uppercase tracking-[0.08em] text-teal">Study</div>
               <ul className="mt-3 space-y-2 text-[14px]">
+                <li><Link href="/demo" className="hover:text-white">Try the demo</Link></li>
                 <li><Link href="/signup" className="hover:text-white">Start learning</Link></li>
                 <li><Link href="/login" className="hover:text-white">Sign in</Link></li>
               </ul>

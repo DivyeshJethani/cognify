@@ -131,6 +131,7 @@ export const TOPIC_ALIASES: Record<string, string> = {
   "t-9-standard-form-factorisation": "t-0-standard-form-factorisation",
   "t-10-completing-the-square": "t-1-completing-the-square",
   "t-11-nature-of-roots-discriminant": "t-2-nature-of-roots-discriminant",
+  "t-6-quadratic-formula-applications": "t-2-nature-of-roots-discriminant",
   "t-0-writing-balancing-equations": "t-0-writing-balancing-equations",
   "t-1-types-of-reactions": "t-1-types-of-reactions",
   "t-2-oxidation-reduction-corrosion": "t-2-oxidation-reduction-corrosio",

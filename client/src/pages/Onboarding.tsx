@@ -65,7 +65,7 @@ export default function Onboarding() {
         .join(" · ");
       setOnboarding({ learningGoal: goalText.trim() || goalLabel });
       completeOnboarding();
-      navigate("/dashboard");
+      navigate("/today");
     } else {
       setStep(step + 1);
     }
@@ -293,7 +293,7 @@ export default function Onboarding() {
             className="h-11 bg-ink px-6 text-[14px] text-ivory hover:bg-ink/90 disabled:opacity-40"
           >
             {step === steps.length - 1 ? (
-              <>Open my Command Center <ArrowRight className="ml-1.5 h-4 w-4" /></>
+              <>Open my study space <ArrowRight className="ml-1.5 h-4 w-4" /></>
             ) : (
               <>Continue <ArrowRight className="ml-1.5 h-3.5 w-3.5" /></>
             )}

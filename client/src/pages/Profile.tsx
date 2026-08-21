@@ -64,7 +64,7 @@ export default function Profile() {
             {[
               ["Board · Class", `${profile.board} · ${profile.className}`],
               ["Stated goal", profile.learningGoal],
-              ["DNA strength", `${dna.profileStrength}%`],
+              ["Learning picture", `${dna.profileStrength}% complete`],
               ["Streak", `${profile.streakDays} days`],
               ["Credits", `${credits.balance}`],
               ["Weekly target", `${Math.round(profile.weeklyTargetMinutes / 60)}h`],
@@ -249,7 +249,7 @@ export default function Profile() {
                   <dd className="font-mono text-[12px] font-medium text-ink">{Math.round(profile.weeklyTargetMinutes / 60)}h 00m</dd>
                 </div>
                 <div className="flex items-baseline justify-between">
-                  <dt className="font-mono text-[12px] uppercase tracking-[0.12em] text-muted-foreground">Profile strength</dt>
+                  <dt className="font-mono text-[12px] uppercase tracking-[0.12em] text-muted-foreground">Learning picture</dt>
                   <dd className="font-mono text-[12px] font-medium text-teal-dark">{dna.profileStrength}%</dd>
                 </div>
               </dl>

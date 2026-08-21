@@ -24,6 +24,7 @@ import {
   Lightbulb,
   LogOut,
   Menu,
+  PenLine,
   PlayCircle,
   Settings,
   Target,
@@ -49,6 +50,7 @@ import { toast } from "sonner";
 const navItems = [
   { href: "/today", label: "Today", icon: Command },
   { href: "/curriculum", label: "Curriculum Explorer", icon: BookOpen },
+  { href: "/practice", label: "Practice", icon: PenLine },
   { href: "/teach", label: "Teach Cognify", icon: Lightbulb },
   { href: "/community", label: "Study Groups", icon: Users },
 ];
@@ -57,9 +59,10 @@ const navItems = [
 // reachable via the profile menu and direct links, not promoted.
 const quietLinks: { href: string; label: string }[] = [
   { href: "/continue", label: "Continue learning" },
+  { href: "/library", label: "Resource library" },
   { href: "/profile", label: "My profile" },
   { href: "/timetable", label: "Timetable" },
-  { href: "/goals", label: "Stretch goals" },
+  { href: "/goals", label: "Goals" },
 ];
 
 const comingSoon = new Set(["/goals", "/credits"]);
@@ -363,7 +366,7 @@ function MobileSubjectStrip() {
 
 function NavLinks({ onNavigate }: { onNavigate?: () => void }) {
   const [location] = useLocation();
-  const { profile, dna } = useApp();
+  const { profile } = useApp();
 
   return (
     <nav className="flex flex-col gap-0.5">
@@ -401,7 +404,7 @@ function NavLinks({ onNavigate }: { onNavigate?: () => void }) {
 }
 
 function ShellContent({ children }: { children: React.ReactNode }) {
-  const { logout, profile, dna } = useApp();
+  const { logout, profile } = useApp();
   return (
     <div className="flex min-h-screen bg-background">
       {/* Sidebar — desktop */}
@@ -482,7 +485,7 @@ function ShellContent({ children }: { children: React.ReactNode }) {
 
 function MobileHeader() {
   const [open, setOpen] = useState(false);
-  const { profile, dna } = useApp();
+  const { profile } = useApp();
   return (
     <header className="sticky top-0 z-40 flex items-center justify-between border-b border-border bg-ivory px-4 py-3 lg:hidden">
       <Link href="/today" className="flex items-center gap-2.5">
@@ -490,9 +493,6 @@ function MobileHeader() {
         <span className="font-serif text-base font-bold tracking-[0.12em] text-ink">COGNIFY</span>
       </Link>
       <div className="flex items-center gap-3">
-        <span className="font-mono text-[12px] uppercase tracking-widest text-muted-foreground">
-          DNA {dna.profileStrength}%
-        </span>
         <Sheet open={open} onOpenChange={setOpen}>
           <SheetTrigger asChild>
             <Button variant="outline" size="icon" className="h-9 w-9 border-ink/20 bg-transparent">

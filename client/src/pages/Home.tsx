@@ -17,7 +17,7 @@ const textureImg = "/manus-storage/cognify-lab-texture_eea6ce6a.png";
 
 function Hero() {
   const { auth } = useApp();
-  const ctaHref = auth.kind === "logged-in" ? "/dashboard" : "/signup";
+  const ctaHref = auth.kind === "logged-in" ? "/today" : "/demo";
   return (
     <section className="relative overflow-hidden paper-grain">
       <div className="container grid items-center gap-12 py-16 lg:grid-cols-[1.15fr_1fr] lg:py-24">
@@ -38,7 +38,7 @@ function Hero() {
           <div className="mt-8 flex flex-wrap items-center gap-4">
             <Button asChild size="lg" className="h-12 bg-teal px-7 text-[15px] text-white hover:bg-teal-dark">
               <Link href={ctaHref}>
-                Begin your diagnostic <ArrowRight className="ml-1.5 h-4 w-4" />
+                {auth.kind === "logged-in" ? "Open Today" : "Try the demo"} <ArrowRight className="ml-1.5 h-4 w-4" />
               </Link>
             </Button>
             <a
@@ -253,7 +253,7 @@ function CurriculumSection() {
 
 function Closing() {
   const { auth } = useApp();
-  const href = auth.kind === "logged-in" ? "/dashboard" : "/signup";
+  const href = auth.kind === "logged-in" ? "/today" : "/signup";
   return (
     <section className="border-t border-ink/10 bg-ivory-deep/60 paper-grain">
       <div className="container py-20 text-center lg:py-28">
