@@ -184,6 +184,27 @@
   .pill {
     @apply rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider;
   }
+  
+  .marginalia {
+    @apply font-mono text-[10px] uppercase tracking-[0.15em] text-slate-light flex items-center gap-3;
+  }
+  
+  .marginalia::before {
+    content: "";
+    @apply block h-px w-6 bg-slate-light/40;
+  }
+  
+  .marginalia-amber {
+    @apply text-orange;
+  }
+  
+  .marginalia-amber::before {
+    @apply bg-orange/40;
+  }
+  
+  .footnote {
+    @apply text-[13px] leading-relaxed text-slate-light;
+  }
 }
 
 /* Animations */

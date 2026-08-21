@@ -19,9 +19,9 @@ export function Marginalia({
   className?: string;
 }) {
   return (
-    <span className={cn("marginalia", amber && "marginalia-amber", className)}>
+    <div className={cn("marginalia", amber && "marginalia-amber", className)}>
       {children}
-    </span>
+    </div>
   );
 }
 

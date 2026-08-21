@@ -28,7 +28,7 @@ function Hero() {
             <br />
             <span className="text-teal italic">We found it.</span>
           </h1>
-          <p className="mt-6 max-w-lg text-[15px] leading-relaxed text-dark-text/80">
+          <p className="mt-6 max-w-lg text-[15px] leading-relaxed text-slate-text">
             Every student learns differently — and most platforms ignore it. COGNIFY
             is a learning laboratory that continuously studies how <em>you</em> learn:
             your mistakes, your focus, your confidence, the formats that stick. It
@@ -36,14 +36,14 @@ function Hero() {
             personalises every lesson, practice session and revision around it.
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-4">
-            <Button asChild size="lg" className="h-12 bg-teal px-7 text-[15px] text-white hover:bg-teal-dark">
+            <Button asChild size="lg" className="h-12 bg-teal px-7 text-[15px] font-semibold text-white hover:bg-teal-dark">
               <Link href={ctaHref}>
                 {auth.kind === "logged-in" ? "Open Today" : "Try the demo"} <ArrowRight className="ml-1.5 h-4 w-4" />
               </Link>
             </Button>
             <a
               href="#how-it-works"
-              className="group inline-flex items-center gap-2 border-b border-ink/40 pb-0.5 font-serif text-[15px] italic text-ink transition-colors hover:border-teal hover:text-teal"
+              className="group inline-flex items-center gap-2 border-b border-ink/60 pb-0.5 font-serif text-[15px] italic text-ink transition-colors hover:border-teal hover:text-teal"
             >
               Read the method
               <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
@@ -56,7 +56,7 @@ function Hero() {
               ["Personalisation", "Continuous, not one-time"],
             ].map(([k, v]) => (
               <div key={k}>
-                <div className="font-display text-xs uppercase tracking-[0.08em] text-muted-foreground">{k}</div>
+                <div className="font-display text-xs uppercase tracking-[0.08em] text-slate-light">{k}</div>
                 <div className="mt-1 font-serif text-lg font-bold text-ink">{v}</div>
               </div>
             ))}
@@ -71,7 +71,7 @@ function Hero() {
             />
           </div>
           <div className="mt-3 flex items-center justify-between px-1">
-            <span className="font-display text-xs uppercase tracking-[0.08em] text-muted-foreground">
+            <span className="font-display text-xs uppercase tracking-[0.08em] text-slate-light">
               Fig. 1 — The knowledge map, drawn per student
             </span>
           </div>
@@ -117,21 +117,21 @@ function HowItWorks() {
             <h2 className="mt-4 font-display text-3xl font-bold text-ink sm:text-4xl">
               Not a quiz bank.<br /><span className="italic">A laboratory.</span>
             </h2>
-            <p className="mt-4 max-w-sm text-[14px] leading-relaxed text-dark-text/75">
+            <p className="mt-4 max-w-sm text-[14px] leading-relaxed text-slate-text">
               Generic platforms hand every student the same lessons. COGNIFY treats
               learning as an experiment that runs on one subject: you.
             </p>
           </div>
-          <div className="divide-y divide-ink/10 border-y border-ink/10">
+          <div className="divide-y divide-ink/20 border-y border-ink/20">
             {steps.map((s, i) => (
               <div key={s.num} className="grid grid-cols-[3.5rem_1fr] gap-5 py-7">
                 <div className="flex flex-col items-start gap-2">
                   <span className="font-serif text-2xl italic text-teal">{s.num}</span>
-                  <s.icon className="h-4 w-4 text-ink/40" />
+                  <s.icon className="h-4 w-4 text-ink/60" />
                 </div>
                 <div>
                   <h3 className="font-display text-[20px] font-bold text-ink">{s.title}</h3>
-                  <p className="mt-2 text-[13.5px] leading-relaxed text-dark-text/75">{s.body}</p>
+                  <p className="mt-2 text-[13.5px] leading-relaxed text-slate-text">{s.body}</p>
                 </div>
               </div>
             ))}
@@ -156,16 +156,16 @@ function DnaSection() {
           <div className="border border-white/15 bg-white/[0.04] p-2">
             <img src={dnaImg} alt="DNA helix transforming into a curriculum tree" className="w-full" />
           </div>
-          <div className="mt-3 font-display text-xs uppercase tracking-[0.08em] text-white/40">
+          <div className="mt-3 font-display text-xs uppercase tracking-[0.08em] text-white/60">
             Fig. 2 — Learning DNA → curriculum tree
           </div>
         </div>
         <div className="order-1 lg:order-2">
-          <Marginalia className="[&::before]:bg-teal !text-white/50">Section 03 — Learning DNA</Marginalia>
+          <Marginalia className="[&::before]:bg-teal !text-white/80">Section 03 — Learning DNA</Marginalia>
           <h2 className="mt-4 font-display text-3xl font-bold text-ink sm:text-4xl">
             A profile that reads like a case study, <span className="italic">not a scorecard.</span>
           </h2>
-          <p className="mt-4 max-w-lg text-[14px] leading-relaxed text-white/70">
+          <p className="mt-4 max-w-lg text-[14px] leading-relaxed text-white/85">
             Your Learning DNA records six dimensions of how you learn. Each comes
             with evidence strength and a concrete change it triggers in your plan.
           </p>
@@ -180,7 +180,7 @@ function DnaSection() {
             ].map(([k, v]) => (
               <div key={k} className="grid grid-cols-[11rem_1fr] gap-4 py-4">
                 <dt className="font-mono text-[14px] uppercase tracking-[0.12em] text-teal">{k}</dt>
-                <dd className="text-[14px] leading-relaxed text-white/70">{v}</dd>
+                <dd className="text-[14px] leading-relaxed text-white/85">{v}</dd>
               </div>
             ))}
           </dl>
@@ -207,7 +207,7 @@ function CurriculumSection() {
           <h2 className="mt-4 text-3xl font-bold text-ink sm:text-4xl">
             Your whole board. Every chapter. Every topic.
           </h2>
-          <p className="mt-4 text-[14px] leading-relaxed text-dark-text/75">
+          <p className="mt-4 text-[14px] leading-relaxed text-slate-text">
             COGNIFY maps the complete school curriculum — Board → Class → Subject →
             Chapter → Topic → learning objectives. Every topic carries its own
             mastery state, revision schedule and recommended next action, so you
@@ -218,9 +218,9 @@ function CurriculumSection() {
           <table className="w-full min-w-[560px] border-collapse bg-card text-left">
             <thead>
               <tr className="border-b border-ink/15 bg-ivory-deep">
-                <th className="px-5 py-3 font-display text-xs uppercase tracking-[0.08em] text-muted-foreground">Code</th>
-                <th className="px-5 py-3 font-display text-xs uppercase tracking-[0.08em] text-muted-foreground">Subject</th>
-                <th className="px-5 py-3 font-display text-xs uppercase tracking-[0.08em] text-muted-foreground">Structure</th>
+                <th className="px-5 py-3 font-display text-xs uppercase tracking-[0.08em] text-slate-light">Code</th>
+                <th className="px-5 py-3 font-display text-xs uppercase tracking-[0.08em] text-slate-light">Subject</th>
+                <th className="px-5 py-3 font-display text-xs uppercase tracking-[0.08em] text-slate-light">Structure</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-ink/8">
@@ -228,7 +228,7 @@ function CurriculumSection() {
                 <tr key={s.code} className="transition-colors hover:bg-ivory-deep/50">
                   <td className={`px-5 py-3.5 font-mono text-xs font-medium ${s.color}`}>{s.code}</td>
                   <td className="px-5 py-3.5 font-serif text-base font-bold text-ink">{s.name}</td>
-                  <td className="px-5 py-3.5 text-[14px] text-dark-text/70">
+                  <td className="px-5 py-3.5 text-[14px] text-slate-text">
                     Chapters → Topics → Learning objectives
                   </td>
                 </tr>
@@ -242,7 +242,7 @@ function CurriculumSection() {
               Explore the curriculum <ArrowRight className="ml-1.5 h-4 w-4" />
             </Link>
           </Button>
-          <span className="font-mono text-[14px] uppercase tracking-[0.08em] text-muted-foreground">
+          <span className="font-mono text-[14px] uppercase tracking-[0.08em] text-slate-light">
             CBSE Class 10 shown in demo · more boards & classes mapped
           </span>
         </div>
@@ -262,10 +262,10 @@ function Closing() {
           Stop studying like everyone else.<br />
           <span className="italic text-teal">Study like yourself.</span>
         </h2>
-        <p className="mx-auto mt-4 max-w-md text-[14px] leading-relaxed text-dark-text/75">
+        <p className="mx-auto mt-4 max-w-md text-[14px] leading-relaxed text-slate-text">
           Your diagnostic takes minutes. The pattern-finding never stops.
         </p>
-        <Button asChild size="lg" className="mt-8 h-12 bg-teal px-8 text-[15px] text-white hover:bg-teal-dark">
+        <Button asChild size="lg" className="mt-8 h-12 bg-teal px-8 text-[15px] font-semibold text-white hover:bg-teal-dark">
           <Link href={href}>
             Begin your diagnostic <ArrowRight className="ml-1.5 h-4 w-4" />
           </Link>
