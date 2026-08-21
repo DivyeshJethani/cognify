@@ -193,8 +193,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "lecture",
       difficulty: "core",
       relevance: 92,
-      whyRecommended:
-        "You are proficient here (84%) but repeat a remainder error. This walkthrough drills exactly the step where your pattern breaks.",
+      whyRecommended: "This drills the exact step where your mistakes tend to happen.",
       dnaDimension: "Step-by-step sequencing",
     },
     {
@@ -206,8 +205,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "example",
       difficulty: "core",
       relevance: 88,
-      whyRecommended:
-        "Your board is CBSE — NCERT's own worked examples are the closest mirror of what your exam will ask. Strong match for consolidation.",
+      whyRecommended: "NCERT's own worked examples — closest to what your exam will actually ask.",
       dnaDimension: null,
     },
     {
@@ -219,8 +217,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "diagram",
       difficulty: "foundational",
       relevance: 79,
-      whyRecommended:
-        "Visual-diagram format — your strongest learning channel (31% better retention). A 6-minute primer before the 15-minute drill.",
+      whyRecommended: "A quick visual primer — pictures-first explanations work best for you.",
       dnaDimension: "Teaching format",
     },
     {
@@ -232,8 +229,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "practice",
       difficulty: "core",
       relevance: 94,
-      whyRecommended:
-        "Recommended action on your dashboard is Practice. This drill targets your remainder-error pattern with adaptive difficulty.",
+      whyRecommended: "Practice is what you need most here — and this drill adapts to your mistakes.",
       dnaDimension: "Mistake pattern",
     },
     {
@@ -245,8 +241,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "lecture",
       difficulty: "advanced",
       relevance: 66,
-      whyRecommended:
-        "Deep coverage if you want the full picture — but your attention ceiling is ~22 min on long content, so chunk it into two sessions.",
+      whyRecommended: "A deep dive — split it into two sittings for the best results.",
       dnaDimension: "Attention",
     },
   ],
@@ -260,8 +255,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "revision",
       difficulty: "core",
       relevance: 97,
-      whyRecommended:
-        "Your weakest flagged topic. Your proofs break at the 'assume rational' step — this guided revision rebuilds that exact step before Friday's test.",
+      whyRecommended: "This is your weakest spot right now — and this session targets it directly.",
       dnaDimension: "Mistake pattern",
     },
     {
@@ -273,8 +267,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "explanation",
       difficulty: "foundational",
       relevance: 84,
-      whyRecommended:
-        "Conceptual-errors dominate your profile (46%). A narrative explanation of WHY the contradiction works strengthens the idea before the formal proof.",
+      whyRecommended: "A story-based explanation of WHY it works — before you tackle the formal proof.",
       dnaDimension: "Mistake pattern",
     },
     {
@@ -286,8 +279,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "example",
       difficulty: "core",
       relevance: 90,
-      whyRecommended:
-        "This is a textbook-theorem question in CBSE papers. Mastering NCERT's exact proof wording is worth marks directly.",
+      whyRecommended: "This theorem appears word-for-word in CBSE papers — NCERT's wording wins marks.",
       dnaDimension: null,
     },
     {
@@ -299,8 +291,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "diagram",
       difficulty: "advanced",
       relevance: 77,
-      whyRecommended:
-        "Visual-diagram format, your strongest channel. The geometric construction makes the contradiction feel inevitable rather than symbolic.",
+      whyRecommended: "A visual proof — the geometry makes the idea feel obvious.",
       dnaDimension: "Teaching format",
     },
   ],
@@ -314,8 +305,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "explanation",
       difficulty: "core",
       relevance: 86,
-      whyRecommended:
-        "Developing mastery (61%). This session connects prime factorisation to HCF/LCM — exactly the link your curriculum sequence needs next.",
+      whyRecommended: "This connects prime factorisation to HCF/LCM — the exact next link you need.",
       dnaDimension: null,
     },
     {
@@ -327,8 +317,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "practice",
       difficulty: "core",
       relevance: 89,
-      whyRecommended:
-        "Practice is the fastest path from 61% to proficiency here. Problems adapt after every 3 attempts based on your error type.",
+      whyRecommended: "Practice is the fastest path to proficiency here — problems adapt to your errors.",
       dnaDimension: "Mastery gap",
     },
     {
@@ -340,8 +329,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "example",
       difficulty: "core",
       relevance: 83,
-      whyRecommended:
-        "Exercise 1.2 is where this theorem is actually tested. Board-style solutions model the presentation examiners expect.",
+      whyRecommended: "Exercise 1.2 is where this theorem is tested — in the style examiners expect.",
       dnaDimension: null,
     },
   ],
@@ -356,8 +344,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "revision",
       difficulty: "core",
       relevance: 91,
-      whyRecommended:
-        "Proficient (92%) but retention decays — spaced scheduler flagged this for day 12. Ten rapid questions will keep it mastered cheaply.",
+      whyRecommended: "You've got this, but it's due for a quick refresh — ten rapid questions will keep it.",
       dnaDimension: "Spaced retention",
     },
     {
@@ -369,8 +356,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "diagram",
       difficulty: "foundational",
       relevance: 82,
-      whyRecommended:
-        "Your strongest format again. Counting zeros from graphs is a diagram-native skill — this set converts your visual strength into marks.",
+      whyRecommended: "Counting zeros from graphs is a visual skill — this set plays to your strength.",
       dnaDimension: "Teaching format",
     },
   ],
@@ -384,8 +370,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "revision",
       difficulty: "core",
       relevance: 98,
-      whyRecommended:
-        "Your weakest tracked topic (27%) and confidence calibration shows you overestimate it. Before Friday's Chapter 2 test this is the highest-impact 30 minutes available today.",
+      whyRecommended: "Your weakest topic right now — and the highest-impact 30 minutes you can spend today.",
       dnaDimension: "Confidence calibration",
     },
     {
@@ -397,8 +382,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "explanation",
       difficulty: "core",
       relevance: 87,
-      whyRecommended:
-        "This topic is conceptually weak for you — connecting α+β and αβ to the graph's shape builds understanding rather than memorised formulas.",
+      whyRecommended: "This topic is conceptually weak for you — connecting α+β and αβ to the graph's shape builds understanding before the formulas.",
       dnaDimension: "Teaching format",
     },
     {
@@ -410,8 +394,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "example",
       difficulty: "core",
       relevance: 91,
-      whyRecommended:
-        "Forming a quadratic from given zeros is a guaranteed board question type. These worked examples include the verification step examiners mark.",
+      whyRecommended: "Forming a quadratic from given zeros is a guaranteed board question type.",
       dnaDimension: null,
     },
     {
@@ -423,8 +406,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "practice",
       difficulty: "advanced",
       relevance: 93,
-      whyRecommended:
-        "After the revision module, evidence of mastery requires a timed attempt. This set also serves as your Chapter 2 test rehearsal.",
+      whyRecommended: "After the revision module, evidence of mastery requires a timed attempt.",
       dnaDimension: "Mastery gap",
     },
     {
@@ -436,8 +418,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "diagram",
       difficulty: "foundational",
       relevance: 80,
-      whyRecommended:
-        "5 minutes, diagram-first, your strongest format. Watch before the revision module to prime the geometry behind the algebra.",
+      whyRecommended: "5 minutes, diagram-first, your",
       dnaDimension: "Teaching format",
     },
   ],
@@ -451,8 +432,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "lecture",
       difficulty: "core",
       relevance: 95,
-      whyRecommended:
-        "Recommended action: Learn. Your prerequisite 'Zeros of a Polynomial' is now proficient, so this is the natural next step — scheduled for tomorrow's session.",
+      whyRecommended: "Recommended action: Learn.",
       dnaDimension: "Curriculum sequence",
     },
     {
@@ -464,8 +444,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "explanation",
       difficulty: "core",
       relevance: 88,
-      whyRecommended:
-        "The verification identity is where students slip procedurally. This 10-minute visual keeps the 25-minute lesson inside your attention budget.",
+      whyRecommended: "The verification identity is where students slip procedurally.",
       dnaDimension: "Attention",
     },
     {
@@ -477,8 +456,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "practice",
       difficulty: "core",
       relevance: 86,
-      whyRecommended:
-        "CBSE requires you to verify with the identity. Every problem here forces the verification step, pre-empting procedural errors.",
+      whyRecommended: "CBSE requires you to verify with the identity.",
       dnaDimension: "Mistake pattern",
     },
   ],
@@ -493,8 +471,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "lecture",
       difficulty: "core",
       relevance: 85,
-      whyRecommended:
-        "You are developing here (73%). This lesson closes the gap on classifying pair types from the graph — your weakest sub-skill in the chapter.",
+      whyRecommended: "You are developing here (73%).",
       dnaDimension: "Mastery gap",
     },
     {
@@ -506,8 +483,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "diagram",
       difficulty: "foundational",
       relevance: 83,
-      whyRecommended:
-        "A diagram-native skill in your strongest format. Dragging lines until they intersect builds the classification intuition for free.",
+      whyRecommended: "A diagram-native skill in your",
       dnaDimension: "Teaching format",
     },
     {
@@ -519,8 +495,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "practice",
       difficulty: "core",
       relevance: 81,
-      whyRecommended:
-        "Graph accuracy decides marks here. A timed plotting set converts your 73% to proficient while your momentum is still warm.",
+      whyRecommended: "Graph accuracy decides marks here.",
       dnaDimension: "Mastery gap",
     },
   ],
@@ -534,8 +509,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "practice",
       difficulty: "core",
       relevance: 94,
-      whyRecommended:
-        "Your elimination steps are right but sign errors appear in 3 of your last 8 attempts — a careless-error pattern. Timed drills are the prescribed fix.",
+      whyRecommended: "Your elimination steps are right but sign errors appear in 3 of your last 8 attempts — a careless-error pattern.",
       dnaDimension: "Mistake pattern",
     },
     {
@@ -547,8 +521,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "explanation",
       difficulty: "core",
       relevance: 85,
-      whyRecommended:
-        "Plateaued at 55%. Choosing the efficient method is the conceptual layer above mechanics — this session adds it.",
+      whyRecommended: "Plateaued at 55%.",
       dnaDimension: "Mastery gap",
     },
     {
@@ -560,8 +533,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "revision",
       difficulty: "foundational",
       relevance: 89,
-      whyRecommended:
-        "Your recurring careless errors match items on this checklist. Keep it open during every timed drill.",
+      whyRecommended: "Your recurring careless errors match items on this checklist.",
       dnaDimension: "Mistake pattern",
     },
     {
@@ -573,8 +545,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "example",
       difficulty: "core",
       relevance: 82,
-      whyRecommended:
-        "Both methods are tested in NCERT exercises — these board-style solutions show the presentation full marks expect.",
+      whyRecommended: "Both methods are tested in NCERT exercises — these board-style solutions show the presentation full marks expect.",
       dnaDimension: null,
     },
   ],
@@ -588,8 +559,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "lecture",
       difficulty: "core",
       relevance: 92,
-      whyRecommended:
-        "New topic in your sequence. The derivation lesson is scheduled right after you clear the current revision backlog.",
+      whyRecommended: "New topic in your sequence.",
       dnaDimension: "Curriculum sequence",
     },
     {
@@ -601,8 +571,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "explanation",
       difficulty: "advanced",
       relevance: 84,
-      whyRecommended:
-        "Converting real situations into equations is the hardest part of this topic. This session teaches the translation pattern, not just the method.",
+      whyRecommended: "Converting real situations into equations is the hardest part of this topic.",
       dnaDimension: "Mastery gap",
     },
     {
@@ -614,8 +583,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "practice",
       difficulty: "advanced",
       relevance: 87,
-      whyRecommended:
-        "CBSE consistently sets 5-mark word problems from this topic. This set mirrors the exam distribution.",
+      whyRecommended: "CBSE consistently sets 5-mark word problems from this topic.",
       dnaDimension: null,
     },
   ],
@@ -630,8 +598,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "lecture",
       difficulty: "core",
       relevance: 88,
-      whyRecommended:
-        "You sit at 66% here — the factorisation mechanics are the remaining gap. Splitting the middle term gets a full treatment in this lesson.",
+      whyRecommended: "You sit at 66% here — the factorisation mechanics are the remaining gap.",
       dnaDimension: "Mastery gap",
     },
     {
@@ -643,8 +610,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "practice",
       difficulty: "core",
       relevance: 90,
-      whyRecommended:
-        "Factorisation is a mechanical skill — deliberate practice is the shortest path from 66% to proficient.",
+      whyRecommended: "Factorisation is a mechanical skill — deliberate practice is the shortest path from 66% to proficient.",
       dnaDimension: "Mastery gap",
     },
     {
@@ -656,8 +622,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "example",
       difficulty: "core",
       relevance: 84,
-      whyRecommended:
-        "Exercise 4.2 is the direct source of most board factorisation questions — board-style presentation included.",
+      whyRecommended: "Exercise 4.",
       dnaDimension: null,
     },
   ],
@@ -671,8 +636,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "revision",
       difficulty: "core",
       relevance: 96,
-      whyRecommended:
-        "Struggle analysis: you attempted this twice and paused 4+ minutes each time. A guided re-attempt with worked examples is the recommended intervention.",
+      whyRecommended: "Struggle analysis: you attempted this twice and paused 4+ minutes each time.",
       dnaDimension: "Attention",
     },
     {
@@ -684,8 +648,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "diagram",
       difficulty: "foundational",
       relevance: 85,
-      whyRecommended:
-        "Your strongest format, on the exact topic where you stall. The geometric story explains the '+1 then −1' trick that trips you.",
+      whyRecommended: "Your, on the exact topic where you stall.",
       dnaDimension: "Teaching format",
     },
     {
@@ -697,8 +660,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "diagram",
       difficulty: "core",
       relevance: 81,
-      whyRecommended:
-        "Hands-on diagram work before the guided revision lowers the frustration you recorded in your last two attempts.",
+      whyRecommended: "Hands-on diagram work before the guided revision lowers the frustration you recorded in your last two attempts.",
       dnaDimension: "Teaching format",
     },
     {
@@ -710,8 +672,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "example",
       difficulty: "core",
       relevance: 87,
-      whyRecommended:
-        "This is the second board-prescribed method for Chapter 4. NCERT's worked solutions model the step sequence examiners award marks for.",
+      whyRecommended: "This is the second board-prescribed method for Chapter 4.",
       dnaDimension: null,
     },
   ],
@@ -725,8 +686,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "lecture",
       difficulty: "core",
       relevance: 93,
-      whyRecommended:
-        "New topic. It follows 'Completing the Square' in your sequence, and links directly to the parabola diagrams you learn best from.",
+      whyRecommended: "New topic.",
       dnaDimension: "Curriculum sequence",
     },
     {
@@ -738,8 +698,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "diagram",
       difficulty: "foundational",
       relevance: 88,
-      whyRecommended:
-        "Your second objective here is literally this diagram: relating D's sign to x-axis intersections. Learn it visually first.",
+      whyRecommended: "Your second objective here is literally this diagram: relating D's sign to x-axis intersections.",
       dnaDimension: "Teaching format",
     },
     {
@@ -751,8 +710,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "practice",
       difficulty: "core",
       relevance: 86,
-      whyRecommended:
-        "Board questions ask for the nature of roots, not just the roots. This set trains the prediction habit the exam rewards.",
+      whyRecommended: "Board questions ask for the nature of roots, not just the roots.",
       dnaDimension: null,
     },
   ],
@@ -767,8 +725,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "revision",
       difficulty: "foundational",
       relevance: 90,
-      whyRecommended:
-        "Proficient (88%) and flagged for spaced review at day 10. Ten rapid questions keep conservation-of-mass skills sharp at minimum cost.",
+      whyRecommended: "and flagged for spaced review at day 10.",
       dnaDimension: "Spaced retention",
     },
     {
@@ -780,8 +737,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "practice",
       difficulty: "core",
       relevance: 85,
-      whyRecommended:
-        "Balancing is mechanical and practice-driven. This set warms up the skill before Chapter 1's unit test.",
+      whyRecommended: "Balancing is mechanical and practice-driven.",
       dnaDimension: "Mastery gap",
     },
     {
@@ -793,8 +749,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "example",
       difficulty: "core",
       relevance: 87,
-      whyRecommended:
-        "NCERT activities are the source of board activity-based questions. This walkthrough connects every activity to a probable question.",
+      whyRecommended: "NCERT activities are the source of board activity-based questions.",
       dnaDimension: null,
     },
   ],
@@ -808,8 +763,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "practice",
       difficulty: "core",
       relevance: 95,
-      whyRecommended:
-        "You confuse displacement with double displacement in 4 of your last 10 classifications. This drill targets exactly that gap.",
+      whyRecommended: "You confuse displacement with double displacement in 4 of your last 10 classifications.",
       dnaDimension: "Mistake pattern",
     },
     {
@@ -821,8 +775,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "revision",
       difficulty: "foundational",
       relevance: 86,
-      whyRecommended:
-        "A visual-diagram format you excel with. The side-by-side table directly contrasts displacement vs double displacement — your confusion point.",
+      whyRecommended: "A visual-diagram format you excel with.",
       dnaDimension: "Teaching format",
     },
     {
@@ -834,8 +787,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "lecture",
       difficulty: "core",
       relevance: 80,
-      whyRecommended:
-        "Chunk into two 11-minute watches (your 22-minute attention ceiling). Real-life examples anchor each type for exam application questions.",
+      whyRecommended: "Chunk into two 11-minute watches (your 22-minute",
       dnaDimension: "Attention",
     },
     {
@@ -847,8 +799,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "example",
       difficulty: "core",
       relevance: 84,
-      whyRecommended:
-        "CBSE draws classification questions straight from NCERT exercises. Solved set shows the terminology full marks expect.",
+      whyRecommended: "CBSE draws classification questions straight from NCERT exercises.",
       dnaDimension: null,
     },
   ],
@@ -862,8 +813,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "lecture",
       difficulty: "core",
       relevance: 94,
-      whyRecommended:
-        "Recommended action: Learn. Scheduled for your peak focus hour (18:00–20:00), when new-content retention is best.",
+      whyRecommended: "Recommended action: Learn.",
       dnaDimension: "Rhythm",
     },
     {
@@ -875,8 +825,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "explanation",
       difficulty: "foundational",
       relevance: 82,
-      whyRecommended:
-        "A short contextual primer before the full lesson — corrosion examples are your third learning objective, taught with real images.",
+      whyRecommended: "A short contextual primer before the full lesson — corrosion examples are your third learning objective, taught with real images.",
       dnaDimension: null,
     },
     {
@@ -888,8 +837,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "diagram",
       difficulty: "foundational",
       relevance: 85,
-      whyRecommended:
-        "Your strongest format for a memory-heavy objective. The flow diagram gives you a retrieval hook for 'LEO says GER'.",
+      whyRecommended: "Your",
       dnaDimension: "Teaching format",
     },
   ],
@@ -904,8 +852,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "diagram",
       difficulty: "foundational",
       relevance: 88,
-      whyRecommended:
-        "Proficient (76%) with indicator questions as the thin spot. A diagram-first reference consolidates the colour-change table.",
+      whyRecommended: "with indicator questions as the thin spot.",
       dnaDimension: "Teaching format",
     },
     {
@@ -917,8 +864,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "practice",
       difficulty: "core",
       relevance: 84,
-      whyRecommended:
-        "Prediction questions are where 76% stalls at proficiency. Twelve targeted problems close the loop.",
+      whyRecommended: "Prediction questions are where 76% stalls at proficiency.",
       dnaDimension: "Mastery gap",
     },
     {
@@ -930,8 +876,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "example",
       difficulty: "core",
       relevance: 82,
-      whyRecommended:
-        "NCERT's acid-base activities (litmus, zinc + acid) are board favourites. This walkthrough pre-answers the probable activity questions.",
+      whyRecommended: "NCERT's acid-base activities (litmus, zinc + acid) are board favourites.",
       dnaDimension: null,
     },
   ],
@@ -945,8 +890,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "practice",
       difficulty: "advanced",
       relevance: 93,
-      whyRecommended:
-        "Mastery plateauing at ~52%. Practice with pH-logarithm conversions typically breaks this plateau — this set leads with them.",
+      whyRecommended: "Mastery plateauing at ~52%.",
       dnaDimension: "Mastery gap",
     },
     {
@@ -958,8 +902,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "explanation",
       difficulty: "core",
       relevance: 87,
-      whyRecommended:
-        "The log step is the conceptual barrier holding you at 52%. This session removes the math anxiety layer first.",
+      whyRecommended: "The log step is the conceptual barrier holding you at 52%.",
       dnaDimension: "Mistake pattern",
     },
     {
@@ -971,8 +914,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "diagram",
       difficulty: "foundational",
       relevance: 83,
-      whyRecommended:
-        "Your second objective is this comparison. Visual-diagram format, retrieved in 8 minutes, feeds directly into the calculation set.",
+      whyRecommended: "Your second objective is this comparison.",
       dnaDimension: "Teaching format",
     },
     {
@@ -984,8 +926,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "example",
       difficulty: "core",
       relevance: 80,
-      whyRecommended:
-        "Indicator and pH activities from NCERT appear in board practical-based questions. Worked solutions included.",
+      whyRecommended: "Indicator and pH activities from NCERT appear in board practical-based questions.",
       dnaDimension: null,
     },
   ],
@@ -1000,8 +941,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "revision",
       difficulty: "foundational",
       relevance: 89,
-      whyRecommended:
-        "Mastered (95%) — just keep it that way. Day-14 spaced review at minimum cost preserves the win.",
+      whyRecommended: "Mastered (95%) — just keep it that way.",
       dnaDimension: "Spaced retention",
     },
     {
@@ -1013,8 +953,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "diagram",
       difficulty: "foundational",
       relevance: 84,
-      whyRecommended:
-        "Stomatal mechanism is a diagram-mark question in CBSE. Your strongest format, five minutes, direct mark conversion.",
+      whyRecommended: "Stomatal mechanism is a diagram-mark question in CBSE.",
       dnaDimension: "Teaching format",
     },
   ],
@@ -1028,8 +967,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "revision",
       difficulty: "core",
       relevance: 96,
-      whyRecommended:
-        "Revision due tomorrow, and your DNA shows diagram formats are your strongest channel. This module pairs the two facts.",
+      whyRecommended: "Revision due tomorrow, and your DNA shows diagram formats are your.",
       dnaDimension: "Teaching format",
     },
     {
@@ -1041,8 +979,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "diagram",
       difficulty: "foundational",
       relevance: 88,
-      whyRecommended:
-        "Tracing food's pathway is your first objective — an animation makes the sequence unforgettable before the diagram revision.",
+      whyRecommended: "Tracing food's pathway is your first objective — an animation makes the sequence unforgettable before the diagram revision.",
       dnaDimension: "Teaching format",
     },
     {
@@ -1054,8 +991,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "diagram",
       difficulty: "core",
       relevance: 90,
-      whyRecommended:
-        "Your second objective is exactly this enzyme map. One diagram covers both objectives; a high-value 6 minutes.",
+      whyRecommended: "Your second objective is exactly this enzyme map.",
       dnaDimension: "Teaching format",
     },
     {
@@ -1067,8 +1003,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "example",
       difficulty: "core",
       relevance: 81,
-      whyRecommended:
-        "NCERT's chloroplast/starch and starch-iodine activities feed board activity-based questions. Solved walkthrough included.",
+      whyRecommended: "NCERT's chloroplast/starch and starch-iodine activities feed board activity-based questions.",
       dnaDimension: null,
     },
   ],
@@ -1082,8 +1017,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "lecture",
       difficulty: "core",
       relevance: 93,
-      whyRecommended:
-        "New topic in your sequence. Diagram-heavy by nature — which plays to your documented strength.",
+      whyRecommended: "New topic in your sequence.",
       dnaDimension: "Curriculum sequence",
     },
     {
@@ -1095,8 +1029,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "explanation",
       difficulty: "core",
       relevance: 87,
-      whyRecommended:
-        "The heart diagram is the single highest-mark visual in this chapter. Learn the labels here, verify with the practice set after.",
+      whyRecommended: "The heart diagram is the single highest-mark visual in this chapter.",
       dnaDimension: "Teaching format",
     },
     {
@@ -1108,8 +1041,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "diagram",
       difficulty: "foundational",
       relevance: 89,
-      whyRecommended:
-        "Your first objective is a diagram question. This flow diagram is the canonical answer sketch examiners reward.",
+      whyRecommended: "Your first objective is a diagram question.",
       dnaDimension: "Teaching format",
     },
     {
@@ -1121,8 +1053,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "practice",
       difficulty: "core",
       relevance: 84,
-      whyRecommended:
-        "After the lesson, evidence requires a timed attempt. Set mirrors CBSE's question distribution for Chapter 6.",
+      whyRecommended: "After the lesson, evidence requires a timed attempt.",
       dnaDimension: "Mastery gap",
     },
   ],
@@ -1137,8 +1068,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "lecture",
       difficulty: "core",
       relevance: 86,
-      whyRecommended:
-        "Solid footing (70%) with Napoleon's Civil Code as the thin spot. This lesson's timeline treats both objectives evenly.",
+      whyRecommended: "Solid footing (70%) with Napoleon's Civil Code as the thin spot.",
       dnaDimension: "Mastery gap",
     },
     {
@@ -1150,8 +1080,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "practice",
       difficulty: "core",
       relevance: 88,
-      whyRecommended:
-        "CBSE sets source-based questions on this chapter. This set builds the source-reading skill the board now tests.",
+      whyRecommended: "CBSE sets source-based questions on this chapter.",
       dnaDimension: null,
     },
     {
@@ -1163,8 +1092,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "explanation",
       difficulty: "core",
       relevance: 79,
-      whyRecommended:
-        "A narrative retelling cements chronology — useful before your unit revision, though it stays within your 22-minute attention ceiling.",
+      whyRecommended: "A narrative retelling cements chronology — useful before your unit revision, though it stays within one sitting.",
       dnaDimension: "Attention",
     },
     {
@@ -1176,8 +1104,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "example",
       difficulty: "core",
       relevance: 84,
-      whyRecommended:
-        "NCERT's map work (1815 Europe) is a guaranteed board item. Solved walkthrough includes the exact map labels required.",
+      whyRecommended: "NCERT's map work (1815 Europe) is a guaranteed board item.",
       dnaDimension: null,
     },
   ],
@@ -1191,8 +1118,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "revision",
       difficulty: "core",
       relevance: 96,
-      whyRecommended:
-        "Your notes are flagged incomplete and unit-test performance was 58%. This module rebuilds the unification comparison from zero.",
+      whyRecommended: "Your notes are flagged incomplete and unit-test performance was 58%.",
       dnaDimension: "Mastery gap",
     },
     {
@@ -1204,8 +1130,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "example",
       difficulty: "core",
       relevance: 89,
-      whyRecommended:
-        "Board questions on Cavour, Garibaldi and Bismarck trace directly to NCERT. These solved answers model the 5-mark structure.",
+      whyRecommended: "Board questions on Cavour, Garibaldi and Bismarck trace directly to NCERT.",
       dnaDimension: null,
     },
     {
@@ -1217,8 +1142,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "diagram",
       difficulty: "core",
       relevance: 85,
-      whyRecommended:
-        "A visual-diagram summary of both unifications — your strongest format compressing 25 minutes of reading into 8.",
+      whyRecommended: "A visual-diagram summary of both unifications — your",
       dnaDimension: "Teaching format",
     },
     {
@@ -1230,8 +1154,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "explanation",
       difficulty: "core",
       relevance: 82,
-      whyRecommended:
-        "You underperform on 'key figures' questions. This character-first explanation gives each figure a memorable anchor.",
+      whyRecommended: "You underperform on 'key figures' questions.",
       dnaDimension: "Mastery gap",
     },
   ],
@@ -1245,8 +1168,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "lecture",
       difficulty: "core",
       relevance: 92,
-      whyRecommended:
-        "New topic in your sequence. The lesson ends with the imperialism→WWI link that is your second objective.",
+      whyRecommended: "New topic in your sequence.",
       dnaDimension: "Curriculum sequence",
     },
     {
@@ -1258,8 +1180,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "diagram",
       difficulty: "core",
       relevance: 87,
-      whyRecommended:
-        "The map of 1914 Europe is the visual spine of this topic — learn it early and every later fact has somewhere to live.",
+      whyRecommended: "The map of 1914 Europe is the visual spine of this topic — learn it early and every later fact has somewhere to live.",
       dnaDimension: "Teaching format",
     },
     {
@@ -1271,8 +1192,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "explanation",
       difficulty: "advanced",
       relevance: 80,
-      whyRecommended:
-        "A narrative that connects the Balkans flashpoint to the war's outbreak — your second learning objective, told as a story.",
+      whyRecommended: "A narrative that connects the Balkans flashpoint to the war's outbreak — your second learning objective, told as a story.",
       dnaDimension: null,
     },
   ],
@@ -1287,8 +1207,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "practice",
       difficulty: "advanced",
       relevance: 94,
-      whyRecommended:
-        "You recall facts well but struggle with 'assess/evaluate' answers. This set targets exactly that exam skill gap.",
+      whyRecommended: "You recall facts well but struggle with 'assess/evaluate' answers.",
       dnaDimension: "Mistake pattern",
     },
     {
@@ -1300,8 +1219,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "example",
       difficulty: "core",
       relevance: 86,
-      whyRecommended:
-        "NCERT's treatment of Khilafat-Non-Cooperation is the board reference. Solved 5-mark answers show the evaluation structure.",
+      whyRecommended: "NCERT's treatment of Khilafat-Non-Cooperation is the board reference.",
       dnaDimension: null,
     },
     {
@@ -1313,8 +1231,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "explanation",
       difficulty: "core",
       relevance: 83,
-      whyRecommended:
-        "Your first objective needs the economic-social chain of consequences — this narration builds it causally, not as a list.",
+      whyRecommended: "Your first objective needs the economic-social chain of consequences — this narration builds it causally, not as a list.",
       dnaDimension: null,
     },
     {
@@ -1326,8 +1243,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "diagram",
       difficulty: "foundational",
       relevance: 81,
-      whyRecommended:
-        "Your strongest format compressing a decade of movements into one retrievable visual — useful before every practice attempt.",
+      whyRecommended: "Your",
       dnaDimension: "Teaching format",
     },
   ],
@@ -1341,8 +1257,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "lecture",
       difficulty: "core",
       relevance: 93,
-      whyRecommended:
-        "Recommended action: Learn, next topic in sequence. Scheduled after your revision backlog clears — estimated 3 sessions to proficiency.",
+      whyRecommended: "Recommended action: Learn, next topic in sequence.",
       dnaDimension: "Curriculum sequence",
     },
     {
@@ -1354,8 +1269,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "explanation",
       difficulty: "core",
       relevance: 84,
-      whyRecommended:
-        "Primary footage makes 'describe the Salt March' answers vivid and specific — exactly what examiners reward over generic answers.",
+      whyRecommended: "Primary footage makes 'describe the Salt March' answers vivid and specific — exactly what examiners reward over generic answers.",
       dnaDimension: null,
     },
     {
@@ -1367,8 +1281,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "diagram",
       difficulty: "foundational",
       relevance: 88,
-      whyRecommended:
-        "Your second objective is visual by nature. This set converts 'sense of collective belonging' from abstraction to labelled examples.",
+      whyRecommended: "Your second objective is visual by nature.",
       dnaDimension: "Teaching format",
     },
     {
@@ -1380,8 +1293,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "example",
       difficulty: "core",
       relevance: 85,
-      whyRecommended:
-        "NCERT's Civil Disobedience section is the direct source for board questions on the Salt March's significance.",
+      whyRecommended: "NCERT's Civil Disobedience section is the direct source for board questions on the Salt March's significance.",
       dnaDimension: null,
     },
   ],
@@ -1396,8 +1308,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "lecture",
       difficulty: "core",
       relevance: 88,
-      whyRecommended:
-        "This lesson covers plot, character of Lencho and the faith-vs-institution theme — the three angles CBSE asks from this prose piece.",
+      whyRecommended: "This lesson covers plot, character of Lencho and the faith-vs-institution theme — the three angles CBSE asks from this prose",
       dnaDimension: null,
     },
     {
@@ -1409,8 +1320,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "practice",
       difficulty: "core",
       relevance: 85,
-      whyRecommended:
-        "English marks live and die on answer precision. This set drills inference and character-analysis questions in board style.",
+      whyRecommended: "English marks live and die on answer precision.",
       dnaDimension: "Mastery gap",
     },
     {
@@ -1422,8 +1332,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "diagram",
       difficulty: "foundational",
       relevance: 83,
-      whyRecommended:
-        "Your strongest format applied to literature: character arcs and themes on a single retrievable map.",
+      whyRecommended: "Your",
       dnaDimension: "Teaching format",
     },
     {
@@ -1435,8 +1344,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "example",
       difficulty: "core",
       relevance: 82,
-      whyRecommended:
-        "NCERT's think-about-it questions frequently reappear in boards. Solved answers model the text-evidence habit.",
+      whyRecommended: "NCERT's think-about-it questions frequently reappear in boards.",
       dnaDimension: null,
     },
   ],
@@ -1450,8 +1358,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "lecture",
       difficulty: "core",
       relevance: 87,
-      whyRecommended:
-        "Covers Mandela's 'courage is not absence of fear' and the twin obligations theme — the two most-tested ideas from this extract.",
+      whyRecommended: "Covers Mandela's 'courage is not absence of fear' and the twin obligations theme — the two most-tested ideas from this extract.",
       dnaDimension: null,
     },
     {
@@ -1463,8 +1370,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "practice",
       difficulty: "core",
       relevance: 84,
-      whyRecommended:
-        "Two- and three-mark extract questions are the bulk of English Section A. Timed practice here is high-yield.",
+      whyRecommended: "Two- and three-mark extract questions are the bulk of English Section A.",
       dnaDimension: "Mastery gap",
     },
     {
@@ -1476,8 +1382,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "explanation",
       difficulty: "foundational",
       relevance: 80,
-      whyRecommended:
-        "Knowing the real history deepens every answer you write about the extract — context is what separates 2-mark and 3-mark responses.",
+      whyRecommended: "Knowing the real history deepens every answer you write about the extract — context is what separates 2-mark and 3-mark responses.",
       dnaDimension: null,
     },
   ],
@@ -1491,8 +1396,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "lecture",
       difficulty: "core",
       relevance: 86,
-      whyRecommended:
-        "The supernatural ending is the most-asked question from this story. This lesson gives you the three accepted readings.",
+      whyRecommended: "The supernatural ending is the most-asked question from this story.",
       dnaDimension: null,
     },
     {
@@ -1504,8 +1408,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "practice",
       difficulty: "core",
       relevance: 83,
-      whyRecommended:
-        "Inference questions on the story's ending decide English marks. Twelve board-style questions with model answers.",
+      whyRecommended: "Inference questions on the story's ending decide English marks.",
       dnaDimension: "Mastery gap",
     },
     {
@@ -1517,8 +1420,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "diagram",
       difficulty: "foundational",
       relevance: 81,
-      whyRecommended:
-        "Your strongest format: story beats and symbols on one map. Retrieve it before every practice attempt.",
+      whyRecommended: "Your",
       dnaDimension: "Teaching format",
     },
   ],
@@ -1533,8 +1435,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "lecture",
       difficulty: "core",
       relevance: 85,
-      whyRecommended:
-        "कहानी का सार, किरदार विश्लेषण और 'माँ के ममत्व' की भूमिका — बोर्ड के प्रमुख प्रश्नों की कवच।",
+      whyRecommended: "कहानी का सार, किरदार विश्लेषण और 'माँ के ममत्व' की भूमिका — बोर्ड के प्रमुख प्रश्नों की कवच।.",
       dnaDimension: null,
     },
     {
@@ -1546,8 +1447,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "practice",
       difficulty: "core",
       relevance: 83,
-      whyRecommended:
-        "हिंदी में उत्तर की सटीकता अंक तय करती है। बोर्ड-शैली प्रश्नों का समयबद्ध अभ्यास।",
+      whyRecommended: "हिंदी में उत्तर की सटीकता अंक तय करती है। बोर्ड-शैली प्रश्नों का समयबद्ध अभ्यास।.",
       dnaDimension: "Mastery gap",
     },
     {
@@ -1559,8 +1459,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "example",
       difficulty: "core",
       relevance: 82,
-      whyRecommended:
-        "NCERT के विचार-विमर्श प्रश्न अक्सर बोर्ड में दोहराए जाते हैं — हल सहित।",
+      whyRecommended: "NCERT के विचार-विमर्श प्रश्न अक्सर बोर्ड में दोहराए जाते हैं — हल सहित।.",
       dnaDimension: null,
     },
   ],
@@ -1574,8 +1473,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "revision",
       difficulty: "core",
       relevance: 86,
-      whyRecommended:
-        "दिन-7 पुनरावलोकन निर्धारित। कहानी का सार और प्रमुख प्रश्न एक बार फिर — स्पेस्ड रिटेंशन के अनुसार।",
+      whyRecommended: "दिन-7 पुनरावलोकन निर्धारित। कहानी का सार और प्रमुख प्रश्न एक बार फिर — स्पेस्ड रिटेंशन के अनुसार।.",
       dnaDimension: "Spaced retention",
     },
     {
@@ -1587,8 +1485,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "example",
       difficulty: "core",
       relevance: 81,
-      whyRecommended:
-        "बोर्ड प्रश्न NCERT के विचार-विमर्श से सीधे आते हैं — उत्तरों की प्रस्तुति बोर्ड-शैली में।",
+      whyRecommended: "बोर्ड प्रश्न NCERT के विचार-विमर्श से सीधे आते हैं — उत्तरों की प्रस्तुति बोर्ड-शैली में।.",
       dnaDimension: null,
     },
   ],
@@ -1603,8 +1500,7 @@ const INVENTORY: Record<string, RawResource[]> = {
       format: "revision",
       difficulty: "foundational",
       relevance: 84,
-      whyRecommended:
-        "दिन-7 स्पेस्ड रिव्यू। शब्दार्थ और कथावस्तु — बोर्ड में सबसे ज्यादा पूछे जाने वाले अंश।",
+      whyRecommended: "दिन-7 स्पेस्ड रिव्यू। शब्दार्थ और कथावस्तु — बोर्ड में सबसे ज्यादा पूछे जाने वाले अंश।.",
       dnaDimension: "Spaced retention",
     },
   ],
@@ -1688,7 +1584,7 @@ export function discoverResources(
   }
 
   const rankingNote =
-    "Ranked per student by Learning DNA (top format: visual diagrams), current mastery, mistake profile and curriculum sequence. Sources searched: NCERT official, CBSE-aligned YouTube channels, free educational websites and COGNIFY's own engine.";
+    "Picked from NCERT, board-aligned channels and free educational sites — sorted by what fits your level and your week.";
 
   const resolved = filtered.map(
     (r): LearningResource => ({

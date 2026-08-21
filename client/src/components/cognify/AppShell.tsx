@@ -21,6 +21,7 @@ import {
   Command,
   CreditCard,
   Library,
+  Lightbulb,
   LogOut,
   Menu,
   PlayCircle,
@@ -44,21 +45,24 @@ import { useEffect, useState } from "react";
 import { Link, useLocation } from "wouter";
 import { toast } from "sonner";
 
+// Primary journey — what a student uses every day
 const navItems = [
-  { href: "/dashboard", label: "Command Center", icon: Command },
+  { href: "/today", label: "Today", icon: Command },
   { href: "/curriculum", label: "Curriculum Explorer", icon: BookOpen },
-  { href: "/library", label: "Resource Library", icon: Library },
-  { href: "/saved", label: "My Saved Resources", icon: Bookmark },
-  { href: "/continue", label: "Continue Learning", icon: PlayCircle },
-  { href: "/profile", label: "Learning DNA", icon: Atom },
-  { href: "/adaptive", label: "Adaptive Lab", icon: Zap },
-  { href: "/timetable", label: "Timetable", icon: CalendarDays },
-  { href: "/goals", label: "Stretch Goals", icon: Target },
+  { href: "/teach", label: "Teach Cognify", icon: Lightbulb },
   { href: "/community", label: "Study Groups", icon: Users },
-  { href: "/credits", label: "Credits", icon: CreditCard },
 ];
 
-const comingSoon = new Set(["/credits"]);
+// Available quietly for deeper sessions / future backend integration —
+// reachable via the profile menu and direct links, not promoted.
+const quietLinks: { href: string; label: string }[] = [
+  { href: "/continue", label: "Continue learning" },
+  { href: "/profile", label: "My profile" },
+  { href: "/timetable", label: "Timetable" },
+  { href: "/goals", label: "Stretch goals" },
+];
+
+const comingSoon = new Set(["/goals", "/credits"]);
 
 const KIND_GLYPH: Record<string, string> = {
   topic: "T",
@@ -402,7 +406,7 @@ function ShellContent({ children }: { children: React.ReactNode }) {
     <div className="flex min-h-screen bg-background">
       {/* Sidebar — desktop */}
       <aside className="fixed inset-y-0 left-0 z-40 hidden w-64 flex-col border-r border-white/[0.08] bg-ink lg:flex">
-                <Link href="/dashboard" className="flex items-center gap-3 border-b border-white/[0.08] px-5 py-5">
+                <Link href="/today" className="flex items-center gap-3 border-b border-white/[0.08] px-5 py-5">
           <img src={LOGO_URL} alt="COGNIFY" className="h-9 w-9" />
           <div>
             <div className="font-serif text-lg font-bold tracking-[0.12em] text-white">COGNIFY</div>
@@ -434,9 +438,26 @@ function ShellContent({ children }: { children: React.ReactNode }) {
               </div>
             </div>
           </Link>
+          {/* Quiet links — available, but not promoted */}
+          <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 border-t border-white/[0.08] pt-2">
+            {quietLinks.map((q) => (
+              <Link
+                key={q.href}
+                href={q.href}
+                className="text-[12px] text-white/35 transition-colors hover:text-white/70"
+                onClick={() => {
+                  if (comingSoon.has(q.href)) {
+                    toast(`${q.label} — coming in the next stage`);
+                  }
+                }}
+              >
+                {q.label}
+              </Link>
+            ))}
+          </div>
           <div className="mt-3 flex items-center justify-between border-t border-white/[0.08] pt-3">
             <div className="font-mono text-[12px] uppercase tracking-widest text-white/40">
-              DNA profile <span className="text-teal">{dna.profileStrength}%</span>
+              COGNIFY
             </div>
             <button
               onClick={logout}
@@ -464,7 +485,7 @@ function MobileHeader() {
   const { profile, dna } = useApp();
   return (
     <header className="sticky top-0 z-40 flex items-center justify-between border-b border-border bg-ivory px-4 py-3 lg:hidden">
-      <Link href="/dashboard" className="flex items-center gap-2.5">
+      <Link href="/today" className="flex items-center gap-2.5">
         <img src={LOGO_URL} alt="COGNIFY" className="h-8 w-8" />
         <span className="font-serif text-base font-bold tracking-[0.12em] text-ink">COGNIFY</span>
       </Link>

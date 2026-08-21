@@ -11,6 +11,7 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Onboarding from "./pages/Onboarding";
 import Dashboard from "./pages/Dashboard";
+import Today from "./pages/Today";
 import Curriculum from "./pages/Curriculum";
 import Profile from "./pages/Profile";
 import ComingSoon from "./pages/ComingSoon";
@@ -93,6 +94,7 @@ function Router() {
       <Route path={"/login"} component={Login} />
       <Route path={"/signup"} component={Signup} />
       <GuardedRoute path={"/onboarding"} component={Onboarding} requireOnboarding={false} />
+      <GuardedRoute path={"/today"} component={Today} />
       <GuardedRoute path={"/dashboard"} component={Dashboard} />
       <GuardedRoute path={"/curriculum"} component={Curriculum} />
       <GuardedRoute path={"/subject/:subjectId"} component={SubjectPage} />

@@ -134,7 +134,7 @@ export default function Adaptive() {
             <section>
               <div className="flex flex-wrap items-baseline justify-between gap-3">
                 <Marginalia amber>
-                  Today's adaptive path — ranked {path.length} · engine decision ledger
+                  Today's study plan — picked just for you
                 </Marginalia>
                 <span className="font-mono text-[12px] uppercase tracking-wider text-muted-foreground">
                   ranked by evidence
@@ -253,7 +253,7 @@ export default function Adaptive() {
               <div className="flex flex-wrap items-baseline justify-between gap-3">
                 <Marginalia>Active interventions — what Cognify has changed</Marginalia>
                 <span className="font-mono text-[12px] uppercase tracking-wider text-muted-foreground">
-                  each writes evidence to Learning DNA
+                  each quietly shapes what Cognify suggests next
                 </span>
               </div>
               <ol className="mt-4 space-y-0">

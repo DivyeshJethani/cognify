@@ -77,7 +77,7 @@ export function todaySequence(): { items: TodayItem[]; afterToday: { topicTitle:
           topicTitle: "Nature of Roots & Discriminant",
           subjectCode: "MATH",
           minutes: 10,
-          reason: "Your DNA suggests teach-back cements this topic fastest.",
+          reason: "Teaching this back cements it faster than anything else.",
         };
 
   const items: TodayItem[] = [due, practice, teachBack].filter((x): x is TodayItem => !!x);

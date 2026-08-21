@@ -38,9 +38,9 @@ export default function Profile() {
   return (
     <AppShell>
       <PageHeader
-        overline="Student Profile — Learning DNA"
-        title={`The case file of ${profile.name}`}
-        subtitle="Full analytics are being built for the next stage. This dossier shows what COGNIFY has established so far — every claim carries its evidence strength."
+        overline="Student Profile"
+        title={`How you learn, in plain words — ${profile.name}`}
+        subtitle="Everything here is kept simple on purpose. What matters isn't the data — it's what you do with it next."
       />
 
       <div className="px-5 py-7 sm:px-8 lg:px-10">
@@ -138,12 +138,9 @@ export default function Profile() {
             </section>
 
             <section>
-              <Marginalia>Q2 · Where am I weak?</Marginalia>
-              <p className="mt-3 max-w-xl footnote">
-                {dna.mistakeProfile.conceptual}% of your errors are conceptual, {dna.mistakeProfile.careless}%
-                careless, {dna.mistakeProfile.procedural}% procedural. Each class demands
-                a different intervention — this is why COGNIFY never treats all
-                mistakes as equal.
+              <Marginalia>Where are your gaps?</Marginalia>
+              <p className="mt-3 max-w-xl text-[13.5px] leading-relaxed text-ink/65">
+                Most of your mistakes come from concepts that haven't clicked yet — not carelessness. That's good news: those are exactly the ones you can fix with one focused sitting.
               </p>
               <div className="mt-5 flex gap-2">
                 {[
@@ -163,18 +160,14 @@ export default function Profile() {
                 ))}
               </div>
               <JourneyLink href="/mistakes" className="mt-4">
-                Read the full mistake analysis
+                See the mistakes you've made recently
               </JourneyLink>
             </section>
 
             <section>
-              <Marginalia>Q3 · How confident am I — truly?</Marginalia>
-              <p className="mt-3 max-w-xl footnote">
-                Across {calibrationSummary().total} measured readings your average self-assessment
-                gap is <strong className="font-serif">{Math.abs(calibrationSummary().avgGap)} points</strong>;
-                {calibrationSummary().overCount > 0
-                  ? ` ${calibrationSummary().overCount} of them show overestimation.`
-                  : " no systematic overestimation detected."}
+              <Marginalia>Are you reading yourself right?</Marginalia>
+              <p className="mt-3 max-w-xl text-[13.5px] leading-relaxed text-ink/65">
+                Sometimes you feel ready and aren't — sometimes you're ready and don't believe it. Here are a few recent moments, with what actually happened.
               </p>
               <ul className="mt-5 divide-y divide-ink/10 border-y border-ink/10">
                 {confidenceReadings().slice(0, 3).map((r) => (
@@ -199,12 +192,12 @@ export default function Profile() {
                 ))}
               </ul>
               <JourneyLink href="/confidence" className="mt-4">
-                Open the calibration ledger
+                Check your confidence habits
               </JourneyLink>
             </section>
 
             <section>
-              <Marginalia amber>Q4 · What should Cognify change about how I study?</Marginalia>
+              <Marginalia amber>What should change in how you study?</Marginalia>
               <div className="mt-5 divide-y divide-ink/10 border-y border-ink/10">
                 {activeInterventions().map((iv) => (
                   <div key={iv.id} className="grid gap-4 py-6 sm:grid-cols-[3rem_1fr]">
@@ -262,8 +255,7 @@ export default function Profile() {
               </dl>
               <MasteryBar value={dna.profileStrength} className="mt-3" />
               <p className="mt-3 footnote">
-                More study sessions = a sharper DNA. {100 - dna.profileStrength}% of the profile
-                is still being written.
+                Every study session makes this picture a little sharper — the rest is still being written.
               </p>
             </section>
 
@@ -286,13 +278,12 @@ export default function Profile() {
             </section>
 
             <section className="border border-ink bg-ink p-5 text-ivory">
-              <div className="font-mono text-[9px] uppercase tracking-[0.08em] text-teal">This file changes</div>
+              <div className="font-mono text-[9px] uppercase tracking-[0.08em] text-teal">This updates as you learn</div>
               <p className="mt-2 font-serif text-[14.5px] leading-relaxed">
-                The DNA file rewrites itself after every session. What you read here is the
-                snapshot at your last login — the ledger updates on the next activity.
+                Every session quietly rewrites this picture. The clearest way to sharpen it? Teach a topic you just learned.
               </p>
               <JourneyLink href="/teach" className="mt-3 text-white/60 hover:text-teal">
-                Teach a topic to sharpen it
+                Teach a topic now
               </JourneyLink>
             </section>
           </div>
@@ -300,13 +291,10 @@ export default function Profile() {
 
         <Hairline className="my-8" />
         <div className="flex flex-wrap items-center justify-between gap-4 pb-4">
-          <p className="footnote max-w-xl">
-            Note: confidence scoring, attention analysis and resilience modelling run on
-            the backend. This dossier renders what the Learning DNA service returns today.
+          <p className="text-[12px] text-ink/45 max-w-xl">
+            The details are kept behind these pages on purpose. You'll never need to look —
+            we'll tell you what to do next when it matters.
           </p>
-          <JourneyLink href="/adaptive" className="text-ink">
-            Watch the engine decide for you
-          </JourneyLink>
         </div>
       </div>
     </AppShell>

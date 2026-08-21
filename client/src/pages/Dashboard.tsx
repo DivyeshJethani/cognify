@@ -121,7 +121,7 @@ export default function Dashboard() {
         subtitle={
           subjectFocus
             ? `Everything below is filtered to ${subjectFocus} — tap a different subject in the sidebar to shift focus.`
-            : `${todayDateString()} · Your learning DNA is ${dna.profileStrength}% complete · ${pathMinutes} minutes scheduled today`
+            : `${todayDateString()} · ${pathMinutes} minutes planned for today — most of it focused on what you need most`
         }
       />
 
@@ -158,7 +158,7 @@ export default function Dashboard() {
           <StatCell
             label="Adaptive interventions"
             value={`${activeInterventions().filter((i) => i.status === "active").length} active`}
-            sub="engine adjustments live"
+            sub="adjustments in effect"
           />
           <StatCell
             label="Weekly target"
@@ -436,7 +436,7 @@ export default function Dashboard() {
             <section className="border border-ink/12 bg-card">
               <div className="border-b border-ink/10 px-5 py-4">
                 <div className="flex items-center justify-between">
-                  <Marginalia className="[&::before]:hidden">Learning DNA — preview</Marginalia>
+                  <Marginalia className="[&::before]:hidden">How you learn — three quick facts</Marginalia>
                   <Link href="/profile" className="font-display text-xs uppercase tracking-[0.08em] text-teal hover:underline">
                     Full analysis →
                   </Link>
@@ -449,7 +449,7 @@ export default function Dashboard() {
                       <span className="font-mono text-[12px] uppercase tracking-[0.12em] text-ink/60">
                         {ins.dimension}
                       </span>
-                      <span className="font-mono text-[12px] text-teal-dark">evidence {ins.confidence}%</span>
+                      <span className="font-mono text-[12px] text-teal-dark">well-supported</span>
                     </div>
                     <p className="mt-1.5 text-[14px] font-medium leading-relaxed text-ink">{ins.finding}</p>
                     <p className="mt-1 footnote">{ins.implication}</p>

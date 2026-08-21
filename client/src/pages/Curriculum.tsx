@@ -141,15 +141,15 @@ export default function Curriculum() {
                     </div>
                   </div>
                   <span className="font-mono text-[12px] uppercase tracking-[0.12em] text-teal transition-transform group-hover:translate-x-0.5">
-                    Open subject ledger →
+                    Open subject →
                   </span>
                 </button>
               );
             })}
           </div>
           <p className="footnote mt-5 max-w-2xl border-l-2 border-teal/40 pl-4">
-            Each subject ledger shows chapter priority from the adaptive engine —
-            what is due for revision, what is weak, and what your streak has not yet touched.
+            Each subject view orders chapters by what matters most right now —
+            what is due for revision, what is still weak, and what your streak has not yet touched.
           </p>
         </div>
       </AppShell>
@@ -168,8 +168,8 @@ export default function Curriculum() {
     <AppShell>
       <PageHeader
         overline="Curriculum Explorer"
-        title={`${subject.name} · ${board.name} ${cls.name}`}
-        subtitle={`Board → Class → Subject → Chapter → Topic → learning objectives — ${subject.chapters.length} chapters, ${allTopicEntries.length} topics mapped`}
+          title={`${subject.name} · ${board.name} ${cls.name}`}
+        subtitle={`${subject.chapters.length} chapters, ${allTopicEntries.length} topics — open any topic to start learning`}
       />
 
       {/* Selector strip */}
@@ -315,7 +315,7 @@ export default function Curriculum() {
 
           {viewMode === "mastery" && (
             <div>
-              <Marginalia amber>All topics ranked by mastery — weakest first</Marginalia>
+              <Marginalia amber>All topics — weakest first</Marginalia>
               <Hairline className="mt-3" />
               <ul className="mt-1 divide-y divide-ink/8">
                 {[...allTopicEntries]
@@ -337,10 +337,10 @@ export default function Curriculum() {
 
           {viewMode === "revision" && (
             <div>
-              <Marginalia>Spaced-retention schedule — due & overdue</Marginalia>
+              <Marginalia>Revision due — don't let these slip</Marginalia>
               <Hairline className="mt-3" />
               {dueForRevision.length === 0 ? (
-                <p className="mt-6 footnote">Nothing is due for revision right now in {subject.name}. The scheduler will flag topics here as they approach their review date.</p>
+                <p className="mt-6 text-[13.5px] text-ink/55">Nothing is due for revision right now in {subject.name} — topics will appear here as their review date approaches.</p>
               ) : (
                 <ul className="mt-1 divide-y divide-ink/8">
                   {dueForRevision.map((e, i) => (

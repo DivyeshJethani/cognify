@@ -152,7 +152,7 @@ export default function Library() {
       <PageHeader
         overline="Resource Discovery"
         title="The catalogue"
-        subtitle={`${resources.length} resources indexed across your subjects — filtered, sorted and ranked by the knowledge engine. Every recommendation carries its evidence.`}
+        subtitle={`${resources.length} resources across your subjects — picked for what you are working on right now.`}
         actions={
           <Link
             href="/dashboard"

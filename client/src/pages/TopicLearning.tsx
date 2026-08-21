@@ -120,9 +120,9 @@ export default function TopicLearning() {
   return (
     <AppShell>
       <PageHeader
-        overline="Topic Dossier"
+        overline="Learning this topic"
         title={topic.title}
-        subtitle={`${subject.name} · Chapter ${String(chapter.index).padStart(2, "0")} — ${chapter.title} · ${resources.length} resources available · ${topic.estimatedMinutes} minutes expected`}
+        subtitle={`${subject.name} · ${chapter.title} · about ${topic.estimatedMinutes} minutes to make this stick`}
         actions={
           <button
             onClick={() => navigate("/curriculum")}
@@ -140,10 +140,13 @@ export default function TopicLearning() {
           <div className="border border-ink/10 bg-card p-5">
             <div className="flex flex-wrap items-start justify-between gap-4">
               <div className="min-w-0 flex-1">
-                <div className="marginalia [&::before]:hidden">The dossier</div>
+                <div className="marginalia [&::before]:hidden">Where you stand</div>
                 <p className="mt-3 text-[14px] leading-relaxed text-dark-text/75">
-                  {topic.actionReason ??
-                    `A topic in ${chapter.title}. Your mastery sits at ${topic.mastery}%, so the recommended first pass below is calibrated to ${topic.mastery < 50 ? "rebuild the idea from the ground up" : "tighten the gaps around the core"} — not to rehearse what you already know.`}
+                  {topic.mastery < 50
+                    ? "This idea needs building from the ground up — start with the first pick below and work through the stages."
+                    : topic.mastery < 85
+                      ? "You have the basics — the resources below target the specific gaps."
+                      : "Nearly there — short revision and practice will close it."}
                 </p>
               </div>
               <div className="w-full shrink-0 sm:w-56">
@@ -169,7 +172,7 @@ export default function TopicLearning() {
           {sequence && (
             <div className="mt-7">
               <div className="flex flex-wrap items-baseline justify-between gap-3">
-                <div className="marginalia">The learning arc — {sequence.totalMinutes} minutes, seven stages</div>
+                <div className="marginalia">The learning arc — {sequence.totalMinutes} minutes from first look to teaching it</div>
                 <span className="font-mono text-[10.5px] uppercase tracking-[0.1em] text-ink/60">
                   {doneCount}/{sequence.stages.length} complete
                 </span>
@@ -203,8 +206,8 @@ export default function TopicLearning() {
                             <p className="mt-1.5 max-w-2xl text-[12.5px] leading-relaxed text-dark-text/70">
                               {s.body ??
                                 (hasResource
-                                  ? "Resource selected by the knowledge engine — expand to begin the session."
-                                  : "Complete this stage using the resources below.")}
+                                  ? "A focused resource is picked for this stage — expand to begin."
+                                  : "Use the resources below to complete this stage.")}
                             </p>
                           )}
                         </div>
@@ -277,9 +280,7 @@ export default function TopicLearning() {
                           </div>
                           {s.key === "teach-back" && (
                             <p className="footnote mt-3 max-w-xl">
-                              Teach-back is the strongest mastery evidence in the loop — the
-                              explanation you write is scored against these key points and
-                              written to your Learning DNA.
+                              Teaching the idea back is the surest way to make it stick — the explanation you write is checked against these key points.
                             </p>
                           )}
                         </div>
@@ -295,9 +296,12 @@ export default function TopicLearning() {
           {/* Recommended first pass */}
           {resources.length > 0 && (
             <div className="mt-7">
-              <div className="marginalia">Recommended first pass</div>
+              <div className="marginalia">Start here — three resources, in order</div>
+              <p className="mt-1 max-w-2xl text-[12.5px] leading-relaxed text-ink/60">
+                Three picks, ordered by fit. If the first doesn't click, the second explains the same idea differently.
+              </p>
               <ul className="mt-3 divide-y divide-ink/8 border-y border-ink/10">
-                {resources.slice(0, 5).map((r, i) => (
+                {resources.slice(0, 3).map((r, i) => (
                   <li key={r.id}>
                     <div className="grid grid-cols-[2.5rem_1fr_auto] items-center gap-4 py-4">
                       <span className="index-num">{String(i + 1).padStart(2, "0")}</span>
@@ -348,12 +352,12 @@ export default function TopicLearning() {
                   </li>
                 ))}
               </ul>
-              {resources.length > 5 && (
+              {resources.length > 3 && (
                 <button
                   onClick={() => navigate(`/resources/${topicId}`)}
                   className="mt-3 h-9 border border-ink/25 bg-card px-4 font-mono text-[10.5px] uppercase tracking-[0.12em] text-ink/70 transition-all duration-150 hover:border-teal hover:text-teal active:scale-[0.97]"
                 >
-                  Show all {resources.length} resources →
+                  Browse all {resources.length} resources →
                 </button>
               )}
             </div>
@@ -363,10 +367,8 @@ export default function TopicLearning() {
           {alts.length > 0 && (
             <div className="mt-8">
               <div className="marginalia">Another explanation</div>
-              <p className="mt-2 max-w-2xl text-[14px] leading-relaxed text-dark-text/70">
-                If the first pass above did not hold, do not repeat it — meet the idea in a
-                different format. These surface after a session registers a replay or an
-                “I need another explanation” reflection.
+              <p className="mt-2 max-w-2xl text-[13px] leading-relaxed text-dark-text/70">
+                If the first pass didn't hold, don't repeat it — meet the idea in a different format instead.
               </p>
               <ul className="mt-3 divide-y divide-ink/8 border-y border-ink/10">
                 {alts.map((a, i) => (
@@ -408,10 +410,12 @@ export default function TopicLearning() {
         {/* Margin */}
         <aside className="w-full shrink-0 space-y-6 lg:w-80">
           <div className="border border-ink bg-ink p-5 text-ivory">
-            <div className="font-mono text-[9px] uppercase tracking-[0.08em] text-teal">DNA note</div>
+            <div className="font-mono text-[9px] uppercase tracking-[0.08em] text-teal">A nudge for you</div>
             <p className="mt-2 font-serif text-[15px] leading-relaxed">
               {dnaItems[0]?.why ??
-                `Your profile suggests a ${firstRecommended?.resourceType.replace("-", " ") ?? "guided lecture"}-first approach for this topic — ${topic.mastery < 50 ? "the idea needs building, not polishing" : "the gaps are specific, not systemic"}.`}
+                topic.mastery < 50
+                  ? "This idea needs building, not polishing — a video walkthrough first, then practice."
+                  : "The gaps here are specific, not systemic — short focused sessions beat long ones."}
             </p>
           </div>
 
@@ -429,9 +433,8 @@ export default function TopicLearning() {
                   </li>
                 ))}
               </ol>
-              <p className="footnote mt-4">
-                Each completed stage is written to your topic file — the arc, not the
-                video, is what the adaptive engine reads.
+              <p className="mt-4 text-[12px] leading-relaxed text-ink/55">
+                Completing each stage quietly adjusts what Cognify suggests next.
               </p>
             </div>
           )}

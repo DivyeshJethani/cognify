@@ -47,8 +47,8 @@ export default function Mistakes() {
     <AppShell>
       <PageHeader
         overline="Mistake Analysis"
-        title="Every error is classified — none are wasted"
-        subtitle="Cognify reads each mistake as evidence. A conceptual error changes how you learn a topic; a careless error changes how you check your work. This ledger shows what the engine has classified, and what it changed because of it."
+        title="Every mistake is a lesson — none are wasted"
+        subtitle="A conceptual error changes how you learn a topic; a careless one changes how you check your work. Here's what happened recently, and what changed because of it."
         actions={
           <Button
             asChild
@@ -140,9 +140,9 @@ export default function Mistakes() {
             {/* Individual mistakes */}
             <section>
               <div className="flex flex-wrap items-baseline justify-between gap-3">
-                <Marginalia>Recent classified mistakes — the raw evidence</Marginalia>
+                <Marginalia>Recent mistakes, and what they teach</Marginalia>
                 <span className="font-mono text-[12px] uppercase tracking-wider text-muted-foreground">
-                  each feeds a dimension of your Learning DNA
+                  each quietly shapes what Cognify suggests next
                 </span>
               </div>
               <div className="mt-5 divide-y divide-ink/10 border-y border-ink/10">
@@ -263,10 +263,9 @@ export default function Mistakes() {
             </section>
 
             <section className="border border-ink/12 bg-card p-5">
-              <Marginalia className="[&::before]:hidden">Evidence strength</Marginalia>
-              <p className="mt-2 footnote">
-                Classifications below 70% evidence are supervised — they influence the path but do
-                not override your sessions. Every reading still writes to your Learning DNA.
+              <Marginalia className="[&::before]:hidden">How sure is this</Marginalia>
+              <p className="mt-2 text-[13.5px] text-ink/60">
+                A few readings are only partly certain — they influence what's suggested next, but never override your own sessions.
               </p>
               <div className="mt-4 space-y-3">
                 {analytics.slice(0, 3).map((m) => (
@@ -275,7 +274,7 @@ export default function Mistakes() {
                       <span className="font-mono text-[12px] uppercase tracking-wider text-ink/60">
                         {m.label} cluster
                       </span>
-                      <span className="font-mono text-[12px] text-teal-dark">evidence ~{70 + m.percentage / 4}%</span>
+                      <span className="font-mono text-[12px] text-teal-dark">~{70 + Math.round(m.percentage / 4)}% certain</span>
                     </div>
                     <MasteryBar value={70 + m.percentage / 4} className="mt-1.5" />
                   </div>
@@ -284,7 +283,7 @@ export default function Mistakes() {
             </section>
 
             <section>
-              <Marginalia>Mistakes this week</Marginalia>
+              <Marginalia>Looking closer at this week</Marginalia>
               <div className="mt-4 grid grid-cols-2 gap-px border border-ink/12 bg-ink/10">
                 <div className="bg-card p-4">
                   <div className="font-display text-3xl font-bold text-amber-dark">
@@ -307,7 +306,7 @@ export default function Mistakes() {
                 href="/confidence"
                 className="mt-4 inline-flex items-center gap-1.5 border-b border-teal/50 pb-0.5 font-mono text-[14px] uppercase tracking-wider text-teal transition-colors hover:border-teal"
               >
-                See confidence calibration →
+                Check your confidence habits →
               </Link>
             </section>
           </div>

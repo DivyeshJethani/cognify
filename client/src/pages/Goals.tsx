@@ -46,9 +46,9 @@ export default function GoalsPage() {
       const prev = p[id] ?? goals.find((g) => g.id === id)!.progress;
       const next = Math.min(100, prev + points);
       if (next >= 100 && prev < 100) {
-        toast.success("Goal achieved", { description: "Evidence written to your Learning DNA." });
+        toast.success("Goal achieved", { description: "Well done — this marks a real step forward." });
       } else {
-        toast.success(`+${points}% — ${label}`, { description: "Logged as progress evidence." });
+        toast.success(`+${points}% — ${label}`, { description: "Progress saved — you're closer." });
       }
       return { ...p, [id]: next };
     });
@@ -58,8 +58,8 @@ export default function GoalsPage() {
     <AppShell>
       <PageHeader
         overline="Stretch Goals"
-        title="Goals the engine set from your data"
-        subtitle="These are not checkboxes you wrote yourself — each goal is generated from your Learning DNA, your weak topics and your revision schedule. Progress is logged as evidence, not as a favour to the UI."
+        title="Goals picked from what you're actually working on"
+        subtitle="These aren't checkboxes you wrote yourself — each one comes from the topics you're currently tackling and what you have coming up. Make progress and it quietly disappears."
       />
 
       <div className="px-5 py-7 sm:px-8 lg:px-10">
@@ -68,7 +68,7 @@ export default function GoalsPage() {
           <StatCell
             label="Active goals"
             value={`${goals.length}`}
-            sub="generated from your DNA"
+            sub="from your current work"
           />
           <StatCell
             label="Achieved this term"
@@ -147,7 +147,7 @@ export default function GoalsPage() {
                     )}
                     {done && (
                       <div className="mt-5 flex items-center gap-2 font-mono text-[14px] uppercase tracking-wider text-teal-dark">
-                        <Award className="h-4 w-4" /> Goal achieved — logged to Learning DNA
+                        <Award className="h-4 w-4" /> Goal achieved
                       </div>
                     )}
                   </div>

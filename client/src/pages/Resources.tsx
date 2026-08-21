@@ -284,7 +284,7 @@ function ResourceRow({
             </div>
             {resource.dnaDimension && (
               <span className="border border-amber/40 bg-amber/5 px-1.5 py-0.5 font-mono text-[9px] uppercase tracking-[0.1em] text-amber-dark">
-                DNA · {resource.dnaDimension}
+                Fits your learning style
               </span>
             )}
           </div>
@@ -293,27 +293,27 @@ function ResourceRow({
             {whyOpen ? (
               <div className="border-l border-dotted border-ink/15 pl-3">
                 <span className="font-mono text-[12px] font-bold uppercase tracking-[0.1em] text-teal-dark">
-                  Why Cognify recommends
+                  Why this one
                 </span>
                 <p className="mt-1 text-[14px] leading-relaxed text-dark-text/75">{resource.whyRecommended}</p>
                 <button
                   onClick={() => setWhyOpen(false)}
                   className="mt-1 font-display text-xs uppercase tracking-[0.08em] text-ink/55 hover:text-teal"
                 >
-                  Hide evidence ←
+                  Hide ←
                 </button>
               </div>
             ) : (
               <p className="text-[14px] leading-relaxed text-dark-text/75">
                 <span className="font-mono text-[12px] font-bold uppercase tracking-[0.1em] text-teal-dark">
-                  Why Cognify recommends{" "}
+                  Why this one{" "}
                 </span>
                 {resource.whyRecommended.split(".").slice(0, 1).join("")}.
                 <button
                   onClick={() => setWhyOpen(true)}
                   className="ml-2 border-b border-teal/50 pb-0.5 font-display text-xs uppercase tracking-[0.08em] text-teal transition-colors hover:border-teal"
                 >
-                  See evidence →
+                  Read more →
                 </button>
               </p>
             )}
