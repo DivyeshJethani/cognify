@@ -18,13 +18,13 @@ export function PublicNav() {
           <span className="font-display text-[20px] font-bold tracking-[0.08em] text-ink">COGNIFY</span>
         </Link>
         <nav className="hidden items-center gap-8 md:flex">
-          <a href="#how-it-works" className="text-[14px] tracking-wide text-slate-text transition-colors hover:text-ink">
+          <a href="#how-it-works" className="text-[14px] tracking-wide text-dark-text/80 transition-colors hover:text-ink">
             How it works
           </a>
-          <a href="#learning-dna" className="text-[14px] tracking-wide text-slate-text transition-colors hover:text-ink">
+          <a href="#learning-dna" className="text-[14px] tracking-wide text-dark-text/80 transition-colors hover:text-ink">
             Learning DNA
           </a>
-          <a href="#curriculum" className="text-[14px] tracking-wide text-slate-text transition-colors hover:text-ink">
+          <a href="#curriculum" className="text-[14px] tracking-wide text-dark-text/80 transition-colors hover:text-ink">
             Curriculum
           </a>
         </nav>
@@ -74,7 +74,7 @@ export function PublicFooter() {
               <img src={LOGO_URL} alt="COGNIFY" className="h-9 w-9" />
               <span className="font-serif text-lg font-bold tracking-[0.08em] text-white">COGNIFY</span>
             </div>
-            <p className="mt-4 text-[14px] leading-relaxed text-white/70">
+            <p className="mt-4 text-[14px] leading-relaxed text-white">
               An adaptive learning laboratory. It studies how you learn, then
               shapes every lesson, practice and revision around your Learning DNA.
             </p>
@@ -105,7 +105,7 @@ export function PublicFooter() {
             </div>
           </div>
         </div>
-        <div className="mt-10 border-t border-white/10 pt-6 font-mono text-[14px] tracking-wider text-white/50">
+        <div className="mt-10 border-t border-white/20 pt-6 font-mono text-[14px] tracking-wider text-white/80">
           © 2026 COGNIFY — The Learning Laboratory. Frontend foundation stage; backend services connecting shortly.
         </div>
       </div>

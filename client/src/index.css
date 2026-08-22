@@ -14,13 +14,17 @@
 :root {
   --navy: #0f172a;
   --teal: #2b9c8c;
+  --teal-light: #4fd1c5;
   --teal-dark: #238375;
   --purple: #8b5cf6;
   --orange: #f97316;
   --ivory: #f8f9fa;
+  --ivory-deep: #f1f3f5;
   --white: #ffffff;
   --slate-text: #334155;
   --slate-light: #64748b;
+  --ink: #163047;
+  --dark-text: #163047;
   --border-light: rgba(0, 0, 0, 0.05);
   --shadow-soft: 0 4px 20px -4px rgba(0, 0, 0, 0.05), 0 2px 10px -4px rgba(0, 0, 0, 0.03);
 }
@@ -63,10 +67,14 @@
 
   /* Cognify brand tokens */
   --color-navy: #0f172a;
+  --color-ink: #163047;
+  --color-dark-text: #163047;
   --color-teal: #2b9c8c;
+  --color-teal-light: #4fd1c5;
   --color-purple: #8b5cf6;
   --color-orange: #f97316;
   --color-ivory: #f8f9fa;
+  --color-ivory-deep: #f1f3f5;
   --color-slate-light: #64748b;
   --color-border-light: rgba(0, 0, 0, 0.05);
   
@@ -159,7 +167,7 @@
     font-weight: 700;
   }
   p {
-    @apply text-slate-light leading-relaxed;
+    @apply text-dark-text/80 leading-relaxed;
   }
 }
 
@@ -186,12 +194,12 @@
   }
   
   .marginalia {
-    @apply font-mono text-[10px] uppercase tracking-[0.15em] text-slate-light flex items-center gap-3;
+    @apply font-mono text-[10px] uppercase tracking-[0.15em] text-dark-text/70 flex items-center gap-3;
   }
   
   .marginalia::before {
     content: "";
-    @apply block h-px w-6 bg-slate-light/40;
+    @apply block h-px w-6 bg-dark-text/20;
   }
   
   .marginalia-amber {
@@ -203,7 +211,7 @@
   }
   
   .footnote {
-    @apply text-[13px] leading-relaxed text-slate-light;
+    @apply text-[13px] leading-relaxed text-dark-text/70;
   }
 }
 
