@@ -443,6 +443,8 @@ export interface RevisionEntry {
 }
 
 /** Teach-back session */
+export type TeachBackOutcome = "correct" | "partial" | "incorrect" | "irrelevant" | "too-short";
+
 export interface TeachBackPrompt {
   topicId: string;
   topicTitle: string;
@@ -459,6 +461,16 @@ export interface TeachBackAnalysis {
   missingTopicId?: string;
   verdict: string;
   evidence: number; // 0–100 evidence strength added to DNA
+  /** Explicit evaluation state used to keep corrective feedback honest. */
+  outcome: TeachBackOutcome;
+  /** The specific issue Cognify identified, when any. */
+  whatWasWrong: string;
+  /** The concept the student should understand. */
+  correctConcept: string;
+  /** The next attempt Cognify wants the student to make. */
+  tryAgain: string;
+  /** Key ideas detected in the submitted explanation. */
+  matchedPoints?: string[];
 }
 
 /** Active interventions — what Cognify changes about the student's learning */

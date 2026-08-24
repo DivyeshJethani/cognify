@@ -13,6 +13,7 @@ import {
   ArrowRight, 
   BookOpen, 
   Check, 
+  AlertCircle,
   Lightbulb, 
   Mic, 
   Play, 
@@ -53,17 +54,35 @@ const STEPS = [
   { n: 4, label: "Analysis" },
 ];
 
-function recommendNextStep(coverage: number): { label: string; note: string; peer: boolean } {
-  if (coverage >= 80)
+function recommendNextStep(analysis: { coverage: number; outcome: "correct" | "partial" | "incorrect" | "irrelevant" | "too-short" }): { label: string; note: string; peer: boolean } {
+  if (analysis.outcome === "correct" && analysis.coverage >= 80)
     return {
       label: "Teach a classmate",
       note: "Your explanation is excellent! You're ready to help others in your study group.",
       peer: true,
     };
-  if (coverage >= 55)
+  if (analysis.outcome === "partial")
     return {
       label: "Refine one concept",
       note: "Almost there — revisit the specific point flagged by Cognify, then try again.",
+      peer: false,
+    };
+  if (analysis.outcome === "too-short")
+    return {
+      label: "Add more detail",
+      note: "Write two or three connected sentences, then submit the explanation again.",
+      peer: false,
+    };
+  if (analysis.outcome === "irrelevant")
+    return {
+      label: "Return to the prompt",
+      note: "Start with the concept named in the prompt, then connect it to one key idea.",
+      peer: false,
+    };
+  if (analysis.outcome === "incorrect")
+    return {
+      label: "Correct the misconception",
+      note: "Review the correct concept below, then try the explanation again in your own words.",
       peer: false,
     };
   return {
@@ -92,7 +111,7 @@ export default function Teach() {
         : null,
     [submitted, prompt, teaching]
   );
-  const nextStep = analysis ? recommendNextStep(analysis.coverage) : null;
+  const nextStep = analysis ? recommendNextStep(analysis) : null;
 
   const resources = useMemo(() => {
     if (!prompt) return [];
@@ -164,7 +183,6 @@ export default function Teach() {
   }
 
   function submitTeaching() {
-    if (teaching.kind === "text" && !teaching.text?.trim()) return;
     setSubmitted(true);
     setStage(4);
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -405,8 +423,7 @@ export default function Teach() {
                          <div className="ml-auto">
                             <Button 
                               onClick={submitTeaching} 
-                              disabled={!teaching.text?.trim()}
-                              className="h-12 px-8 rounded-2xl bg-teal text-white shadow-lg shadow-teal/20 hover:bg-teal/90 disabled:opacity-50"
+                              className="h-12 px-8 rounded-2xl bg-teal text-white shadow-lg shadow-teal/20 hover:bg-teal/90"
                             >
                                Submit Explanation <ArrowRight className="ml-2 h-4 w-4" />
                             </Button>
@@ -420,10 +437,21 @@ export default function Teach() {
             {stage === 4 && analysis && nextStep && (
               <div className="space-y-8 animate-slide-up">
                  <div className="text-center space-y-2">
-                    <div className="inline-flex h-16 w-16 items-center justify-center rounded-3xl bg-teal/10 text-teal mb-4">
-                       <Check className="h-8 w-8" />
+                    <div className={cn(
+                      "inline-flex h-16 w-16 items-center justify-center rounded-3xl mb-4",
+                      analysis.outcome === "correct" ? "bg-teal/10 text-teal" :
+                      analysis.outcome === "partial" ? "bg-orange/10 text-orange" :
+                      "bg-red-50 text-red-600"
+                    )}>
+                       {analysis.outcome === "correct" ? <Check className="h-8 w-8" /> : <AlertCircle className="h-8 w-8" />}
                     </div>
-                    <h2 className="text-2xl font-bold text-navy">Understanding Check Complete</h2>
+                    <h2 className="text-2xl font-bold text-navy">
+                      {analysis.outcome === "correct" ? "Understanding Check Complete" :
+                       analysis.outcome === "partial" ? "Your explanation is partly correct" :
+                       analysis.outcome === "too-short" ? "Add more detail to your explanation" :
+                       analysis.outcome === "irrelevant" ? "This explanation needs to refocus" :
+                       "Let's correct this explanation"}
+                    </h2>
                     <p className="text-slate-light">Here's a quick summary of your explanation on "{prompt?.topicTitle}"</p>
                  </div>
 
@@ -437,7 +465,11 @@ export default function Teach() {
                                 <span>{analysis.coverage}%</span>
                              </div>
                              <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
-                                <div className="h-full bg-teal transition-all duration-1000" style={{ width: `${analysis.coverage}%` }} />
+                                <div className={cn(
+                                  "h-full transition-all duration-1000",
+                                  analysis.outcome === "correct" ? "bg-teal" :
+                                  analysis.outcome === "partial" ? "bg-orange" : "bg-red-500"
+                                )} style={{ width: `${analysis.coverage}%` }} />
                              </div>
                           </div>
                           <div>
@@ -457,12 +489,25 @@ export default function Teach() {
                        <p className="text-navy font-bold leading-relaxed mb-4">
                           {analysis.verdict}
                        </p>
-                       <div className="p-4 rounded-xl bg-orange/5 border border-orange/10 flex gap-3">
-                          <Info className="h-4 w-4 text-orange shrink-0 mt-0.5" />
+                       <div className={cn(
+                         "p-4 rounded-xl border flex gap-3",
+                         analysis.outcome === "correct" ? "bg-teal/5 border-teal/10" :
+                         analysis.outcome === "partial" ? "bg-orange/5 border-orange/10" : "bg-red-50 border-red-100"
+                       )}>
+                          {analysis.outcome === "correct" ? <Check className="h-4 w-4 text-teal shrink-0 mt-0.5" /> : <AlertCircle className="h-4 w-4 text-red-600 shrink-0 mt-0.5" />}
                           <div>
-                             <p className="text-[10px] font-bold text-orange uppercase tracking-widest mb-1">Missing Point</p>
-                             <p className="text-xs text-slate-700">{analysis.missingIdea}</p>
+                             <p className={cn(
+                               "text-[10px] font-bold uppercase tracking-widest mb-1",
+                               analysis.outcome === "correct" ? "text-teal" : analysis.outcome === "partial" ? "text-orange" : "text-red-600"
+                             )}>
+                               {analysis.outcome === "correct" ? "One more detail" : analysis.outcome === "partial" ? "What is missing" : "What was wrong"}
+                             </p>
+                             <p className="text-xs text-slate-700">{analysis.outcome === "correct" ? analysis.missingIdea : analysis.whatWasWrong}</p>
                           </div>
+                       </div>
+                       <div className="mt-3 p-4 rounded-xl bg-teal/5 border border-teal/10">
+                          <p className="text-[10px] font-bold text-teal uppercase tracking-widest mb-1">Correct concept</p>
+                          <p className="text-xs text-slate-700 leading-relaxed">{analysis.correctConcept}</p>
                        </div>
                     </div>
                  </div>
@@ -472,7 +517,7 @@ export default function Teach() {
                        <span className="text-[10px] font-bold text-teal uppercase tracking-[0.2em] mb-2 block">Next Step</span>
                        <h3 className="text-2xl font-bold mb-2">{nextStep.label}</h3>
                        <p className="text-slate-300 text-sm leading-relaxed max-w-md">
-                          {nextStep.note}
+                          {analysis.outcome === "correct" ? nextStep.note : analysis.tryAgain}
                        </p>
                     </div>
                     <div className="shrink-0 flex gap-3">
