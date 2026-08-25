@@ -149,7 +149,7 @@ export default function Curriculum() {
               return (
                 <div
                   key={s.id}
-                  onClick={() => setSubjectId(s.code.toLowerCase())}
+                  onClick={() => setSubjectId(s.id)}
                   className="card-rounded p-6 card-hover group cursor-pointer flex flex-col"
                 >
                   <div className={cn("mb-4 flex h-12 w-12 items-center justify-center rounded-2xl text-2xl shadow-sm", colorClass + "/10")}>

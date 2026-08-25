@@ -106,7 +106,7 @@ export default function Teach() {
   const prompt = useMemo(() => prompts.find((p) => p.topicId === selectedId), [selectedId, prompts]);
   const analysis = useMemo(
     () =>
-      submitted && prompt && (teaching.kind === "text" ? teaching.text : "[voice teaching]")
+      submitted && prompt
         ? analyseTeachBack(prompt.topicId, teaching.kind === "text" ? teaching.text ?? "" : "")
         : null,
     [submitted, prompt, teaching]

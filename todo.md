@@ -104,3 +104,16 @@ The Class 10 CBSE demo data now includes 14 Mathematics chapters, 16 Science cha
 Focused checks completed: Teach evaluation cases produced the expected five outcomes; CBSE Class 10 curriculum integrity found 50 chapters and 105 topics with no duplicate chapter or topic IDs; TypeScript compilation passed; production build passed; development server restarted with no TypeScript or LSP errors; and route screenshot checks completed for `/teach` and `/curriculum` while unauthenticated routes redirected to the existing public landing flow.
 
 Changed implementation files: `client/src/lib/types.ts`, `client/src/lib/teachBack.ts`, `client/src/pages/Teach.tsx`, and `client/src/lib/mockData.ts`. The temporary focused test script under `scripts/test-teach-back.ts` may be removed before checkpointing if it is not intended as a permanent project test.
+
+
+# Curriculum Explorer Visibility Fix
+
+- [ ] Trace the exact Curriculum Explorer component, context, selector, and data source used at runtime.
+- [ ] Confirm the active board/class context used by the rendered Curriculum Explorer.
+- [ ] Determine why the previously added Science and Social Science chapters are not visible in the live UI.
+- [ ] Modify only the actual frontend data source or existing categorization path used by Curriculum Explorer.
+- [ ] Ensure CBSE Class 10 Science visibly exposes Physics, Chemistry, and Biology categories with chapters.
+- [ ] Ensure CBSE Class 10 Social Science visibly exposes History, Civics/Political Science, and Geography categories with chapters.
+- [ ] Preserve existing Mathematics chapters, topic IDs, Teach Cognify behavior, and the current UI.
+- [ ] Verify representative category, chapter, topic, and refresh flows in the rendered application.
+- [ ] Report the exact cause, exact files changed, checks performed, and any remaining limitation.
